@@ -7,13 +7,7 @@ export type QuestionFilter = 'all' | QuestionCategory;
 export type QuestionCount = number | 'all' | null;
 export type TimerMinutes = number | null;
 export type ExamSource = 'full' | 'missed';
-export type ModeId =
-  | 'full-test'
-  | 'rules-drill'
-  | 'signs-drill'
-  | 'assisted'
-  | 'all-questions'
-  | 'retake';
+export type ModeId = 'full-test' | 'rules-drill' | 'signs-drill' | 'assisted' | 'retake';
 export type ExamMode = ModeId;
 
 export interface AnswerOption {

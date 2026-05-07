@@ -50,7 +50,12 @@ export function Header() {
 
   return (
     <header className="site-header">
-      <Link href="/" className="site-logo" aria-label="NS Learner Test Practice — Home">
+      <Link
+        href="/"
+        prefetch={false}
+        className="site-logo"
+        aria-label="NS Learner Test Practice — Home"
+      >
         <span className="site-logo__mark" aria-hidden="true">
           NS
         </span>
@@ -61,10 +66,14 @@ export function Header() {
       </Link>
 
       <nav className="site-nav" aria-label="Primary navigation">
-        <Link aria-current={pathname === '/' ? 'page' : undefined} href="/">
+        <Link aria-current={pathname === '/' ? 'page' : undefined} href="/" prefetch={false}>
           Home
         </Link>
-        <Link aria-current={pathname === '/handbooks' ? 'page' : undefined} href="/handbooks">
+        <Link
+          aria-current={pathname === '/handbooks' ? 'page' : undefined}
+          href="/handbooks"
+          prefetch={false}
+        >
           Handbooks
         </Link>
         <button type="button" onClick={() => setSettingsOpen(true)}>

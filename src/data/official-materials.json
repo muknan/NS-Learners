@@ -1,10 +1,80 @@
 [
   {
-    "id": "official-driver-handbook",
-    "label": "Nova Scotia Driver's Handbook",
+    "id": "driver-handbook-introduction",
+    "label": "Driver's Handbook - Introduction",
+    "section": "Driver's Handbook PDFs",
+    "fileSize": "PDF 1.3 MB",
+    "href": "https://novascotia.ca/sns/rmv/handbook/DH-1_intro.pdf"
+  },
+  {
+    "id": "driver-handbook-chapter-1",
+    "label": "Chapter 1 - Your Driver's Licence",
+    "section": "Driver's Handbook PDFs",
+    "fileSize": "PDF 812 KB",
+    "href": "https://novascotia.ca/sns/rmv/handbook/DH-Chapter1.pdf"
+  },
+  {
+    "id": "driver-handbook-chapter-2",
+    "label": "Chapter 2 - Rules of the Road",
+    "section": "Driver's Handbook PDFs",
+    "fileSize": "PDF 2.0 MB",
+    "href": "https://novascotia.ca/sns/rmv/handbook/DH-Chapter2.pdf"
+  },
+  {
+    "id": "driver-handbook-chapter-3",
+    "label": "Chapter 3 - Signs, Pavement Markings and Work Zones",
+    "section": "Driver's Handbook PDFs",
+    "fileSize": "PDF 798 KB",
+    "href": "https://novascotia.ca/sns/rmv/handbook/DH-Chapter3.pdf"
+  },
+  {
+    "id": "driver-handbook-chapter-4",
+    "label": "Chapter 4 - Safety",
+    "section": "Driver's Handbook PDFs",
+    "fileSize": "PDF 2.2 MB",
+    "href": "https://novascotia.ca/sns/rmv/handbook/DH-Chapter4.pdf"
+  },
+  {
+    "id": "driver-handbook-chapter-5",
+    "label": "Chapter 5 - Adverse Driving Conditions",
+    "section": "Driver's Handbook PDFs",
+    "fileSize": "PDF 1.6 MB",
+    "href": "https://novascotia.ca/sns/rmv/handbook/DH-Chapter5.pdf"
+  },
+  {
+    "id": "driver-handbook-chapter-6",
+    "label": "Chapter 6 - Driving and Impairment",
+    "section": "Driver's Handbook PDFs",
+    "fileSize": "PDF 984 KB",
+    "href": "https://novascotia.ca/sns/rmv/handbook/DH-Chapter6.pdf"
+  },
+  {
+    "id": "driver-handbook-chapter-7",
+    "label": "Chapter 7 - Vehicle Registration and Insurance",
+    "section": "Driver's Handbook PDFs",
+    "fileSize": "PDF 1.4 MB",
+    "href": "https://novascotia.ca/sns/rmv/handbook/DH-Chapter7.pdf"
+  },
+  {
+    "id": "driver-handbook-chapter-8",
+    "label": "Chapter 8 - Motorcycles",
+    "section": "Driver's Handbook PDFs",
+    "fileSize": "PDF 4.3 MB",
+    "href": "https://novascotia.ca/sns/rmv/handbook/DH-Chapter8.pdf"
+  },
+  {
+    "id": "driver-handbook-index",
+    "label": "Driver's Handbook - Index",
+    "section": "Driver's Handbook PDFs",
+    "fileSize": "PDF 586 KB",
+    "href": "https://novascotia.ca/sns/rmv/handbook/DH-Index.pdf"
+  },
+  {
+    "id": "class-7-knowledge-test",
+    "label": "Learner's Licence (Class 7) knowledge test",
     "section": "Official Guides",
     "fileSize": "Primary source",
-    "href": "https://novascotia.ca/sns/rmv/safe/handbook.asp"
+    "href": "https://www.novascotia.ca/take-driver-knowledge-test-learners-licence-class-7"
   },
   {
     "id": "road-test-class-5",

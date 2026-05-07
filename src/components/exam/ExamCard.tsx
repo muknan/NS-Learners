@@ -121,14 +121,15 @@ export function ExamCard({
           {toggleHint ? <p className="exam-card__toggle-hint">{toggleHint}</p> : null}
         </div>
         <div className="exam-card__actions">
-          <Button
-            tone="secondary"
-            icon={<ArrowLeft aria-hidden="true" suppressHydrationWarning />}
-            onClick={onPrevious}
-            disabled={questionIndex === 0}
-          >
-            Prev
-          </Button>
+          {questionIndex > 0 ? (
+            <Button
+              tone="secondary"
+              icon={<ArrowLeft aria-hidden="true" suppressHydrationWarning />}
+              onClick={onPrevious}
+            >
+              Prev
+            </Button>
+          ) : null}
           <Button
             aria-pressed={flagged}
             icon={<Flag aria-hidden="true" suppressHydrationWarning />}

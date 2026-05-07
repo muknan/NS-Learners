@@ -89,10 +89,7 @@ export function HomeClient({ stats }: HomeClientProps) {
         </div>
         <div className="mode-grid">
           {modes.map((mode) => (
-            <article
-              className={mode.id === 'all-questions' ? 'mode-card mode-card--wide' : 'mode-card'}
-              key={mode.id}
-            >
+            <article className="mode-card" key={mode.id}>
               <span className="mode-card__top">
                 <span className="mode-card__category">{mode.categoryLabel}</span>
                 <strong>{mode.label}</strong>

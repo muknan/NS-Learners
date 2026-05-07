@@ -6,6 +6,7 @@ import { ToggleSwitch } from '@/components/ui/ToggleSwitch';
 import { HISTORY_KEY, readAdvanceDuration, saveAdvanceDuration, THEME_KEY } from '@/lib/storage';
 
 type Theme = 'light' | 'dark';
+const ADVANCE_DURATION_OPTIONS = [2, 3, 5, 8] as const;
 
 export function SettingsPanel({ open, onClose }: { open: boolean; onClose: () => void }) {
   const [theme, setTheme] = useState<Theme>('light');
@@ -86,26 +87,32 @@ export function SettingsPanel({ open, onClose }: { open: boolean; onClose: () =>
         <section className="settings-section" aria-labelledby="advance-settings-title">
           <h3 id="advance-settings-title">Auto-advance delay</h3>
           <div className="setting-row">
-            <label htmlFor="advance-duration" className="setting-label">
+            <div className="setting-label">
               Auto-advance delay
               <span className="setting-value">{advanceDuration}s</span>
-            </label>
-            <input
-              id="advance-duration"
-              type="range"
-              min={2}
-              max={8}
-              step={0.5}
-              value={advanceDuration}
-              onChange={(event) => updateAdvanceDuration(Number(event.target.value))}
-            />
+            </div>
+            <div className="delay-choice" role="group" aria-label="Auto-advance delay">
+              {ADVANCE_DURATION_OPTIONS.map((duration) => (
+                <button
+                  className={advanceDuration === duration ? 'is-active' : ''}
+                  key={duration}
+                  onClick={() => updateAdvanceDuration(duration)}
+                  type="button"
+                >
+                  {duration}s
+                </button>
+              ))}
+            </div>
             <p className="setting-hint">
               How long to show feedback before moving to the next question.
             </p>
           </div>
         </section>
 
-        <section className="settings-section" aria-labelledby="keyboard-settings-title">
+        <section
+          className="settings-section settings-section--data"
+          aria-labelledby="keyboard-settings-title"
+        >
           <h3 id="keyboard-settings-title">Data & shortcuts</h3>
           <dl className="shortcut-list">
             <div>

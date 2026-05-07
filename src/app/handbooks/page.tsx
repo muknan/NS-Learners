@@ -12,10 +12,12 @@ export const metadata = {
 export const dynamic = 'force-static';
 
 export default function HandbooksPage() {
-  const groups = ['Official Guides', 'Quick Reference'].map((section) => ({
-    section,
-    materials: officialMaterials.filter((material) => material.section === section),
-  }));
+  const groups = [...new Set(officialMaterials.map((material) => material.section))].map(
+    (section) => ({
+      section,
+      materials: officialMaterials.filter((material) => material.section === section),
+    }),
+  );
 
   return (
     <PageWrapper>
@@ -45,8 +47,8 @@ export default function HandbooksPage() {
                 <span>
                   <strong>{material.label}</strong>
                   <small>
-                    {material.id === 'official-driver-handbook'
-                      ? 'Primary handbook for rules, signs, licensing, safety, conditions, and impairment.'
+                    {material.section === "Driver's Handbook PDFs"
+                      ? 'Official Nova Scotia Driver Handbook chapter PDF.'
                       : 'Official Nova Scotia reference material.'}
                   </small>
                 </span>

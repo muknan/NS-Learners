@@ -1,6 +1,6 @@
 'use client';
 
-import { AlertTriangle, ArrowLeft, Flag, Keyboard, LogOut, Menu, RotateCcw } from 'lucide-react';
+import { AlertTriangle, ArrowLeft, Flag, Keyboard, LogOut, Menu, RotateCcw, X } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
   useCallback,
@@ -411,6 +411,14 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
             {session.instantFeedback ? 'Instant feedback' : 'End-of-exam mode'}
           </Badge>
           <Timer remaining={remaining} />
+          <Button
+            aria-label="Close navigator"
+            className="exam-sidebar__close"
+            tone="ghost"
+            size="icon"
+            icon={<X aria-hidden="true" suppressHydrationWarning />}
+            onClick={() => setNavigatorOpen(false)}
+          />
         </div>
 
         <div className="progress-card">
