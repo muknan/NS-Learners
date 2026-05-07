@@ -280,7 +280,21 @@ p {
   color: var(--color-brand-dark);
 }
 
+.button--secondary:hover {
+  border-color: var(--color-brand-primary);
+  background: var(--color-brand-tertiary);
+  color: var(--color-brand-dark);
+}
+
 [data-theme='dark'] .button--secondary {
+  border-color: var(--color-border-strong);
+  background: var(--color-surface-muted);
+  color: var(--color-text-primary);
+}
+
+[data-theme='dark'] .button--secondary:hover {
+  border-color: var(--color-brand-secondary);
+  background: color-mix(in srgb, var(--color-brand-primary) 24%, var(--color-surface-muted));
   color: var(--color-text-primary);
 }
 
