@@ -1,0 +1,13 @@
+.vercel
+.next/
+out/
+coverage/
+test-results/
+playwright-report/
+public/sw.js
+public/workbox-*.js
+*.tsbuildinfo
+*.log
+node_modules
+dist
+vite-dev*.log

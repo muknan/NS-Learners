@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <path d="M100,14 L186,100 L100,186 L14,100Z"
+    fill="#FFD700" stroke="#111827" stroke-width="6"/>
+  <text x="100" y="108" text-anchor="middle"
+    font-family="Arial,sans-serif" font-size="52"
+    font-weight="900" fill="#111827">?</text>
+</svg>

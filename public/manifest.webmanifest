@@ -1,0 +1,23 @@
+{
+  "name": "Nova Scotia Learner Test Practice",
+  "short_name": "NS Class 7",
+  "description": "Free Nova Scotia Class 7 learner licence mock exams.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FDFAF7",
+  "theme_color": "#E8601C",
+  "icons": [
+    {
+      "src": "/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

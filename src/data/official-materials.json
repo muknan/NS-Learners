@@ -1,0 +1,37 @@
+[
+  {
+    "id": "official-driver-handbook",
+    "label": "Nova Scotia Driver's Handbook",
+    "section": "Official Guides",
+    "fileSize": "Primary source",
+    "href": "https://novascotia.ca/sns/rmv/safe/handbook.asp"
+  },
+  {
+    "id": "road-test-class-5",
+    "label": "Book a Road Test - Class 5",
+    "section": "Official Guides",
+    "fileSize": "Reference",
+    "href": "https://novascotia.ca/book-a-road-test/"
+  },
+  {
+    "id": "gdl-overview",
+    "label": "Graduated Driver Licensing Program overview",
+    "section": "Official Guides",
+    "fileSize": "Reference",
+    "href": "https://www.novascotia.ca/sns/rmv/licence/gradlic.asp"
+  },
+  {
+    "id": "signs-reference",
+    "label": "Road signs, pavement markings and work zones",
+    "section": "Quick Reference",
+    "fileSize": "PDF 798 KB",
+    "href": "https://novascotia.ca/sns/rmv/handbook/DH-Chapter3.pdf"
+  },
+  {
+    "id": "demerit-points",
+    "label": "Demerit points and driver improvement",
+    "section": "Quick Reference",
+    "fileSize": "Reference",
+    "href": "https://novascotia.ca/sns/rmv/licence/point.asp"
+  }
+]

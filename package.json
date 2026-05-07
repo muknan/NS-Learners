@@ -1,0 +1,64 @@
+{
+  "name": "nova-scotia-learners-test",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Production-grade Nova Scotia Class 7 learner licence practice exam app.",
+  "type": "module",
+  "packageManager": "pnpm@10.32.1",
+  "scripts": {
+    "dev": "next dev --webpack",
+    "validate-questions": "tsx scripts/validate-questions.ts",
+    "prebuild": "pnpm validate-questions",
+    "build": "next build --webpack",
+    "start": "next start",
+    "lint": "eslint . --max-warnings=0",
+    "type-check": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "format": "prettier --write .",
+    "analyze": "ANALYZE=true next build",
+    "prepare": "husky"
+  },
+  "dependencies": {
+    "@fontsource-variable/inter": "^5.2.8",
+    "@next/bundle-analyzer": "16.2.4",
+    "lucide-react": "^0.468.0",
+    "next": "16.2.4",
+    "next-pwa": "^5.6.0",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@next/eslint-plugin-next": "16.2.4",
+    "@playwright/test": "^1.56.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/jest-axe": "^3.5.9",
+    "@types/node": "^24.10.1",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.1",
+    "eslint": "^9.39.1",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "husky": "^9.1.7",
+    "jest-axe": "^10.0.0",
+    "jsdom": "^27.2.0",
+    "lint-staged": "^16.2.6",
+    "prettier": "^3.6.2",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.46.3",
+    "vitest": "^4.0.8"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,css,json,md,yml,yaml}": [
+      "prettier --write"
+    ],
+    "*.{ts,tsx}": [
+      "eslint --max-warnings=0"
+    ]
+  }
+}
