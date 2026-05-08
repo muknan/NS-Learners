@@ -89,36 +89,20 @@ test('auto-advances after an answer when instant feedback is off', async ({ page
 
   const nextButton = page.getByTestId('exam-action-bar').getByRole('button', { name: /^next$/i });
   await expect(nextButton).toHaveClass(/is-counting/);
-  const countdown = nextButton.locator('.next-button__countdown');
-  const countdownLine = nextButton.locator('.next-button__countdown-line');
-  await expect(countdown).toBeVisible();
-  const buttonBox = await nextButton.boundingBox();
-  const countdownBox = await countdown.boundingBox();
-  expect(buttonBox).not.toBeNull();
-  expect(countdownBox).not.toBeNull();
-  if (!buttonBox || !countdownBox) {
-    throw new Error('Expected the Next button countdown to have measurable bounds');
-  }
-  expect(countdownBox.width).toBeGreaterThanOrEqual(buttonBox.width - 3);
-  expect(countdownBox.height).toBeGreaterThanOrEqual(2.5);
-  expect(countdownBox.height).toBeLessThanOrEqual(3.5);
-  expect(
-    Math.abs(countdownBox.y + countdownBox.height - (buttonBox.y + buttonBox.height)),
-  ).toBeLessThanOrEqual(1);
-  const countdownStyle = await countdownLine.evaluate((element) => {
+  const countdownStyle = await nextButton.evaluate((element) => {
     const style = window.getComputedStyle(element);
     return {
       animationName: style.animationName,
-      strokeDasharray: style.strokeDasharray,
-      strokeLinecap: style.strokeLinecap,
-      strokeWidth: style.strokeWidth,
+      backgroundImage: style.backgroundImage,
+      backgroundPosition: style.backgroundPosition,
+      backgroundRepeat: style.backgroundRepeat,
     };
   });
 
   expect(countdownStyle.animationName).toBe('advance-countdown');
-  expect(countdownStyle.strokeDasharray).toBe('1px');
-  expect(countdownStyle.strokeLinecap).toBe('butt');
-  expect(countdownStyle.strokeWidth).toBe('3px');
+  expect(countdownStyle.backgroundImage).toContain('linear-gradient');
+  expect(countdownStyle.backgroundPosition).toContain('100%');
+  expect(countdownStyle.backgroundRepeat).toBe('no-repeat');
   await expect(page.getByTestId('exam-top-bar')).toContainText('Q 2 / 40', { timeout: 4500 });
 });
 
