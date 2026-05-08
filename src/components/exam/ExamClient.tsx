@@ -1,6 +1,6 @@
 'use client';
 
-import { AlertTriangle, ArrowLeft, Flag, Keyboard, LogOut, Menu, RotateCcw, X } from 'lucide-react';
+import { AlertTriangle, Keyboard, RotateCcw } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
   useCallback,
@@ -10,13 +10,13 @@ import {
   useState,
   type PointerEvent as ReactPointerEvent,
 } from 'react';
+import { ExamActionBar } from '@/components/exam/ExamActionBar';
 import { ExamCard } from '@/components/exam/ExamCard';
-import { QuestionNav } from '@/components/exam/QuestionNav';
-import { Timer } from '@/components/exam/Timer';
+import { ExamTopBar } from '@/components/exam/ExamTopBar';
+import { NavigatorDrawer } from '@/components/exam/NavigatorDrawer';
 import { Badge } from '@/components/ui/Badge';
 import { Button, ButtonLink } from '@/components/ui/Button';
 import { Modal } from '@/components/ui/Modal';
-import { ProgressBar } from '@/components/ui/ProgressBar';
 import { ToastViewport, type ToastMessage, type ToastType } from '@/components/ui/Toast';
 import { useExam, ExamProvider } from '@/hooks/useExam';
 import { useProgress } from '@/hooks/useProgress';
@@ -138,6 +138,9 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
   const questionNumber = session.currentIndex + 1;
   const tip = drivingTips[session.currentIndex % drivingTips.length] ?? drivingTips[0];
   const flaggedCount = session.flaggedIds.length;
+  const modeLabel = getExamMode(session.mode).label;
+  const isLastQuestion = session.currentIndex === session.questionIds.length - 1;
+  const currentQuestionFlagged = session.flaggedIds.includes(currentQuestion.id);
   const showSectionBreak =
     session.mode === 'full-test' &&
     session.currentIndex === 20 &&
@@ -196,8 +199,18 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
   }, []);
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo(0, 0);
   }, [session.currentIndex]);
+
+  useEffect(() => {
+    document.documentElement.classList.add('exam-route-active');
+    document.body.classList.add('exam-route-active');
+
+    return () => {
+      document.documentElement.classList.remove('exam-route-active');
+      document.body.classList.remove('exam-route-active');
+    };
+  }, []);
 
   useEffect(() => {
     if (autoAdvanceTimerRef.current !== null) {
@@ -280,7 +293,11 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
       if (event.key === 'ArrowRight' || event.key === 'n' || event.key === 'N') {
         event.preventDefault();
         cancelAutoAdvance();
-        dispatch({ type: 'next' });
+        if (session.currentIndex >= session.questionIds.length - 1) {
+          requestSubmit();
+        } else {
+          dispatch({ type: 'next' });
+        }
         return;
       }
 
@@ -374,84 +391,19 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
   return (
     <section
       className="exam-layout"
+      data-testid="exam-shell"
       onPointerDown={handlePointerDown}
       onPointerUp={handlePointerUp}
     >
-      <header className="active-exam-header">
-        <Button
-          tone="ghost"
-          size="sm"
-          icon={<LogOut aria-hidden="true" suppressHydrationWarning />}
-          onClick={() => setExitModalOpen(true)}
-        >
-          Exit
-        </Button>
-        <strong>
-          {getExamMode(session.mode).label} · Question {questionNumber} of{' '}
-          {session.questionIds.length}
-        </strong>
-        <Timer remaining={remaining} />
-        <Badge tone={flaggedCount ? 'warning' : 'neutral'}>
-          <Flag aria-hidden="true" suppressHydrationWarning />
-          {flaggedCount} flagged
-        </Badge>
-        <Button
-          tone="ghost"
-          size="sm"
-          icon={<Menu aria-hidden="true" suppressHydrationWarning />}
-          onClick={() => setNavigatorOpen(true)}
-        >
-          Navigator
-        </Button>
-      </header>
-
-      <aside className={navigatorOpen ? 'exam-sidebar is-open' : 'exam-sidebar'}>
-        <div className="exam-sidebar__top">
-          <Badge tone={session.instantFeedback ? 'warning' : 'brand'}>
-            {session.instantFeedback ? 'Instant feedback' : 'End-of-exam mode'}
-          </Badge>
-          <Timer remaining={remaining} />
-          <Button
-            aria-label="Close navigator"
-            className="exam-sidebar__close"
-            tone="ghost"
-            size="icon"
-            icon={<X aria-hidden="true" suppressHydrationWarning />}
-            onClick={() => setNavigatorOpen(false)}
-          />
-        </div>
-
-        <div className="progress-card">
-          <div className="progress-card__label">
-            <span>
-              {questionNumber} of {session.questionIds.length} questions
-            </span>
-            <strong>
-              {progress.answered}/{progress.total}
-            </strong>
-          </div>
-          <ProgressBar value={progress.percentage} label="Exam progress" />
-          {session.mode === 'assisted' ? <small>Did you know? {tip}</small> : null}
-        </div>
-
-        <QuestionNav
-          onSelect={(index) => {
-            cancelAutoAdvance();
-            setNavigatorOpen(false);
-            dispatch({ type: 'go-to', index });
-          }}
-          questionsById={questionsById}
-          session={session}
-        />
-
-        <ButtonLink
-          href="/"
-          tone="ghost"
-          icon={<ArrowLeft aria-hidden="true" suppressHydrationWarning />}
-        >
-          Home
-        </ButtonLink>
-      </aside>
+      <ExamTopBar
+        flaggedCount={flaggedCount}
+        modeLabel={modeLabel}
+        onExit={() => setExitModalOpen(true)}
+        onOpenNavigator={() => setNavigatorOpen(true)}
+        questionNumber={questionNumber}
+        remaining={remaining}
+        totalQuestions={session.questionIds.length}
+      />
 
       <div className="exam-main">
         {showSectionBreak ? (
@@ -464,32 +416,8 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
           </section>
         ) : (
           <ExamCard
-            autoAdvanceActive={autoAdvanceActive}
-            autoAdvanceDurationMs={session.autoAdvanceDurationMs}
             instantFeedback={session.instantFeedback}
-            autoAdvance={session.autoAdvance}
             onAnswer={answer}
-            onFlag={() => {
-              cancelAutoAdvance();
-              handleFlag();
-            }}
-            onNext={() => {
-              cancelAutoAdvance();
-              dispatch({ type: 'next' });
-            }}
-            onPrevious={() => {
-              cancelAutoAdvance();
-              dispatch({ type: 'previous' });
-            }}
-            onSubmit={requestSubmit}
-            onToggleAutoAdvance={(value) => {
-              cancelAutoAdvance();
-              dispatch({ type: 'set-auto-advance', value });
-            }}
-            onToggleInstantFeedback={(value) => {
-              cancelAutoAdvance();
-              dispatch({ type: 'set-instant-feedback', value });
-            }}
             question={currentQuestion}
             questionIndex={session.currentIndex}
             session={session}
@@ -498,13 +426,46 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
         )}
       </div>
 
-      <button
-        className="mobile-navigator-button"
-        onClick={() => setNavigatorOpen(true)}
-        type="button"
-      >
-        Q {questionNumber}/{session.questionIds.length}
-      </button>
+      <ExamActionBar
+        autoAdvance={session.autoAdvance}
+        autoAdvanceActive={autoAdvanceActive}
+        autoAdvanceDurationMs={session.autoAdvanceDurationMs}
+        flagged={currentQuestionFlagged}
+        instantFeedback={session.instantFeedback}
+        isLast={isLastQuestion}
+        onFlag={() => {
+          cancelAutoAdvance();
+          handleFlag();
+        }}
+        onNext={() => {
+          cancelAutoAdvance();
+          dispatch({ type: 'next' });
+        }}
+        onSubmit={requestSubmit}
+        onToggleAutoAdvance={(value) => {
+          cancelAutoAdvance();
+          dispatch({ type: 'set-auto-advance', value });
+        }}
+        onToggleInstantFeedback={(value) => {
+          cancelAutoAdvance();
+          dispatch({ type: 'set-instant-feedback', value });
+        }}
+      />
+
+      <NavigatorDrawer
+        modeLabel={modeLabel}
+        onClose={() => setNavigatorOpen(false)}
+        onRequestExit={() => setExitModalOpen(true)}
+        onSelect={(index) => {
+          cancelAutoAdvance();
+          dispatch({ type: 'go-to', index });
+        }}
+        open={navigatorOpen}
+        progress={progress}
+        questionsById={questionsById}
+        session={session}
+        tip={tip}
+      />
 
       {keyboardHintVisible ? (
         <div className="keyboard-hint" role="status">

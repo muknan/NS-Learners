@@ -8,7 +8,7 @@ import { Header } from '@/components/layout/Header';
 export function AppChrome({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const [online, setOnline] = useState(true);
-  const examActive = pathname === '/exam';
+  const examActive = pathname?.startsWith('/exam') ?? false;
 
   useEffect(() => {
     function syncOnline(): void {

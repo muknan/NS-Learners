@@ -13,7 +13,10 @@ export function SignImage({
   }
 
   return (
-    <figure className={compact ? 'sign-figure sign-figure--compact' : 'sign-figure'}>
+    <figure
+      className={compact ? 'sign-figure sign-figure--compact' : 'sign-figure'}
+      data-testid="sign-image"
+    >
       <Image
         alt={question.imageAlt ?? 'Road sign for this question'}
         height={compact ? 96 : 180}
