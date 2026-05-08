@@ -68,6 +68,26 @@ test('home renders at required responsive widths', async ({ page }) => {
   }
 });
 
+test('auto-advances after an answer when instant feedback is off', async ({ page }) => {
+  await page.goto('/');
+  await page.evaluate(() => {
+    window.localStorage.setItem('nsLearner.keyboardHintSeen', 'true');
+    window.localStorage.setItem('ns-learner-advance-duration', '2');
+    for (const storage of [window.localStorage, window.sessionStorage]) {
+      for (const key of Object.keys(storage)) {
+        if (key.startsWith('ns-exam-session-') || key === 'nsLearner.currentSession') {
+          storage.removeItem(key);
+        }
+      }
+    }
+  });
+
+  await page.getByRole('button', { name: /start practice exam/i }).click();
+  await expect(page.getByTestId('exam-top-bar')).toContainText('Q 1 / 40');
+  await page.getByTestId('answer-option').first().click();
+  await expect(page.getByTestId('exam-top-bar')).toContainText('Q 2 / 40', { timeout: 3500 });
+});
+
 test.describe('exam viewport fit', () => {
   test.setTimeout(180_000);
 
