@@ -69,10 +69,11 @@ test('home renders at required responsive widths', async ({ page }) => {
 });
 
 test('auto-advances after an answer when instant feedback is off', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');
   await page.evaluate(() => {
     window.localStorage.setItem('nsLearner.keyboardHintSeen', 'true');
-    window.localStorage.setItem('ns-learner-advance-duration', '2');
+    window.localStorage.setItem('ns-learner-advance-duration', '3');
     for (const storage of [window.localStorage, window.sessionStorage]) {
       for (const key of Object.keys(storage)) {
         if (key.startsWith('ns-exam-session-') || key === 'nsLearner.currentSession') {
@@ -85,7 +86,24 @@ test('auto-advances after an answer when instant feedback is off', async ({ page
   await page.getByRole('button', { name: /start practice exam/i }).click();
   await expect(page.getByTestId('exam-top-bar')).toContainText('Q 1 / 40');
   await page.getByTestId('answer-option').first().click();
-  await expect(page.getByTestId('exam-top-bar')).toContainText('Q 2 / 40', { timeout: 3500 });
+
+  const nextButton = page.getByTestId('exam-action-bar').getByRole('button', { name: /^next$/i });
+  await expect(nextButton).toHaveClass(/is-counting/);
+  const countdownStyle = await nextButton.evaluate((element) => {
+    const style = window.getComputedStyle(element, '::after');
+    return {
+      animationName: style.animationName,
+      opacity: style.opacity,
+      transformOrigin: style.transformOrigin,
+    };
+  });
+
+  expect(countdownStyle).toMatchObject({
+    animationName: 'advance-countdown',
+    opacity: '1',
+  });
+  expect(countdownStyle.transformOrigin).toContain('0px');
+  await expect(page.getByTestId('exam-top-bar')).toContainText('Q 2 / 40', { timeout: 4500 });
 });
 
 test.describe('exam viewport fit', () => {

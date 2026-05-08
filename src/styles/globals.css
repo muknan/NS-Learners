@@ -1105,22 +1105,34 @@ p {
 
 @keyframes advance-countdown {
   from {
-    width: 100%;
+    transform: scaleX(1) translateZ(0);
   }
 
   to {
-    width: 0%;
+    transform: scaleX(0) translateZ(0);
   }
 }
 
-.next-button__countdown {
+.next-button::after {
   position: absolute;
-  bottom: 0;
-  left: 0;
+  inset-inline: 0;
+  inset-block-end: 0;
+  display: block;
   height: 3px;
-  border-radius: 0 0 8px 8px;
+  border-end-end-radius: inherit;
+  border-end-start-radius: inherit;
   background: rgba(255, 255, 255, 0.6);
+  content: '';
+  opacity: 0;
+  pointer-events: none;
+  transform: scaleX(1) translateZ(0);
+  transform-origin: left center;
+  will-change: transform;
+}
+
+.next-button.is-counting::after {
   animation: advance-countdown var(--advance-duration) linear forwards;
+  opacity: 1;
 }
 
 .exam-action-bar {

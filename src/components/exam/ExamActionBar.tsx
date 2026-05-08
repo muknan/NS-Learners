@@ -126,12 +126,18 @@ export function ExamActionBar({
           </Button>
         ) : (
           <Button
-            className="exam-action-bar__next next-button"
+            className={[
+              'exam-action-bar__next',
+              'next-button',
+              autoAdvanceActive ? 'is-counting' : '',
+            ]
+              .filter(Boolean)
+              .join(' ')}
             icon={<ArrowRight aria-hidden="true" suppressHydrationWarning />}
             onClick={onNext}
             style={{ '--advance-duration': `${autoAdvanceDurationMs}ms` } as CSSProperties}
           >
-            Next{autoAdvanceActive ? <span className="next-button__countdown" /> : null}
+            Next
           </Button>
         )}
       </div>
