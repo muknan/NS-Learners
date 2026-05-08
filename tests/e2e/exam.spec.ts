@@ -89,22 +89,20 @@ test('auto-advances after an answer when instant feedback is off', async ({ page
 
   const nextButton = page.getByTestId('exam-action-bar').getByRole('button', { name: /^next$/i });
   await expect(nextButton).toHaveClass(/is-counting/);
-  const countdown = nextButton.locator('.next-button__countdown');
-  await expect(countdown).toBeVisible();
-  const countdownStyle = await countdown.evaluate((element) => {
+  const countdownStyle = await nextButton.evaluate((element) => {
     const style = window.getComputedStyle(element);
     return {
       animationName: style.animationName,
-      height: style.height,
-      transformOrigin: style.transformOrigin,
+      backgroundImage: style.backgroundImage,
+      backgroundPosition: style.backgroundPosition,
+      backgroundRepeat: style.backgroundRepeat,
     };
   });
 
-  expect(countdownStyle).toMatchObject({
-    animationName: 'advance-countdown',
-    height: '4px',
-  });
-  expect(countdownStyle.transformOrigin).toContain('0px');
+  expect(countdownStyle.animationName).toBe('advance-countdown');
+  expect(countdownStyle.backgroundImage).toContain('linear-gradient');
+  expect(countdownStyle.backgroundPosition).toContain('100%');
+  expect(countdownStyle.backgroundRepeat).toBe('no-repeat');
   await expect(page.getByTestId('exam-top-bar')).toContainText('Q 2 / 40', { timeout: 4500 });
 });
 
