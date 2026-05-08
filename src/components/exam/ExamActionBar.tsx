@@ -137,7 +137,7 @@ export function ExamActionBar({
             onClick={onNext}
             style={{ '--advance-duration': `${autoAdvanceDurationMs}ms` } as CSSProperties}
           >
-            Next
+            Next{autoAdvanceActive ? <span className="next-button__countdown" /> : null}
           </Button>
         )}
       </div>

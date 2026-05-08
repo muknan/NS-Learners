@@ -1113,26 +1113,23 @@ p {
   }
 }
 
-.next-button::after {
+.next-button__countdown {
   position: absolute;
-  inset-inline: 0;
-  inset-block-end: 0;
+  inset-inline-start: 3px;
+  inset-block-end: 3px;
   display: block;
-  height: 3px;
-  border-end-end-radius: inherit;
-  border-end-start-radius: inherit;
-  background: rgba(255, 255, 255, 0.6);
-  content: '';
-  opacity: 0;
+  inline-size: calc(100% - 6px);
+  height: 4px;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.76);
   pointer-events: none;
   transform: scaleX(1) translateZ(0);
   transform-origin: left center;
   will-change: transform;
 }
 
-.next-button.is-counting::after {
+.next-button.is-counting .next-button__countdown {
   animation: advance-countdown var(--advance-duration) linear forwards;
-  opacity: 1;
 }
 
 .exam-action-bar {
