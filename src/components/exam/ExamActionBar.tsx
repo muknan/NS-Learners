@@ -138,6 +138,24 @@ export function ExamActionBar({
             style={{ '--advance-duration': `${autoAdvanceDurationMs}ms` } as CSSProperties}
           >
             Next
+            {autoAdvanceActive ? (
+              <svg
+                aria-hidden="true"
+                className="next-button__countdown"
+                focusable="false"
+                preserveAspectRatio="none"
+                viewBox="0 0 1 3"
+              >
+                <line
+                  className="next-button__countdown-line"
+                  pathLength="1"
+                  x1="0"
+                  x2="1"
+                  y1="1.5"
+                  y2="1.5"
+                />
+              </svg>
+            ) : null}
           </Button>
         )}
       </div>
