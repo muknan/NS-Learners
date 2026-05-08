@@ -1,5 +1,4 @@
 import nextDynamic from 'next/dynamic';
-import { PageWrapper } from '@/components/layout/PageWrapper';
 import { questions } from '@/lib/questions';
 
 export const dynamic = 'force-static';
@@ -10,8 +9,8 @@ const ExamClient = nextDynamic(() =>
 
 export default function ExamPage() {
   return (
-    <PageWrapper>
+    <main id="main-content" className="exam-page-shell">
       <ExamClient questions={questions} />
-    </PageWrapper>
+    </main>
   );
 }

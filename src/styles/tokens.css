@@ -72,6 +72,15 @@
   --page-padding: var(--content-padding);
   --header-height: 56px;
   --exam-footer-height: 64px;
+  --exam-top-bar-h: clamp(44px, 6vh, 52px);
+  --exam-action-bar-h: clamp(56px, 8vh, 72px);
+  --exam-image-max-h: clamp(116px, 30vh, 320px);
+  --exam-question-fs: clamp(17px, 2.2vw, 26px);
+  --exam-answer-fs: clamp(14px, 1.45vw, 18px);
+  --exam-answer-min-h: clamp(42px, 6.2vh, 58px);
+  --exam-gap: clamp(6px, 1.35vh, 14px);
+  --exam-pad-x: clamp(10px, 2.5vw, 32px);
+  --exam-pad-y: clamp(6px, 1.55vh, 14px);
   color-scheme: light;
 }
 
