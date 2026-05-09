@@ -1,6 +1,6 @@
 'use client';
 
-import { Play, RotateCcw, ShieldCheck, Trash2 } from 'lucide-react';
+import { BookOpen, Play, RotateCcw, ShieldCheck, Trash2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
@@ -128,6 +128,23 @@ export function HomeClient({ stats }: HomeClientProps) {
               </span>
             </article>
           ))}
+          <article className="mode-card">
+            <span className="mode-card__top">
+              <Badge tone="success">Flashcards</Badge>
+              <strong>Chapter Flashcards</strong>
+              <p>Quick-summary cards from every chapter — perfect for revision on the go.</p>
+            </span>
+            <span className="mode-card__bottom">
+              <span className="mode-card__meta">36 cards · Keyboard friendly</span>
+              <Button
+                tone="secondary"
+                icon={<BookOpen aria-hidden="true" />}
+                onClick={() => router.push('/flashcards')}
+              >
+                Open Flashcards
+              </Button>
+            </span>
+          </article>
         </div>
       </section>
 

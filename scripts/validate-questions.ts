@@ -1,9 +1,12 @@
 import rawQuestions from '../src/data/questions.json' with { type: 'json' };
+import rawFlashcards from '../src/data/flashcards.json' with { type: 'json' };
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
+import { FlashcardDeckSchema } from '../src/lib/flashcards.schema';
 import { QuestionBankSchema } from '../src/lib/questions.schema';
 
 const result = QuestionBankSchema.safeParse(rawQuestions);
+const flashcardResult = FlashcardDeckSchema.safeParse(rawFlashcards);
 
 if (!result.success) {
   console.error('Question bank validation failed:\n');
@@ -49,3 +52,13 @@ if (issues.length) {
 }
 
 console.log(`Question bank OK: ${result.data.length} total (${rules} rules, ${signs} signs).`);
+
+if (!flashcardResult.success) {
+  console.error('Flashcard deck validation failed:\n');
+  for (const issue of flashcardResult.error.issues) {
+    console.error(`- ${issue.path.join('.') || '<root>'}: ${issue.message}`);
+  }
+  process.exit(1);
+}
+
+console.log(`Flashcard deck OK: ${flashcardResult.data.length} cards.`);

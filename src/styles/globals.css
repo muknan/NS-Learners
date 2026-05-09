@@ -707,6 +707,57 @@ p {
   font-size: var(--text-18);
 }
 
+.flashcards-layout {
+  display: grid;
+  width: min(760px, 100%);
+  gap: 18px;
+  margin-inline: auto;
+  padding-block: 16px 48px;
+}
+
+.flashcards-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.flashcards-progress {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-14);
+  font-weight: 500;
+}
+
+.flashcard-view {
+  display: grid;
+  min-height: min(420px, 58vh);
+  align-content: center;
+  gap: 16px;
+  padding: clamp(22px, 5vw, 40px);
+}
+
+.flashcard-view h1 {
+  margin: 0;
+  color: var(--color-text-primary);
+  font-size: var(--text-36);
+  line-height: 1.14;
+}
+
+.flashcard-view p {
+  max-width: 62ch;
+  margin: 0;
+  font-size: var(--text-18);
+  line-height: 1.7;
+}
+
+.flashcard-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
 .home-layout .section-block:last-child {
   padding-block-end: 4rem;
 }
@@ -908,6 +959,7 @@ p {
   display: grid;
   height: 100%;
   min-height: 0;
+  grid-template-rows: minmax(0, 1fr);
   grid-template-columns: minmax(0, min(720px, 100%));
   place-content: center;
   gap: var(--exam-gap);
@@ -918,9 +970,16 @@ p {
 }
 
 .exam-card--with-image {
+  grid-template-rows: minmax(0, 1fr);
   grid-template-columns: minmax(0, min(720px, 100%));
   align-items: center;
   justify-content: center;
+}
+
+.exam-card--feedback {
+  place-content: start stretch;
+  align-content: start;
+  justify-content: stretch;
 }
 
 @keyframes question-fade {
@@ -942,9 +1001,15 @@ p {
 
 .exam-card__content-pane {
   display: grid;
+  height: 100%;
   min-width: 0;
   min-height: 0;
+  grid-template-rows: auto auto minmax(0, 1fr);
   gap: var(--exam-gap);
+}
+
+.exam-card--feedback .exam-card__content-pane {
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
 }
 
 .exam-card__meta {
@@ -1078,9 +1143,11 @@ p {
 }
 
 .explanation-panel {
-  grid-column: 1 / -1;
-  max-height: 22vh;
-  overflow: auto;
+  position: static;
+  width: 100%;
+  max-height: min(22vh, 180px);
+  margin-block-start: var(--exam-gap);
+  overflow-y: auto;
   border: 1px solid var(--color-border-default);
   border-radius: var(--radius-card);
   padding: 10px;
@@ -2006,15 +2073,37 @@ input[type='range'] {
 
   .exam-card,
   .exam-card--with-image {
+    grid-template-rows: minmax(0, 1fr);
     grid-template-columns: minmax(0, 1fr);
+    place-content: start stretch;
     align-content: start;
+    justify-content: stretch;
+    align-items: stretch;
     gap: var(--exam-gap);
     padding: 0;
   }
 
+  .exam-card--with-image {
+    grid-template-rows: auto minmax(0, 1fr);
+  }
+
   .exam-card__image-pane {
     height: auto;
-    max-height: var(--exam-image-max-h);
+    max-height: min(140px, 22vh);
+    align-self: start;
+    overflow: hidden;
+  }
+
+  .exam-card__image-pane .sign-figure {
+    width: min(100%, 140px);
+    max-width: 100%;
+    max-height: min(140px, 22vh);
+  }
+
+  .exam-card__image-pane .sign-figure img {
+    max-width: 100%;
+    max-height: min(140px, 22vh);
+    object-fit: contain;
   }
 
   .exam-card .exam-question {
@@ -2025,6 +2114,7 @@ input[type='range'] {
   }
 
   .answer-list {
+    min-height: 0;
     overflow-y: auto;
   }
 
@@ -2041,7 +2131,12 @@ input[type='range'] {
 
   .answer-option__status {
     grid-column: 2;
+    justify-self: start;
     white-space: normal;
+  }
+
+  .explanation-panel {
+    max-height: min(24vh, 190px);
   }
 
   .keyboard-hint {
@@ -2065,6 +2160,10 @@ input[type='range'] {
 }
 
 @media (max-width: 480px) {
+  .flashcard-view h1 {
+    font-size: var(--text-28);
+  }
+
   .exam-action-bar {
     grid-template-columns: auto minmax(0, 1fr);
     gap: 8px;
@@ -2097,7 +2196,7 @@ input[type='range'] {
   }
 }
 
-@media (max-height: 520px) {
+@media (max-height: 520px) and (min-width: 900px) {
   :root {
     --exam-image-max-h: clamp(80px, 24vh, 160px);
     --exam-question-fs: clamp(15px, 2.1vw, 20px);

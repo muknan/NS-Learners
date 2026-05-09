@@ -77,6 +77,13 @@ export function Header() {
         >
           Handbooks
         </Link>
+        <Link
+          aria-current={pathname === '/flashcards' ? 'page' : undefined}
+          href="/flashcards"
+          prefetch={false}
+        >
+          Flashcards
+        </Link>
         <button type="button" onClick={() => setSettingsOpen(true)}>
           <Settings aria-hidden="true" />
           Settings

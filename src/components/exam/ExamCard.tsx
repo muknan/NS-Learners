@@ -33,6 +33,13 @@ export function ExamCard({
   const questionRef = useRef<HTMLHeadingElement>(null);
   const answerListRef = useRef<HTMLDivElement>(null);
   const hasImage = Boolean(question.image);
+  const cardClassName = [
+    'exam-card',
+    hasImage ? 'exam-card--with-image' : '',
+    showFeedback ? 'exam-card--feedback' : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   useEffect(() => {
     if (questionRef.current) {
@@ -51,7 +58,7 @@ export function ExamCard({
   }, [showFeedback, question.id]);
 
   return (
-    <article className={hasImage ? 'exam-card exam-card--with-image' : 'exam-card'}>
+    <article className={cardClassName}>
       {hasImage ? (
         <div className="exam-card__image-pane">
           <SignImage question={question} />
@@ -94,18 +101,18 @@ export function ExamCard({
             />
           ))}
         </div>
-      </div>
 
-      {showFeedback ? (
-        <details className="explanation-panel" ref={feedbackRef} tabIndex={-1} open>
-          <summary>
-            <Info aria-hidden="true" />
-            Explanation
-          </summary>
-          <p>{question.explanation}</p>
-          {question.handbookSection ? <small>{question.handbookSection}</small> : null}
-        </details>
-      ) : null}
+        {showFeedback ? (
+          <details className="explanation-panel" ref={feedbackRef} tabIndex={-1} open>
+            <summary>
+              <Info aria-hidden="true" />
+              Explanation
+            </summary>
+            <p>{question.explanation}</p>
+            {question.handbookSection ? <small>{question.handbookSection}</small> : null}
+          </details>
+        ) : null}
+      </div>
     </article>
   );
 }

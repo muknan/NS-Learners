@@ -23,12 +23,12 @@ const withPwa = nextPwa({
       },
     },
     {
-      urlPattern: /^\/signs\/.*\.svg$/i,
+      urlPattern: /^\/signs\/.*\.(svg|png|webp|jpg|jpeg)$/i,
       handler: 'CacheFirst',
       options: {
         cacheName: 'road-sign-assets',
         expiration: {
-          maxEntries: 80,
+          maxEntries: 96,
           maxAgeSeconds: 60 * 60 * 24 * 365,
         },
       },

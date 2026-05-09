@@ -25,7 +25,7 @@
     ],
     "correctId": "a",
     "explanation": "The Class 7 knowledge test has two parts: driving rules and road signs. Each part has 20 multiple-choice questions.",
-    "handbookSection": "Official Class 7 Knowledge Test page"
+    "handbookSection": "Chapter 1 — Your Driver's Licence, How to Apply for a Learner's Licence"
   },
   {
     "id": "q-002",
@@ -53,7 +53,7 @@
     ],
     "correctId": "a",
     "explanation": "You need at least 16 correct answers on each 20-question part. Passing one part does not make up for failing the other.",
-    "handbookSection": "Official Class 7 Knowledge Test page"
+    "handbookSection": "Chapter 1 — Your Driver's Licence, How to Apply for a Learner's Licence"
   },
   {
     "id": "q-003",
@@ -81,7 +81,7 @@
     ],
     "correctId": "a",
     "explanation": "Each part of the knowledge test must be completed within 30 minutes. The full simulator uses that timing for each section.",
-    "handbookSection": "Official Class 7 Knowledge Test page"
+    "handbookSection": "Official Class 7 Knowledge Test — How Long It Takes"
   },
   {
     "id": "q-004",
@@ -109,7 +109,7 @@
     ],
     "correctId": "a",
     "explanation": "Passing the online test is not the licence by itself. You still need to complete the remaining learner licence requirements before driving.",
-    "handbookSection": "Official Class 7 Knowledge Test page"
+    "handbookSection": "Official Class 7 Knowledge Test — When You Pass the Knowledge Test"
   },
   {
     "id": "q-005",
@@ -137,7 +137,7 @@
     ],
     "correctId": "a",
     "explanation": "A person must be at least 16 to apply for a Class 7 Learner’s Licence. Drivers who are 16 or 17 need parental or guardian consent.",
-    "handbookSection": "Chapter 1 - Your Driver’s Licence"
+    "handbookSection": "Chapter 1 — Your Driver's Licence, Getting a Learner's Licence"
   },
   {
     "id": "q-006",
@@ -165,7 +165,7 @@
     ],
     "correctId": "a",
     "explanation": "Learner drivers must keep a zero blood alcohol level. This is stricter than the Criminal Code limit.",
-    "handbookSection": "Chapter 1 - Your Driver’s Licence"
+    "handbookSection": "Chapter 1 — Your Driver's Licence, Learner's Licence Restrictions"
   },
   {
     "id": "q-007",
@@ -193,7 +193,7 @@
     ],
     "correctId": "a",
     "explanation": "A red signal means all traffic facing it must stop at the marked stop line or before the crosswalk. Proceed only when legally allowed and safe.",
-    "handbookSection": "Chapter 2 - Traffic Signal Lights"
+    "handbookSection": "Chapter 2 — Rules of the Road, Traffic Signal Lights"
   },
   {
     "id": "q-008",
@@ -221,7 +221,7 @@
     ],
     "correctId": "a",
     "explanation": "A yellow or amber signal means you must stop before entering the intersection if you can stop safely. Never speed up to beat the red.",
-    "handbookSection": "Chapter 2 - Traffic Signal Lights"
+    "handbookSection": "Chapter 2 — Rules of the Road, Traffic Signal Lights"
   },
   {
     "id": "q-009",
@@ -249,7 +249,7 @@
     ],
     "correctId": "a",
     "explanation": "A green light means you may go when safe, but you must still yield to pedestrians and vehicles already in the intersection.",
-    "handbookSection": "Chapter 2 - Traffic Signal Lights"
+    "handbookSection": "Chapter 2 — Rules of the Road, Traffic Signal Lights"
   },
   {
     "id": "q-010",
@@ -277,7 +277,7 @@
     ],
     "correctId": "a",
     "explanation": "A flashing red light has the same meaning as a stop sign. Stop completely and do not proceed until it is safe.",
-    "handbookSection": "Chapter 2 - Flashing Signals"
+    "handbookSection": "Chapter 2 — Rules of the Road, Flashing Signals"
   },
   {
     "id": "q-011",
@@ -305,7 +305,7 @@
     ],
     "correctId": "a",
     "explanation": "A flashing yellow or amber light has the meaning of a warning sign. Slow down and continue carefully.",
-    "handbookSection": "Chapter 2 - Flashing Signals"
+    "handbookSection": "Chapter 2 — Rules of the Road, Flashing Signals"
   },
   {
     "id": "q-012",
@@ -333,7 +333,7 @@
     ],
     "correctId": "a",
     "explanation": "When traffic signal lights are not working, treat the intersection as a multi-stop. Stop, then proceed when you have the right of way and it is safe.",
-    "handbookSection": "Chapter 2 - Traffic Signal Lights"
+    "handbookSection": "Chapter 2 — Rules of the Road, Traffic Signal Lights"
   },
   {
     "id": "q-013",
@@ -361,7 +361,7 @@
     ],
     "correctId": "a",
     "explanation": "Drivers must yield to pedestrians at intersections, whether the crosswalk is marked or unmarked. Always be ready to stop.",
-    "handbookSection": "Chapter 2 - Right of Way"
+    "handbookSection": "Chapter 2 — Rules of the Road, Pedestrians and Crosswalks"
   },
   {
     "id": "q-014",
@@ -389,7 +389,7 @@
     ],
     "correctId": "a",
     "explanation": "A driver turning left must yield to oncoming vehicles and pedestrians who may be in the path. Turn only when it is safe.",
-    "handbookSection": "Chapter 2 - Traffic Signal Lights"
+    "handbookSection": "Chapter 2 — Rules of the Road, Traffic Signal Lights"
   },
   {
     "id": "q-015",
@@ -417,7 +417,7 @@
     ],
     "correctId": "a",
     "explanation": "When two or more vehicles reach an intersection at the same time, the vehicle on the left must yield. Courtesy never replaces checking that it is safe.",
-    "handbookSection": "Chapter 2 - Intersection Right of Way"
+    "handbookSection": "Chapter 2 — Rules of the Road, Right-of-Way at Intersections"
   },
   {
     "id": "q-016",
@@ -445,7 +445,7 @@
     ],
     "correctId": "a",
     "explanation": "Before entering a road from a driveway or parking lot, stop and yield to all road users. Move only when the way is clear.",
-    "handbookSection": "Chapter 2 - Intersection Right of Way"
+    "handbookSection": "Chapter 2 — Rules of the Road, Right-of-Way at Intersections"
   },
   {
     "id": "q-017",
@@ -473,7 +473,7 @@
     ],
     "correctId": "a",
     "explanation": "A vehicle already in the intersection has right of way over one that has not yet entered. You still must avoid a collision when possible.",
-    "handbookSection": "Chapter 2 - Intersection Right of Way"
+    "handbookSection": "Chapter 2 — Rules of the Road, Right-of-Way at Intersections"
   },
   {
     "id": "q-018",
@@ -501,7 +501,7 @@
     ],
     "correctId": "a",
     "explanation": "Keep your wheels straight while waiting to turn left. If hit from behind, turned wheels can push you into oncoming traffic.",
-    "handbookSection": "Chapter 2 - Intersection Right of Way"
+    "handbookSection": "Chapter 2 — Rules of the Road, Right-of-Way at Intersections"
   },
   {
     "id": "q-019",
@@ -529,7 +529,7 @@
     ],
     "correctId": "a",
     "explanation": "Make lane changes before entering an intersection. Changing lanes in an intersection is unsafe and can confuse other drivers.",
-    "handbookSection": "Chapter 2 - Intersection Right of Way"
+    "handbookSection": "Chapter 2 — Rules of the Road, Right-of-Way at Intersections"
   },
   {
     "id": "q-020",
@@ -557,7 +557,7 @@
     ],
     "correctId": "a",
     "explanation": "At a multi-stop, every driver must stop completely and proceed by right-of-way order. If unsure, yield and communicate clearly.",
-    "handbookSection": "Chapter 2 - Traffic Signal Lights"
+    "handbookSection": "Chapter 2 — Rules of the Road, Right-of-Way at Intersections"
   },
   {
     "id": "q-021",
@@ -585,7 +585,7 @@
     ],
     "correctId": "a",
     "explanation": "If a signal changes while a pedestrian is still crossing, drivers must allow the pedestrian to complete the crossing safely.",
-    "handbookSection": "Chapter 2 - Right of Way"
+    "handbookSection": "Chapter 2 — Rules of the Road, Pedestrians and Crosswalks"
   },
   {
     "id": "q-022",
@@ -613,7 +613,7 @@
     ],
     "correctId": "a",
     "explanation": "Drivers must obey appointed crossing guards. A stop paddle facing your vehicle means stop.",
-    "handbookSection": "Chapter 2 - Crosswalk Guards"
+    "handbookSection": "Chapter 2 — Rules of the Road, Crosswalk Guards"
   },
   {
     "id": "q-023",
@@ -641,35 +641,35 @@
     ],
     "correctId": "a",
     "explanation": "Cyclists are vulnerable road users. Give space, check for oncoming traffic, and pass only when it can be done safely.",
-    "handbookSection": "Chapter 2 - Encountering Other Road Users"
+    "handbookSection": "Chapter 2 — Rules of the Road, Sharing the Road with Bicycles"
   },
   {
     "id": "q-024",
     "category": "rules",
     "topic": "sharing-road",
     "difficulty": "medium",
-    "text": "What should you do when a transit bus signals to re-enter traffic from a bus stop?",
+    "text": "On a road with a posted speed limit of 60 km/h or less, what should you do when approaching from behind a stopped transit bus signalling to re-enter traffic?",
     "options": [
       {
         "id": "a",
-        "text": "Yield unless you cannot do so safely"
+        "text": "Yield if it is safe to let the bus re-enter traffic"
       },
       {
         "id": "b",
-        "text": "Speed up to pass before it moves"
+        "text": "Always pass immediately on the left"
       },
       {
         "id": "c",
-        "text": "Stop for at least one minute"
+        "text": "Treat it the same as a school bus with red flashing lights"
       },
       {
         "id": "d",
-        "text": "Change lanes even if unsafe"
+        "text": "Yield only after the bus has fully entered your lane"
       }
     ],
     "correctId": "a",
-    "explanation": "Nova Scotia requires other drivers to yield to a signalling transit bus when it is safe to do so. Be prepared for the bus to move out.",
-    "handbookSection": "Driver’s Handbook Amendments - Yield to Transit Bus"
+    "explanation": "The handbook update says drivers approaching from the rear must yield to a stopped transit bus that signals to re-enter traffic when the posted limit is 60 km/h or less and yielding is safe. This rule does not apply to school buses.",
+    "handbookSection": "Introduction — Driver's Handbook Updates, Yield to Transit Buses"
   },
   {
     "id": "q-025",
@@ -697,7 +697,7 @@
     ],
     "correctId": "a",
     "explanation": "Large vehicles have bigger blind spots and need more space to stop and turn. Keep visible and avoid cutting in.",
-    "handbookSection": "Chapter 2 - Encountering Other Road Users"
+    "handbookSection": "Chapter 5 — Adverse Driving Conditions, Trucker's Blind Spots"
   },
   {
     "id": "q-026",
@@ -725,7 +725,7 @@
     ],
     "correctId": "a",
     "explanation": "Slow-moving vehicles may turn wide or move unpredictably. Reduce speed and pass only when you have clear sight distance and it is legal.",
-    "handbookSection": "Chapter 2 - Encountering Other Road Users"
+    "handbookSection": "Chapter 2 — Rules of the Road, Encountering Other Road Users"
   },
   {
     "id": "q-027",
@@ -753,7 +753,7 @@
     ],
     "correctId": "a",
     "explanation": "When an emergency vehicle approaches, move to the right edge or curb and stop completely. Stay stopped until it passes or an officer directs you.",
-    "handbookSection": "Chapter 2 - Emergency Vehicles"
+    "handbookSection": "Chapter 2 — Rules of the Road, Emergency Vehicles"
   },
   {
     "id": "q-028",
@@ -781,7 +781,7 @@
     ],
     "correctId": "a",
     "explanation": "You must never follow an emergency fire vehicle within 150 metres. Leave the route clear for emergency response.",
-    "handbookSection": "Chapter 2 - Emergency Vehicles"
+    "handbookSection": "Chapter 2 — Rules of the Road, Emergency Vehicles"
   },
   {
     "id": "q-029",
@@ -809,7 +809,7 @@
     ],
     "correctId": "a",
     "explanation": "The handbook says never drive or park within 150 metres of an emergency vehicle stopped to investigate a collision or give assistance.",
-    "handbookSection": "Chapter 2 - Emergency Vehicles"
+    "handbookSection": "Chapter 2 — Rules of the Road, Emergency Vehicles"
   },
   {
     "id": "q-030",
@@ -837,7 +837,7 @@
     ],
     "correctId": "a",
     "explanation": "When children are present in such a school zone, the maximum speed is 30 km/h. The rule applies whatever the time of day.",
-    "handbookSection": "Driver’s Handbook Amendments - School Zone"
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, School and Playground Signs"
   },
   {
     "id": "q-031",
@@ -865,7 +865,7 @@
     ],
     "correctId": "a",
     "explanation": "For school zones with an approaching limit higher than 50 km/h, the school-zone maximum is 50 km/h when children are present.",
-    "handbookSection": "Driver’s Handbook Amendments - School Zone"
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, School and Playground Signs"
   },
   {
     "id": "q-032",
@@ -893,7 +893,7 @@
     ],
     "correctId": "a",
     "explanation": "The posted limit is a maximum for ideal conditions. Slow down when weather, visibility, traffic, or road surface conditions require it.",
-    "handbookSection": "Chapter 5 - Adverse Driving Conditions"
+    "handbookSection": "Chapter 2 — Rules of the Road, Speed Limits"
   },
   {
     "id": "q-033",
@@ -921,7 +921,7 @@
     ],
     "correctId": "a",
     "explanation": "Use at least a two-second following distance in good conditions. Increase the space when conditions are poor.",
-    "handbookSection": "Chapter 4 - Safety"
+    "handbookSection": "Chapter 2 — Rules of the Road, Two-Second Rule"
   },
   {
     "id": "q-034",
@@ -949,7 +949,7 @@
     ],
     "correctId": "a",
     "explanation": "Poor visibility, slippery roads, heavy traffic, and large vehicles all increase stopping needs. More space gives you time to react.",
-    "handbookSection": "Chapter 4 - Safety"
+    "handbookSection": "Chapter 2 — Rules of the Road, Two-Second Rule"
   },
   {
     "id": "q-035",
@@ -977,7 +977,7 @@
     ],
     "correctId": "a",
     "explanation": "Never park where you block emergency access, such as in front of a fire hydrant. Obey all posted parking controls.",
-    "handbookSection": "Chapter 2 - Parking and Stopping"
+    "handbookSection": "Chapter 2 — Rules of the Road, Parking and Stopping"
   },
   {
     "id": "q-036",
@@ -1005,7 +1005,7 @@
     ],
     "correctId": "a",
     "explanation": "Check mirrors and shoulder before opening a door. Opening into a cyclist or vehicle path can cause a serious collision.",
-    "handbookSection": "Chapter 2 - Parking and Stopping"
+    "handbookSection": "Chapter 2 — Rules of the Road, Parking and Stopping"
   },
   {
     "id": "q-037",
@@ -1033,7 +1033,7 @@
     ],
     "correctId": "a",
     "explanation": "Turn wheels toward the curb when parking downhill. This helps the curb stop the vehicle if it rolls.",
-    "handbookSection": "Chapter 2 - Parking and Stopping"
+    "handbookSection": "Chapter 2 — Rules of the Road, Parking on a Hill"
   },
   {
     "id": "q-038",
@@ -1061,7 +1061,7 @@
     ],
     "correctId": "a",
     "explanation": "Do not pass unless you have enough clear sight distance and the law allows it. If in doubt, wait.",
-    "handbookSection": "Chapter 2 - Basic Driving Rules"
+    "handbookSection": "Chapter 2 — Rules of the Road, Overtaking and Passing"
   },
   {
     "id": "q-039",
@@ -1089,7 +1089,7 @@
     ],
     "correctId": "a",
     "explanation": "A safe lane change includes signalling, mirror checks, a shoulder check, and moving only when the space is clear.",
-    "handbookSection": "Chapter 2 - Basic Driving Rules"
+    "handbookSection": "Chapter 2 — Rules of the Road, Signalling and Lane Changes"
   },
   {
     "id": "q-040",
@@ -1117,7 +1117,7 @@
     ],
     "correctId": "a",
     "explanation": "Never pass a vehicle stopped at a crosswalk for a pedestrian. A pedestrian may be hidden from your view.",
-    "handbookSection": "Chapter 2 - Intersection Right of Way"
+    "handbookSection": "Chapter 2 — Rules of the Road, Overtaking and Passing"
   },
   {
     "id": "q-041",
@@ -1145,7 +1145,7 @@
     ],
     "correctId": "a",
     "explanation": "Use the acceleration lane to build speed, signal, and merge into a safe gap. Avoid stopping unless traffic conditions require it.",
-    "handbookSection": "Chapter 2 - Basic Driving Rules"
+    "handbookSection": "Chapter 2 — Rules of the Road, Controlled-Access Highways"
   },
   {
     "id": "q-042",
@@ -1173,7 +1173,7 @@
     ],
     "correctId": "a",
     "explanation": "Never back up or make sudden illegal moves on a highway. Continue to the next exit and return safely.",
-    "handbookSection": "Chapter 2 - Basic Driving Rules"
+    "handbookSection": "Chapter 2 — Rules of the Road, Controlled-Access Highways"
   },
   {
     "id": "q-043",
@@ -1201,7 +1201,7 @@
     ],
     "correctId": "a",
     "explanation": "Keeping space around your vehicle gives you options if something changes. Avoid lingering in another driver’s blind spot.",
-    "handbookSection": "Chapter 4 - Safety"
+    "handbookSection": "Chapter 4 — Safety, Defensive Driving and Blind Spots"
   },
   {
     "id": "q-044",
@@ -1229,7 +1229,7 @@
     ],
     "correctId": "a",
     "explanation": "A solid yellow line on your side means passing is restricted. Wait for legal markings and clear sight distance.",
-    "handbookSection": "Chapter 3 - Pavement Markings"
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Pavement Markings"
   },
   {
     "id": "q-045",
@@ -1257,7 +1257,7 @@
     ],
     "correctId": "a",
     "explanation": "White lane lines separate traffic moving in the same direction. Yellow markings are used to separate opposing traffic.",
-    "handbookSection": "Chapter 3 - Pavement Markings"
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Pavement Markings"
   },
   {
     "id": "q-046",
@@ -1285,7 +1285,7 @@
     ],
     "correctId": "a",
     "explanation": "A stop line marks where drivers should stop for a stop sign, traffic signal, or crossing control. Stop before the line.",
-    "handbookSection": "Chapter 3 - Pavement Markings"
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Pavement Markings"
   },
   {
     "id": "q-047",
@@ -1313,7 +1313,7 @@
     ],
     "correctId": "a",
     "explanation": "A safe pre-drive check includes visibility, controls, lights, tires, and occupant safety. Small checks prevent avoidable problems.",
-    "handbookSection": "Chapter 4 - Safety"
+    "handbookSection": "Chapter 4 — Safety, Vehicle Maintenance"
   },
   {
     "id": "q-048",
@@ -1341,7 +1341,7 @@
     ],
     "correctId": "a",
     "explanation": "Seat belts help keep occupants in place and reduce injury in crashes. Airbags are designed to work with seat belts, not replace them.",
-    "handbookSection": "Chapter 4 - Safety"
+    "handbookSection": "Chapter 4 — Safety, Passenger Safety"
   },
   {
     "id": "q-049",
@@ -1352,24 +1352,24 @@
     "options": [
       {
         "id": "a",
-        "text": "Pump the brake pedal, shift lower, and use the parking brake carefully"
+        "text": "Pump the brake pedal, then apply the parking brake gently if needed"
       },
       {
         "id": "b",
-        "text": "Turn off the engine immediately at highway speed"
+        "text": "Shift to park immediately while the vehicle is moving"
       },
       {
         "id": "c",
-        "text": "Jump from the vehicle"
+        "text": "Turn off the engine and steer sharply onto the shoulder"
       },
       {
         "id": "d",
-        "text": "Accelerate to regain control"
+        "text": "Keep driving slowly until you reach a service station"
       }
     ],
     "correctId": "a",
-    "explanation": "If brakes fail, try pumping the pedal, shift to a lower gear, and apply the parking brake carefully while steering to a safe place.",
-    "handbookSection": "Chapter 4 - Safety"
+    "explanation": "Chapter 5 says to pump the brake pedal several times to build pressure. If that fails, apply the parking brake gently while holding the release button, then get help once stopped.",
+    "handbookSection": "Chapter 5 — Adverse Driving Conditions, Brake Failure"
   },
   {
     "id": "q-050",
@@ -1397,7 +1397,7 @@
     ],
     "correctId": "a",
     "explanation": "Poor visibility requires lower speed and more space. Use appropriate lights and avoid following too closely.",
-    "handbookSection": "Chapter 5 - Adverse Driving Conditions"
+    "handbookSection": "Chapter 5 — Adverse Driving Conditions, Rain, Snow, and Fog"
   },
   {
     "id": "q-051",
@@ -1425,7 +1425,7 @@
     ],
     "correctId": "a",
     "explanation": "Bridges and overpasses are exposed to cold air above and below, so they can become icy sooner than regular pavement.",
-    "handbookSection": "Chapter 5 - Adverse Driving Conditions"
+    "handbookSection": "Chapter 5 — Adverse Driving Conditions, Winter Driving"
   },
   {
     "id": "q-052",
@@ -1453,7 +1453,7 @@
     ],
     "correctId": "a",
     "explanation": "Hydroplaning happens when water builds between tires and the road. Slow down in heavy rain and avoid sudden steering or braking.",
-    "handbookSection": "Chapter 5 - Adverse Driving Conditions"
+    "handbookSection": "Chapter 5 — Adverse Driving Conditions, Rain"
   },
   {
     "id": "q-053",
@@ -1481,7 +1481,7 @@
     ],
     "correctId": "a",
     "explanation": "Dim your high beams for oncoming traffic so you do not blind other drivers. Look toward the right edge if glare bothers you.",
-    "handbookSection": "Chapter 5 - Night Driving"
+    "handbookSection": "Chapter 5 — Adverse Driving Conditions, Nighttime Driving"
   },
   {
     "id": "q-054",
@@ -1509,7 +1509,7 @@
     ],
     "correctId": "a",
     "explanation": "At night, visibility is limited by headlights and glare. Drive at a speed that lets you stop within the distance you can see.",
-    "handbookSection": "Chapter 5 - Night Driving"
+    "handbookSection": "Chapter 5 — Adverse Driving Conditions, Nighttime Driving"
   },
   {
     "id": "q-055",
@@ -1537,7 +1537,7 @@
     ],
     "correctId": "a",
     "explanation": "Alcohol and drugs impair judgment, reaction time, and coordination. The safe choice is not to drive.",
-    "handbookSection": "Chapter 6 - Driving and Impairment"
+    "handbookSection": "Chapter 6 — Driving and Impairment, Drinking and Driving"
   },
   {
     "id": "q-056",
@@ -1565,7 +1565,7 @@
     ],
     "correctId": "a",
     "explanation": "Some legal medicines can cause drowsiness or slowed reactions. Read labels and ask a health professional when unsure.",
-    "handbookSection": "Chapter 6 - Driving and Impairment"
+    "handbookSection": "Chapter 6 — Driving and Impairment, Drug Impairment"
   },
   {
     "id": "q-057",
@@ -1593,7 +1593,7 @@
     ],
     "correctId": "a",
     "explanation": "Impairment makes it harder to judge risk later. Plan a sober ride, transit, taxi, or staying over before drinking or using impairing drugs.",
-    "handbookSection": "Chapter 6 - Driving and Impairment"
+    "handbookSection": "Chapter 6 — Driving and Impairment, Being a Responsible Host or Hostess"
   },
   {
     "id": "q-058",
@@ -1621,7 +1621,7 @@
     ],
     "correctId": "a",
     "explanation": "Regulatory signs state legal requirements such as stop, yield, speed, parking, and movement controls. Drivers must obey them.",
-    "handbookSection": "Chapter 3 - Traffic Signs"
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Regulatory Signs"
   },
   {
     "id": "q-059",
@@ -1649,7 +1649,7 @@
     ],
     "correctId": "a",
     "explanation": "Warning signs prepare drivers for hazards such as curves, crossings, lane changes, and slippery surfaces. Slow and adjust early.",
-    "handbookSection": "Chapter 3 - Traffic Signs"
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Warning Signs"
   },
   {
     "id": "q-060",
@@ -1677,1026 +1677,2406 @@
     ],
     "correctId": "a",
     "explanation": "Orange signs identify construction and work zones. Watch for workers, equipment, lane shifts, and temporary traffic control.",
-    "handbookSection": "Chapter 3 - Work Zones"
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Construction / Work Zone Signs"
   },
   {
-    "id": "q-061",
+    "id": "q-095",
     "category": "signs",
     "topic": "road-signs",
-    "difficulty": "easy",
+    "difficulty": "hard",
     "text": "What does this sign mean?",
+    "image": "/signs/flashing-light-unit-single-arrow.png",
+    "imageAlt": "Flashing arrow board with a single directional arrow",
     "options": [
       {
         "id": "a",
-        "text": "Stop completely"
+        "text": "The lane ahead is closed or obstructed; move over and pass only on the side shown by the arrow."
       },
       {
         "id": "b",
-        "text": "Yield ahead"
+        "text": "The lane ahead is closed or obstructed; it is safe to pass the flashing light unit on either side."
       },
       {
         "id": "c",
-        "text": "No entry"
+        "text": "A straight bar of lamps is caution mode, warning of a hazard without saying it is safe to pass."
       },
       {
         "id": "d",
-        "text": "Do not pass"
+        "text": "Blasting is taking place on or near the road and traffic may be required to stop."
       }
     ],
     "correctId": "a",
-    "explanation": "A red octagon means stop. Come to a full stop and proceed only when it is safe.",
-    "handbookSection": "Chapter 3 - Regulatory Signs",
-    "image": "/signs/stop.svg",
-    "imageAlt": "Red octagonal stop sign"
+    "explanation": "Chapter 3 explains that flashing light units warn of lane closures, obstructions, or active hazards. In this case, the lane ahead is closed or obstructed; move over and pass only on the side shown by the arrow.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Flashing Light Units"
   },
   {
-    "id": "q-062",
+    "id": "q-096",
     "category": "signs",
     "topic": "road-signs",
-    "difficulty": "easy",
-    "text": "What does this sign mean?",
+    "difficulty": "hard",
+    "text": "What does this sign indicate?",
+    "image": "/signs/flashing-light-unit-two-arrows.png",
+    "imageAlt": "Flashing arrow board with two arrow heads",
     "options": [
       {
         "id": "a",
-        "text": "Yield the right of way"
+        "text": "Passing with care is permitted in both directions when the centre line is broken."
       },
       {
         "id": "b",
-        "text": "Stop for railway crossing"
+        "text": "The lane ahead is closed or obstructed; it is safe to pass the flashing light unit on either side."
       },
       {
         "id": "c",
-        "text": "One-way street"
+        "text": "A bump or rough road is ahead; slow down."
       },
       {
         "id": "d",
-        "text": "No passing"
+        "text": "The maximum speed limit changes ahead; be ready to adjust your speed."
       }
     ],
-    "correctId": "a",
-    "explanation": "A yield sign means slow down or stop if needed and give the right of way to traffic or pedestrians.",
-    "handbookSection": "Chapter 3 - Regulatory Signs",
-    "image": "/signs/yield.svg",
-    "imageAlt": "Red and white triangular yield sign"
+    "correctId": "b",
+    "explanation": "Chapter 3 explains that flashing light units warn of lane closures, obstructions, or active hazards. In this case, the lane ahead is closed or obstructed; it is safe to pass the flashing light unit on either side.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Flashing Light Units"
   },
   {
-    "id": "q-063",
+    "id": "q-097",
     "category": "signs",
     "topic": "road-signs",
-    "difficulty": "easy",
-    "text": "What does this sign mean?",
+    "difficulty": "hard",
+    "text": "What should you expect when you see this sign?",
+    "image": "/signs/blasting-activities.png",
+    "imageAlt": "Orange work-zone warning sign for blasting activity",
     "options": [
       {
         "id": "a",
-        "text": "Maximum speed is 50 km/h"
+        "text": "Tar has been sprayed on the road ahead; the surface may be slippery and tar may stick to your vehicle."
       },
       {
         "id": "b",
-        "text": "Minimum speed is 50 km/h"
+        "text": "The road has returned to normal and the work-zone impact has ended."
       },
       {
         "id": "c",
-        "text": "School zone begins"
+        "text": "Blasting is taking place on or near the road and traffic may be required to stop."
       },
       {
         "id": "d",
-        "text": "Truck route only"
+        "text": "Traffic may be stopped by traffic control persons ahead; slow gradually to avoid rear-end collisions."
       }
     ],
-    "correctId": "a",
-    "explanation": "A posted speed sign shows the legal maximum speed in good conditions. Drive slower when conditions require it.",
-    "handbookSection": "Chapter 3 - Regulatory Signs",
-    "image": "/signs/speed50.svg",
-    "imageAlt": "Maximum speed 50 sign"
+    "correctId": "c",
+    "explanation": "Chapter 3 says work-zone signs warn of temporary conditions and require drivers to slow down and act early. In this case, blasting is taking place on or near the road and traffic may be required to stop.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Construction / Work Zone Signs"
   },
   {
-    "id": "q-064",
+    "id": "q-098",
     "category": "signs",
     "topic": "road-signs",
-    "difficulty": "easy",
-    "text": "What does this sign mean?",
+    "difficulty": "medium",
+    "text": "What action does this sign require?",
+    "image": "/signs/bridge-opening.png",
+    "imageAlt": "Yellow warning sign showing an opening bridge",
     "options": [
       {
         "id": "a",
-        "text": "No entry"
+        "text": "The road may be slippery when wet."
       },
       {
         "id": "b",
-        "text": "One-way traffic"
+        "text": "A steep decline is ahead; you may need to use a lower gear."
       },
       {
         "id": "c",
-        "text": "Road narrows"
+        "text": "A stop sign is ahead."
       },
       {
         "id": "d",
-        "text": "Stop ahead"
+        "text": "A bridge that can open for boats is ahead."
       }
     ],
-    "correctId": "a",
-    "explanation": "A no entry sign marks a road or lane you must not enter. Choose another legal route.",
-    "handbookSection": "Chapter 3 - Regulatory Signs",
-    "image": "/signs/noEntry.svg",
-    "imageAlt": "No entry sign"
+    "correctId": "d",
+    "explanation": "Chapter 3 explains that warning signs alert drivers to hazards or changing road conditions ahead. In this case, a bridge that can open for boats is ahead.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Warning Signs"
   },
   {
-    "id": "q-065",
+    "id": "q-099",
     "category": "signs",
-    "topic": "road-signs",
-    "difficulty": "easy",
-    "text": "What does this sign mean?",
+    "topic": "pavement-markings",
+    "difficulty": "medium",
+    "text": "What does this road marking indicate?",
+    "image": "/signs/broken-centre-line-with-solid-line.png",
+    "imageAlt": "Pavement marking diagram with one broken yellow line and one solid yellow line",
     "options": [
       {
         "id": "a",
-        "text": "One-way traffic in the arrow direction"
+        "text": "Passing is permitted only when the broken yellow line is on your side and conditions are safe."
       },
       {
         "id": "b",
-        "text": "Two-way traffic begins"
+        "text": "Do not litter from your vehicle or along the roadway."
       },
       {
         "id": "c",
-        "text": "Keep right of obstacle"
+        "text": "Do not pass; the sign creates an orderly flow before a merge or where passing is unsafe."
       },
       {
         "id": "d",
-        "text": "No turns allowed"
+        "text": "Do not pass other vehicles."
       }
     ],
     "correctId": "a",
-    "explanation": "A one-way sign shows traffic is allowed only in the direction of the arrow. Do not drive against it.",
-    "handbookSection": "Chapter 3 - Regulatory Signs",
-    "image": "/signs/oneWay.svg",
-    "imageAlt": "One way arrow sign"
+    "explanation": "Chapter 3 says pavement markings divide lanes, show permitted movements, and warn when passing or lane changes are unsafe. In this case, passing is permitted only when the broken yellow line is on your side and conditions are safe.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Pavement Markings"
   },
   {
-    "id": "q-066",
+    "id": "q-100",
     "category": "signs",
-    "topic": "road-signs",
+    "topic": "pavement-markings",
     "difficulty": "easy",
-    "text": "What does this sign mean?",
+    "text": "How should drivers read this pavement marking?",
+    "image": "/signs/broken-centre-line.png",
+    "imageAlt": "Pavement marking diagram with a broken yellow centre line",
     "options": [
       {
         "id": "a",
-        "text": "Do not park here"
+        "text": "Hazard marker lines slope left; drive to the left of the sign."
       },
       {
         "id": "b",
-        "text": "No stopping for any reason"
+        "text": "Passing with care is permitted in both directions when the centre line is broken."
       },
       {
         "id": "c",
-        "text": "Parking reserved for buses"
+        "text": "Hazard marker lines slope right; drive to the right of the sign."
       },
       {
         "id": "d",
-        "text": "Loading zone only"
+        "text": "A hidden intersection is ahead; side-road drivers may not clearly see approaching traffic."
       }
     ],
-    "correctId": "a",
-    "explanation": "A no parking sign means you cannot park in that area. You may only stop briefly if the law and signs permit.",
-    "handbookSection": "Chapter 3 - Regulatory Signs",
-    "image": "/signs/noParking.svg",
-    "imageAlt": "No parking sign"
+    "correctId": "b",
+    "explanation": "Chapter 3 says pavement markings divide lanes, show permitted movements, and warn when passing or lane changes are unsafe. In this case, passing with care is permitted in both directions when the centre line is broken.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Pavement Markings"
   },
   {
-    "id": "q-067",
+    "id": "q-101",
+    "category": "signs",
+    "topic": "road-signs",
+    "difficulty": "easy",
+    "text": "What should you expect when you see this sign?",
+    "image": "/signs/bump-or-rough-road-ahead.png",
+    "imageAlt": "Yellow diamond warning sign for a bump or rough road",
+    "options": [
+      {
+        "id": "a",
+        "text": "A railway crossing is at the road; look and listen for trains."
+      },
+      {
+        "id": "b",
+        "text": "There is a height difference between lanes that could catch a tire and cause loss of control."
+      },
+      {
+        "id": "c",
+        "text": "A bump or rough road is ahead; slow down."
+      },
+      {
+        "id": "d",
+        "text": "Do not enter this road or lane."
+      }
+    ],
+    "correctId": "c",
+    "explanation": "Chapter 3 explains that warning signs alert drivers to hazards or changing road conditions ahead. In this case, a bump or rough road is ahead; slow down.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Warning Signs"
+  },
+  {
+    "id": "q-102",
+    "category": "signs",
+    "topic": "road-signs",
+    "difficulty": "medium",
+    "text": "What action does this sign require?",
+    "image": "/signs/speed-limit-change-ahead.png",
+    "imageAlt": "Warning sign showing an upcoming speed limit change",
+    "options": [
+      {
+        "id": "a",
+        "text": "Do not pass other vehicles."
+      },
+      {
+        "id": "b",
+        "text": "Do not cross continuous double solid yellow lines to pass in either direction."
+      },
+      {
+        "id": "c",
+        "text": "Drive to the right of this sign or obstruction."
+      },
+      {
+        "id": "d",
+        "text": "The maximum speed limit changes ahead; be ready to adjust your speed."
+      }
+    ],
+    "correctId": "d",
+    "explanation": "Chapter 3 explains that warning signs alert drivers to hazards or changing road conditions ahead. In this case, the maximum speed limit changes ahead; be ready to adjust your speed.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Warning Signs"
+  },
+  {
+    "id": "q-103",
     "category": "signs",
     "topic": "road-signs",
     "difficulty": "medium",
     "text": "What does this sign mean?",
+    "image": "/signs/chevron-arrow-signs.png",
+    "imageAlt": "Black and yellow chevron arrow sign",
     "options": [
       {
         "id": "a",
-        "text": "Do not pass"
+        "text": "Chevron arrows guide drivers around a sharp curve."
       },
       {
         "id": "b",
-        "text": "Passing lane begins"
+        "text": "Keep to the right of the traffic island or obstruction."
       },
       {
         "id": "c",
-        "text": "Divided highway ends"
+        "text": "A straight bar of lamps is caution mode, warning of a hazard without saying it is safe to pass."
       },
       {
         "id": "d",
-        "text": "Slow vehicles only"
+        "text": "A solid yellow line marks the left edge of a divided highway; seeing it on the wrong side may mean you are travelling the wrong way."
       }
     ],
     "correctId": "a",
-    "explanation": "A no passing sign means you must not pass other vehicles in that zone. Wait until passing is legally allowed again.",
-    "handbookSection": "Chapter 3 - Regulatory Signs",
-    "image": "/signs/noPassing.svg",
-    "imageAlt": "No passing sign"
+    "explanation": "Chapter 3 explains that warning signs alert drivers to hazards or changing road conditions ahead. In this case, chevron arrows guide drivers around a sharp curve.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Warning Signs"
   },
   {
-    "id": "q-068",
+    "id": "q-104",
+    "category": "signs",
+    "topic": "pavement-markings",
+    "difficulty": "medium",
+    "text": "What does this pavement marking mean?",
+    "image": "/signs/climbing-lanes.png",
+    "imageAlt": "Pavement diagram showing a climbing lane",
+    "options": [
+      {
+        "id": "a",
+        "text": "A playground is ahead; reduce speed and watch for children."
+      },
+      {
+        "id": "b",
+        "text": "A climbing lane lets faster traffic pass slower vehicles; keep right unless passing."
+      },
+      {
+        "id": "c",
+        "text": "Prepare for unusual road conditions or construction traffic moving at a different speed."
+      },
+      {
+        "id": "d",
+        "text": "A right curve is ahead and the posted advisory speed indicates a safe speed for the turn."
+      }
+    ],
+    "correctId": "b",
+    "explanation": "Chapter 3 says pavement markings divide lanes, show permitted movements, and warn when passing or lane changes are unsafe. In this case, a climbing lane lets faster traffic pass slower vehicles; keep right unless passing.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Pavement Markings"
+  },
+  {
+    "id": "q-105",
     "category": "signs",
     "topic": "road-signs",
-    "difficulty": "easy",
-    "text": "What does this sign warn you about?",
+    "difficulty": "medium",
+    "text": "What should you expect when you see this sign?",
+    "image": "/signs/construction-activities-1-5-km-ahead.png",
+    "imageAlt": "Orange work-zone sign showing construction ahead distance",
     "options": [
       {
         "id": "a",
-        "text": "Traffic signals ahead"
+        "text": "No turns are permitted."
       },
       {
         "id": "b",
-        "text": "Stop sign ahead"
+        "text": "Do not make a U-turn to travel in the opposite direction."
       },
       {
         "id": "c",
-        "text": "School crossing ahead"
+        "text": "Construction starts 1.5 km ahead; choose another route or prepare for delays."
       },
       {
         "id": "d",
-        "text": "Railway crossing ahead"
+        "text": "Traffic may travel only in the direction shown by the arrow."
       }
     ],
-    "correctId": "a",
-    "explanation": "This warning sign tells drivers a traffic signal is ahead. Be prepared to stop if the light changes.",
-    "handbookSection": "Chapter 3 - Warning Signs",
-    "image": "/signs/trafficSignalAhead.svg",
-    "imageAlt": "Traffic signal ahead warning sign"
+    "correctId": "c",
+    "explanation": "Chapter 3 says work-zone signs warn of temporary conditions and require drivers to slow down and act early. In this case, construction starts 1.5 km ahead; choose another route or prepare for delays.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Construction / Work Zone Signs"
   },
   {
-    "id": "q-069",
+    "id": "q-106",
     "category": "signs",
     "topic": "road-signs",
-    "difficulty": "easy",
-    "text": "What does this sign warn you about?",
+    "difficulty": "hard",
+    "text": "What action does this sign require?",
+    "image": "/signs/construction-traffic-entering-right.png",
+    "imageAlt": "Orange work-zone warning sign for construction traffic entering from the right",
     "options": [
       {
         "id": "a",
-        "text": "Stop sign ahead"
+        "text": "A playground is ahead; reduce speed and watch for children."
       },
       {
         "id": "b",
-        "text": "Yield sign ahead"
+        "text": "A right curve is ahead and the posted advisory speed indicates a safe speed for the turn."
       },
       {
         "id": "c",
-        "text": "No entry ahead"
+        "text": "Drivers in this lane must turn right at the intersection."
       },
       {
         "id": "d",
-        "text": "Playground ahead"
+        "text": "Construction traffic may enter or leave the road on the right and may be slower than through traffic."
+      }
+    ],
+    "correctId": "d",
+    "explanation": "Chapter 3 says work-zone signs warn of temporary conditions and require drivers to slow down and act early. In this case, construction traffic may enter or leave the road on the right and may be slower than through traffic.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Construction / Work Zone Signs"
+  },
+  {
+    "id": "q-107",
+    "category": "signs",
+    "topic": "pavement-markings",
+    "difficulty": "medium",
+    "text": "What does this pavement marking mean?",
+    "image": "/signs/continuity-lines.png",
+    "imageAlt": "Pavement marking diagram with wide continuity lines near a ramp",
+    "options": [
+      {
+        "id": "a",
+        "text": "Continuity lines separate through lanes from entry or exit ramps."
+      },
+      {
+        "id": "b",
+        "text": "A steep decline is ahead; you may need to use a lower gear."
+      },
+      {
+        "id": "c",
+        "text": "A stop sign is ahead."
+      },
+      {
+        "id": "d",
+        "text": "Come to a complete stop and proceed only when the way is clear."
       }
     ],
     "correctId": "a",
-    "explanation": "A stop-ahead sign warns that a stop sign is coming up. Begin slowing early.",
-    "handbookSection": "Chapter 3 - Warning Signs",
-    "image": "/signs/stopAhead.svg",
-    "imageAlt": "Stop ahead warning sign"
+    "explanation": "Chapter 3 says pavement markings divide lanes, show permitted movements, and warn when passing or lane changes are unsafe. In this case, continuity lines separate through lanes from entry or exit ramps.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Pavement Markings"
   },
   {
-    "id": "q-070",
+    "id": "q-108",
     "category": "signs",
     "topic": "road-signs",
     "difficulty": "easy",
     "text": "What does this sign indicate?",
+    "image": "/signs/crossbuck-sign.png",
+    "imageAlt": "White railway crossbuck sign with red border",
     "options": [
       {
         "id": "a",
-        "text": "School area or school crossing"
+        "text": "Tar has been sprayed on the road ahead; the surface may be slippery and tar may stick to your vehicle."
       },
       {
         "id": "b",
-        "text": "Hospital nearby"
+        "text": "A railway crossing is at the road; look and listen for trains."
       },
       {
         "id": "c",
-        "text": "No pedestrians"
+        "text": "The road has returned to normal and the work-zone impact has ended."
       },
       {
         "id": "d",
-        "text": "Playground closed"
+        "text": "Traffic may be stopped by traffic control persons ahead; slow gradually to avoid rear-end collisions."
+      }
+    ],
+    "correctId": "b",
+    "explanation": "Chapter 3 says railway signs warn of tracks and crossings where drivers must slow, look, listen, and be ready to stop. In this case, a railway crossing is at the road; look and listen for trains.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Railway Signs"
+  },
+  {
+    "id": "q-109",
+    "category": "signs",
+    "topic": "road-signs",
+    "difficulty": "hard",
+    "text": "What should you expect when you see this sign?",
+    "image": "/signs/difference-in-elevation-between-lanes.png",
+    "imageAlt": "Orange work-zone sign warning of uneven lane elevation",
+    "options": [
+      {
+        "id": "a",
+        "text": "A railway crossbuck sign is ahead."
+      },
+      {
+        "id": "b",
+        "text": "Drivers in this lane must go straight through or turn right."
+      },
+      {
+        "id": "c",
+        "text": "There is a height difference between lanes that could catch a tire and cause loss of control."
+      },
+      {
+        "id": "d",
+        "text": "Traffic signal lights are ahead."
+      }
+    ],
+    "correctId": "c",
+    "explanation": "Chapter 3 says work-zone signs warn of temporary conditions and require drivers to slow down and act early. In this case, there is a height difference between lanes that could catch a tire and cause loss of control.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Construction / Work Zone Signs"
+  },
+  {
+    "id": "q-110",
+    "category": "signs",
+    "topic": "road-signs",
+    "difficulty": "medium",
+    "text": "What action does this sign require?",
+    "image": "/signs/divided-highway-ahead.png",
+    "imageAlt": "Yellow warning sign showing a divided highway beginning",
+    "options": [
+      {
+        "id": "a",
+        "text": "The centre lane is reserved for left-turning vehicles from both directions; do not use it to pass."
+      },
+      {
+        "id": "b",
+        "text": "Workers are handling overhead electrical or data cables near the road."
+      },
+      {
+        "id": "c",
+        "text": "Workers are active at the site; drive with extra care."
+      },
+      {
+        "id": "d",
+        "text": "A divided highway begins ahead."
+      }
+    ],
+    "correctId": "d",
+    "explanation": "Chapter 3 explains that warning signs alert drivers to hazards or changing road conditions ahead. In this case, a divided highway begins ahead.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Warning Signs"
+  },
+  {
+    "id": "q-111",
+    "category": "signs",
+    "topic": "road-signs",
+    "difficulty": "medium",
+    "text": "What does this sign mean?",
+    "image": "/signs/divided-highway-ends.png",
+    "imageAlt": "Yellow warning sign showing a divided highway ending",
+    "options": [
+      {
+        "id": "a",
+        "text": "A divided highway ends and two-way traffic continues ahead."
+      },
+      {
+        "id": "b",
+        "text": "A bump or rough road is ahead; slow down."
+      },
+      {
+        "id": "c",
+        "text": "The maximum speed limit changes ahead; be ready to adjust your speed."
+      },
+      {
+        "id": "d",
+        "text": "Chevron arrows guide drivers around a sharp curve."
       }
     ],
     "correctId": "a",
-    "explanation": "School signs warn drivers to watch for children and school crossings. Slow down and be ready to stop.",
-    "handbookSection": "Chapter 3 - Warning Signs",
-    "image": "/signs/school.svg",
-    "imageAlt": "School crossing warning sign"
+    "explanation": "Chapter 3 explains that warning signs alert drivers to hazards or changing road conditions ahead. In this case, a divided highway ends and two-way traffic continues ahead.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Warning Signs"
   },
   {
-    "id": "q-071",
+    "id": "q-112",
     "category": "signs",
     "topic": "road-signs",
     "difficulty": "easy",
     "text": "What does this sign indicate?",
+    "image": "/signs/do-not-enter.png",
+    "imageAlt": "Red do-not-enter sign with a white horizontal bar",
     "options": [
       {
         "id": "a",
-        "text": "Pedestrian crossing or pedestrian area"
+        "text": "Do not turn right on a red signal; wait for a green light."
       },
       {
         "id": "b",
-        "text": "No walking allowed"
+        "text": "Do not enter this road or lane."
       },
       {
         "id": "c",
-        "text": "Construction workers ahead"
+        "text": "No stopping is allowed."
       },
       {
         "id": "d",
-        "text": "Bus stop only"
+        "text": "No turns are permitted."
       }
     ],
-    "correctId": "a",
-    "explanation": "A pedestrian sign warns that people may be crossing or walking nearby. Watch carefully and yield where required.",
-    "handbookSection": "Chapter 3 - Warning Signs",
-    "image": "/signs/pedestrian.svg",
-    "imageAlt": "Pedestrian crossing sign"
+    "correctId": "b",
+    "explanation": "Chapter 3 says regulatory signs state laws or rules drivers must obey. In this case, do not enter this road or lane.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Regulatory Signs"
   },
   {
-    "id": "q-072",
-    "category": "signs",
-    "topic": "road-signs",
-    "difficulty": "medium",
-    "text": "What does this sign warn you about?",
-    "options": [
-      {
-        "id": "a",
-        "text": "Playground nearby"
-      },
-      {
-        "id": "b",
-        "text": "School bus stop ahead"
-      },
-      {
-        "id": "c",
-        "text": "Hospital zone"
-      },
-      {
-        "id": "d",
-        "text": "No bicycles"
-      }
-    ],
-    "correctId": "a",
-    "explanation": "A playground sign warns that children may be near the road. Slow down and scan both sides.",
-    "handbookSection": "Chapter 3 - Warning Signs",
-    "image": "/signs/playground.svg",
-    "imageAlt": "Playground warning sign"
-  },
-  {
-    "id": "q-073",
+    "id": "q-113",
     "category": "signs",
     "topic": "road-signs",
     "difficulty": "easy",
-    "text": "What does this sign warn you about?",
+    "text": "What should you expect when you see this sign?",
+    "image": "/signs/do-not-litter.png",
+    "imageAlt": "Regulatory sign showing a no-littering symbol",
     "options": [
       {
         "id": "a",
-        "text": "Railway crossing ahead"
+        "text": "Passing is permitted where it is safe and legal."
       },
       {
         "id": "b",
-        "text": "Divided highway begins"
+        "text": "This marks the location of a pedestrian crosswalk."
       },
       {
         "id": "c",
-        "text": "No stopping"
+        "text": "Do not litter from your vehicle or along the roadway."
       },
       {
         "id": "d",
-        "text": "Route marker ahead"
+        "text": "Drivers in this lane must turn right at the intersection."
       }
     ],
-    "correctId": "a",
-    "explanation": "A railway warning sign means train tracks are ahead. Slow down, look, listen, and be ready to stop.",
-    "handbookSection": "Chapter 3 - Warning Signs",
-    "image": "/signs/railroad.svg",
-    "imageAlt": "Railway crossing warning sign"
+    "correctId": "c",
+    "explanation": "Chapter 3 says regulatory signs state laws or rules drivers must obey. In this case, do not litter from your vehicle or along the roadway.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Regulatory Signs"
   },
   {
-    "id": "q-074",
+    "id": "q-114",
     "category": "signs",
     "topic": "road-signs",
-    "difficulty": "medium",
-    "text": "What does this sign warn you about?",
+    "difficulty": "hard",
+    "text": "What action does this sign require?",
+    "image": "/signs/work-zone-do-not-pass.png",
+    "imageAlt": "Orange work-zone regulatory sign indicating no passing",
     "options": [
       {
         "id": "a",
-        "text": "Slippery road when wet"
+        "text": "The lane ahead is closed or obstructed; move over and pass only on the side shown by the arrow."
       },
       {
         "id": "b",
-        "text": "Loose gravel only"
+        "text": "The lane ahead is closed or obstructed; it is safe to pass the flashing light unit on either side."
       },
       {
         "id": "c",
-        "text": "Steep hill ahead"
+        "text": "A bridge that can open for boats is ahead."
       },
       {
         "id": "d",
-        "text": "Road closed ahead"
+        "text": "Do not pass; the sign creates an orderly flow before a merge or where passing is unsafe."
       }
     ],
-    "correctId": "a",
-    "explanation": "A slippery-when-wet sign warns that traction may be reduced. Slow down and avoid sudden braking or steering.",
-    "handbookSection": "Chapter 3 - Warning Signs",
-    "image": "/signs/slippery.svg",
-    "imageAlt": "Slippery when wet warning sign"
+    "correctId": "d",
+    "explanation": "Chapter 3 says work-zone signs warn of temporary conditions and require drivers to slow down and act early. In this case, do not pass; the sign creates an orderly flow before a merge or where passing is unsafe.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Construction / Work Zone Signs"
   },
   {
-    "id": "q-075",
-    "category": "signs",
-    "topic": "road-signs",
-    "difficulty": "medium",
-    "text": "What does this sign warn you about?",
-    "options": [
-      {
-        "id": "a",
-        "text": "Deer or wildlife may cross"
-      },
-      {
-        "id": "b",
-        "text": "Farm crossing only"
-      },
-      {
-        "id": "c",
-        "text": "Zoo entrance"
-      },
-      {
-        "id": "d",
-        "text": "No animals allowed"
-      }
-    ],
-    "correctId": "a",
-    "explanation": "A deer crossing sign warns that wildlife may enter the road. Reduce speed and scan the shoulders.",
-    "handbookSection": "Chapter 3 - Warning Signs",
-    "image": "/signs/deer.svg",
-    "imageAlt": "Deer crossing warning sign"
-  },
-  {
-    "id": "q-076",
-    "category": "signs",
-    "topic": "road-signs",
-    "difficulty": "medium",
-    "text": "What does this sign mean?",
-    "options": [
-      {
-        "id": "a",
-        "text": "Divided highway begins"
-      },
-      {
-        "id": "b",
-        "text": "Divided highway ends"
-      },
-      {
-        "id": "c",
-        "text": "Two-way traffic ends"
-      },
-      {
-        "id": "d",
-        "text": "Road closed"
-      }
-    ],
-    "correctId": "a",
-    "explanation": "This sign warns that a divided highway begins ahead. Keep to the correct side of the divider.",
-    "handbookSection": "Chapter 3 - Warning Signs",
-    "image": "/signs/dividedBegins.svg",
-    "imageAlt": "Divided highway begins sign"
-  },
-  {
-    "id": "q-077",
-    "category": "signs",
-    "topic": "road-signs",
-    "difficulty": "medium",
-    "text": "What does this sign warn you about?",
-    "options": [
-      {
-        "id": "a",
-        "text": "Lane ends or narrows ahead"
-      },
-      {
-        "id": "b",
-        "text": "One-way street starts"
-      },
-      {
-        "id": "c",
-        "text": "Road is closed"
-      },
-      {
-        "id": "d",
-        "text": "Passing lane begins"
-      }
-    ],
-    "correctId": "a",
-    "explanation": "A lane-ends sign warns that your lane will end or narrow. Check mirrors and merge safely.",
-    "handbookSection": "Chapter 3 - Warning Signs",
-    "image": "/signs/laneEnds.svg",
-    "imageAlt": "Lane ends warning sign"
-  },
-  {
-    "id": "q-078",
-    "category": "signs",
-    "topic": "road-signs",
-    "difficulty": "medium",
-    "text": "What does this sign warn you about?",
-    "options": [
-      {
-        "id": "a",
-        "text": "Traffic merging ahead"
-      },
-      {
-        "id": "b",
-        "text": "No passing ahead"
-      },
-      {
-        "id": "c",
-        "text": "Narrow bridge ahead"
-      },
-      {
-        "id": "d",
-        "text": "Railway crossing ahead"
-      }
-    ],
-    "correctId": "a",
-    "explanation": "A merge sign warns that traffic streams join. Adjust speed and create space.",
-    "handbookSection": "Chapter 3 - Warning Signs",
-    "image": "/signs/merge.svg",
-    "imageAlt": "Merge warning sign"
-  },
-  {
-    "id": "q-079",
+    "id": "q-115",
     "category": "signs",
     "topic": "road-signs",
     "difficulty": "easy",
     "text": "What does this sign mean?",
+    "image": "/signs/do-not-pass.png",
+    "imageAlt": "Regulatory sign with a red prohibition symbol for passing",
     "options": [
       {
         "id": "a",
-        "text": "Two-way traffic"
+        "text": "Do not pass other vehicles."
       },
       {
         "id": "b",
-        "text": "One-way traffic"
+        "text": "Reduce speed, give the right of way, and stop if necessary before proceeding."
       },
       {
         "id": "c",
-        "text": "No entry"
+        "text": "The lane ahead is closed or obstructed; move over and pass only on the side shown by the arrow."
       },
       {
         "id": "d",
-        "text": "Divided highway"
+        "text": "The lane ahead is closed or obstructed; it is safe to pass the flashing light unit on either side."
       }
     ],
     "correctId": "a",
-    "explanation": "A two-way traffic sign warns that vehicles travel in both directions on the road. Stay right and watch for oncoming traffic.",
-    "handbookSection": "Chapter 3 - Warning Signs",
-    "image": "/signs/twoWay.svg",
-    "imageAlt": "Two way traffic sign"
+    "explanation": "Chapter 3 says regulatory signs state laws or rules drivers must obey. In this case, do not pass other vehicles.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Regulatory Signs"
   },
   {
-    "id": "q-080",
+    "id": "q-116",
     "category": "signs",
-    "topic": "road-signs",
-    "difficulty": "medium",
-    "text": "What does this sign warn you about?",
-    "options": [
-      {
-        "id": "a",
-        "text": "Truck entrance or trucks crossing ahead"
-      },
-      {
-        "id": "b",
-        "text": "Truck route only"
-      },
-      {
-        "id": "c",
-        "text": "No trucks allowed"
-      },
-      {
-        "id": "d",
-        "text": "Weigh scale ahead"
-      }
-    ],
-    "correctId": "a",
-    "explanation": "This sign warns that trucks may be entering or crossing the road. Slow down and be ready for large vehicles.",
-    "handbookSection": "Chapter 3 - Warning Signs",
-    "image": "/signs/truckEntering.svg",
-    "imageAlt": "Truck entering warning sign"
-  },
-  {
-    "id": "q-081",
-    "category": "signs",
-    "topic": "road-signs",
-    "difficulty": "medium",
-    "text": "What does this orange sign mean?",
-    "options": [
-      {
-        "id": "a",
-        "text": "Construction or work zone ahead"
-      },
-      {
-        "id": "b",
-        "text": "School zone ahead"
-      },
-      {
-        "id": "c",
-        "text": "Hospital ahead"
-      },
-      {
-        "id": "d",
-        "text": "One-way road ahead"
-      }
-    ],
-    "correctId": "a",
-    "explanation": "Orange signs identify road work and construction areas. Watch for workers, equipment, and temporary directions.",
-    "handbookSection": "Chapter 3 - Work Zones",
-    "image": "/signs/construction.svg",
-    "imageAlt": "Orange construction warning sign"
-  },
-  {
-    "id": "q-082",
-    "category": "signs",
-    "topic": "road-signs",
+    "topic": "pavement-markings",
     "difficulty": "easy",
-    "text": "What does this sign identify?",
+    "text": "What does this pavement marking mean?",
+    "image": "/signs/double-solid-lines.png",
+    "imageAlt": "Pavement marking diagram with double solid yellow lines",
     "options": [
       {
         "id": "a",
-        "text": "Hospital services nearby"
+        "text": "Hazard marker lines slope right; drive to the right of the sign."
       },
       {
         "id": "b",
-        "text": "No parking near hospital"
+        "text": "Do not cross continuous double solid yellow lines to pass in either direction."
       },
       {
         "id": "c",
-        "text": "Emergency vehicles only"
+        "text": "A hidden intersection is ahead; side-road drivers may not clearly see approaching traffic."
       },
       {
         "id": "d",
-        "text": "First aid kit required"
+        "text": "Highway 102 is a controlled-access provincial 100-series highway."
       }
     ],
-    "correctId": "a",
-    "explanation": "A hospital sign gives service information. It helps drivers locate hospital facilities.",
-    "handbookSection": "Chapter 3 - Guide Signs",
-    "image": "/signs/hospital.svg",
-    "imageAlt": "Hospital service sign"
+    "correctId": "b",
+    "explanation": "Chapter 3 says pavement markings divide lanes, show permitted movements, and warn when passing or lane changes are unsafe. In this case, do not cross continuous double solid yellow lines to pass in either direction.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Pavement Markings"
   },
   {
-    "id": "q-083",
-    "category": "signs",
-    "topic": "road-signs",
-    "difficulty": "easy",
-    "text": "What does this sign identify?",
-    "options": [
-      {
-        "id": "a",
-        "text": "Accessible parking or facility"
-      },
-      {
-        "id": "b",
-        "text": "Hospital entrance"
-      },
-      {
-        "id": "c",
-        "text": "No pedestrians"
-      },
-      {
-        "id": "d",
-        "text": "Senior drivers only"
-      }
-    ],
-    "correctId": "a",
-    "explanation": "The wheelchair symbol identifies accessible parking or facilities. Respect posted accessible-use rules.",
-    "handbookSection": "Chapter 3 - Guide and Regulatory Signs",
-    "image": "/signs/accessible.svg",
-    "imageAlt": "Accessible wheelchair symbol sign"
-  },
-  {
-    "id": "q-084",
-    "category": "signs",
-    "topic": "road-signs",
-    "difficulty": "easy",
-    "text": "What does this sign identify?",
-    "options": [
-      {
-        "id": "a",
-        "text": "A numbered route"
-      },
-      {
-        "id": "b",
-        "text": "A speed limit"
-      },
-      {
-        "id": "c",
-        "text": "A truck restriction"
-      },
-      {
-        "id": "d",
-        "text": "A road closure"
-      }
-    ],
-    "correctId": "a",
-    "explanation": "A route marker identifies a numbered highway or route. Use it for navigation and trip planning.",
-    "handbookSection": "Chapter 3 - Guide Signs",
-    "image": "/signs/route.svg",
-    "imageAlt": "Route marker sign"
-  },
-  {
-    "id": "q-085",
+    "id": "q-117",
     "category": "signs",
     "topic": "road-signs",
     "difficulty": "medium",
-    "text": "Which sign shape usually tells you to stop?",
+    "text": "What should you expect when you see this sign?",
+    "image": "/signs/drive-to-the-right-of-the-sign.png",
+    "imageAlt": "Regulatory work-zone sign directing traffic to the right",
     "options": [
       {
         "id": "a",
-        "text": "Red octagon"
+        "text": "Do not pass other vehicles."
       },
       {
         "id": "b",
-        "text": "Yellow diamond"
+        "text": "Do not cross continuous double solid yellow lines to pass in either direction."
       },
       {
         "id": "c",
-        "text": "Blue rectangle"
+        "text": "Drive to the right of this sign or obstruction."
       },
       {
         "id": "d",
-        "text": "Green guide sign"
+        "text": "A fire truck entrance is ahead; watch for fire trucks entering or leaving."
       }
     ],
-    "correctId": "a",
-    "explanation": "The stop sign is a red octagon. Shape recognition helps when visibility or distance makes words hard to read.",
-    "handbookSection": "Chapter 3 - Traffic Signs",
-    "image": "/signs/stop.svg",
-    "imageAlt": "Red octagonal stop sign"
+    "correctId": "c",
+    "explanation": "Chapter 3 says work-zone signs warn of temporary conditions and require drivers to slow down and act early. In this case, drive to the right of this sign or obstruction.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Construction / Work Zone Signs"
   },
   {
-    "id": "q-086",
+    "id": "q-118",
     "category": "signs",
     "topic": "road-signs",
     "difficulty": "medium",
-    "text": "Which sign means you must give right of way and stop if necessary?",
+    "text": "What action does this sign require?",
+    "image": "/signs/fire-truck-entrance-ahead.jpg",
+    "imageAlt": "Yellow warning sign showing a fire truck entrance",
     "options": [
       {
         "id": "a",
-        "text": "Yield sign"
+        "text": "Do not cross continuous double solid yellow lines to pass in either direction."
       },
       {
         "id": "b",
-        "text": "Route marker"
+        "text": "Drive to the right of this sign or obstruction."
       },
       {
         "id": "c",
-        "text": "Hospital sign"
+        "text": "Highway 102 is a controlled-access provincial 100-series highway."
       },
       {
         "id": "d",
-        "text": "Slippery road sign"
+        "text": "A fire truck entrance is ahead; watch for fire trucks entering or leaving."
       }
     ],
-    "correctId": "a",
-    "explanation": "A yield sign requires you to give right of way. Stop if traffic or pedestrians make stopping necessary.",
-    "handbookSection": "Chapter 3 - Regulatory Signs",
-    "image": "/signs/yield.svg",
-    "imageAlt": "Red and white triangular yield sign"
+    "correctId": "d",
+    "explanation": "Chapter 3 explains that warning signs alert drivers to hazards or changing road conditions ahead. In this case, a fire truck entrance is ahead; watch for fire trucks entering or leaving.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Warning Signs"
   },
   {
-    "id": "q-087",
+    "id": "q-119",
     "category": "signs",
     "topic": "road-signs",
     "difficulty": "medium",
-    "text": "Which sign warns that the road surface may be dangerous after rain?",
+    "text": "What does this sign mean?",
+    "image": "/signs/hazard-warning-drive-left.png",
+    "imageAlt": "Black and yellow hazard marker with lines sloping left",
     "options": [
       {
         "id": "a",
-        "text": "Slippery when wet"
+        "text": "Hazard marker lines slope left; drive to the left of the sign."
       },
       {
         "id": "b",
-        "text": "No passing"
+        "text": "A straight bar of lamps is caution mode, warning of a hazard without saying it is safe to pass."
       },
       {
         "id": "c",
-        "text": "Accessible facility"
+        "text": "A solid yellow line marks the left edge of a divided highway; seeing it on the wrong side may mean you are travelling the wrong way."
       },
       {
         "id": "d",
-        "text": "One-way traffic"
+        "text": "This is the maximum speed allowed under ideal conditions."
       }
     ],
     "correctId": "a",
-    "explanation": "The slippery-when-wet sign warns of reduced traction. Slow down before curves and avoid sudden moves.",
-    "handbookSection": "Chapter 3 - Warning Signs",
-    "image": "/signs/slippery.svg",
-    "imageAlt": "Slippery when wet warning sign"
+    "explanation": "Chapter 3 explains that warning signs alert drivers to hazards or changing road conditions ahead. In this case, hazard marker lines slope left; drive to the left of the sign.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Warning Signs"
   },
   {
-    "id": "q-088",
+    "id": "q-120",
     "category": "signs",
     "topic": "road-signs",
     "difficulty": "medium",
-    "text": "Which sign should make you watch for children near the roadway?",
+    "text": "What does this sign indicate?",
+    "image": "/signs/hazard-warning-drive-right.png",
+    "imageAlt": "Black and yellow hazard marker with lines sloping right",
     "options": [
       {
         "id": "a",
-        "text": "Playground sign"
+        "text": "Do not turn right on a red signal; wait for a green light."
       },
       {
         "id": "b",
-        "text": "Route marker"
+        "text": "Hazard marker lines slope right; drive to the right of the sign."
       },
       {
         "id": "c",
-        "text": "Hospital sign"
+        "text": "No stopping is allowed."
       },
       {
         "id": "d",
-        "text": "No entry sign"
+        "text": "No turns are permitted."
       }
     ],
-    "correctId": "a",
-    "explanation": "A playground sign warns that children may be nearby. Reduce speed and prepare to stop.",
-    "handbookSection": "Chapter 3 - Warning Signs",
-    "image": "/signs/playground.svg",
-    "imageAlt": "Playground warning sign"
+    "correctId": "b",
+    "explanation": "Chapter 3 explains that warning signs alert drivers to hazards or changing road conditions ahead. In this case, hazard marker lines slope right; drive to the right of the sign.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Warning Signs"
   },
   {
-    "id": "q-089",
-    "category": "signs",
-    "topic": "road-signs",
-    "difficulty": "medium",
-    "text": "Which sign tells you that a traffic lane will join your lane or road?",
-    "options": [
-      {
-        "id": "a",
-        "text": "Merge sign"
-      },
-      {
-        "id": "b",
-        "text": "No parking sign"
-      },
-      {
-        "id": "c",
-        "text": "Stop sign"
-      },
-      {
-        "id": "d",
-        "text": "Railway sign"
-      }
-    ],
-    "correctId": "a",
-    "explanation": "A merge sign warns that traffic flows are joining. Adjust speed and leave space for vehicles to merge.",
-    "handbookSection": "Chapter 3 - Warning Signs",
-    "image": "/signs/merge.svg",
-    "imageAlt": "Merge warning sign"
-  },
-  {
-    "id": "q-090",
+    "id": "q-121",
     "category": "signs",
     "topic": "road-signs",
     "difficulty": "hard",
-    "text": "You see an orange diamond sign ahead. What should you expect?",
+    "text": "What should you expect when you see this sign?",
+    "image": "/signs/hidden-intersection-ahead.png",
+    "imageAlt": "Yellow warning sign for a hidden intersection",
     "options": [
       {
         "id": "a",
-        "text": "A work zone or construction condition"
+        "text": "Passing is permitted where it is safe and legal."
       },
       {
         "id": "b",
-        "text": "A hospital entrance"
+        "text": "This marks the location of a pedestrian crosswalk."
       },
       {
         "id": "c",
-        "text": "A one-way street"
+        "text": "A hidden intersection is ahead; side-road drivers may not clearly see approaching traffic."
       },
       {
         "id": "d",
-        "text": "An accessible parking area"
+        "text": "A playground is ahead; reduce speed and watch for children."
       }
     ],
-    "correctId": "a",
-    "explanation": "Orange warning signs are used for construction or work zones. Be ready for workers, equipment, lane changes, and lower speeds.",
-    "handbookSection": "Chapter 3 - Work Zones",
-    "image": "/signs/construction.svg",
-    "imageAlt": "Orange construction warning sign"
+    "correctId": "c",
+    "explanation": "Chapter 3 explains that warning signs alert drivers to hazards or changing road conditions ahead. In this case, a hidden intersection is ahead; side-road drivers may not clearly see approaching traffic.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Warning Signs"
   },
   {
-    "id": "q-091",
+    "id": "q-122",
     "category": "signs",
     "topic": "road-signs",
     "difficulty": "medium",
-    "text": "What should you do when you see this railway sign?",
+    "text": "What action does this sign require?",
+    "image": "/signs/highway-102.png",
+    "imageAlt": "Provincial highway route marker for Highway 102",
     "options": [
       {
         "id": "a",
-        "text": "Slow down, look and listen for trains, and be ready to stop"
+        "text": "A green circle gives permission for the movement or action shown."
       },
       {
         "id": "b",
-        "text": "Stop only if the crossing has gates"
+        "text": "A red circle with a slash denies permission for the movement or action shown."
       },
       {
         "id": "c",
-        "text": "Speed up to cross quickly"
+        "text": "The road may be slippery when wet."
       },
       {
         "id": "d",
-        "text": "Drive around lowered gates if no train is visible"
+        "text": "Highway 102 is a controlled-access provincial 100-series highway."
       }
     ],
-    "correctId": "a",
-    "explanation": "Railway warning signs mean tracks are ahead. Always look and listen, and never drive around lowered gates.",
-    "handbookSection": "Chapter 3 - Warning Signs",
-    "image": "/signs/railroad.svg",
-    "imageAlt": "Railway crossing warning sign"
+    "correctId": "d",
+    "explanation": "Chapter 3 describes information and direction signs as route, service, and guidance signs. In this case, highway 102 is a controlled-access provincial 100-series highway.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Information and Direction Signs"
   },
   {
-    "id": "q-092",
-    "category": "signs",
-    "topic": "road-signs",
-    "difficulty": "hard",
-    "text": "What does a lane-ends warning require you to plan for?",
-    "options": [
-      {
-        "id": "a",
-        "text": "A safe merge before the lane runs out"
-      },
-      {
-        "id": "b",
-        "text": "A full stop in your lane"
-      },
-      {
-        "id": "c",
-        "text": "A mandatory U-turn"
-      },
-      {
-        "id": "d",
-        "text": "A speed increase"
-      }
-    ],
-    "correctId": "a",
-    "explanation": "A lane-ends sign gives advance notice to merge. Signal, check mirrors and blind spot, and move into a safe gap.",
-    "handbookSection": "Chapter 3 - Warning Signs",
-    "image": "/signs/laneEnds.svg",
-    "imageAlt": "Lane ends warning sign"
-  },
-  {
-    "id": "q-093",
+    "id": "q-123",
     "category": "signs",
     "topic": "road-signs",
     "difficulty": "medium",
-    "text": "What does this sign tell drivers about traffic direction?",
+    "text": "What does this sign mean?",
+    "image": "/signs/number-of-tracks-to-cross.png",
+    "imageAlt": "Railway crossing sign showing the number of tracks",
     "options": [
       {
         "id": "a",
-        "text": "Traffic travels both ways"
+        "text": "The smaller railway sign shows how many tracks must be crossed."
       },
       {
         "id": "b",
-        "text": "Only bicycles may use the road"
+        "text": "A stop sign is ahead."
       },
       {
         "id": "c",
-        "text": "All traffic must turn left"
+        "text": "Come to a complete stop and proceed only when the way is clear."
       },
       {
         "id": "d",
-        "text": "The road is closed"
+        "text": "Drivers in this lane must go straight through or turn left."
       }
     ],
     "correctId": "a",
-    "explanation": "Two-way traffic signs warn drivers to expect oncoming traffic. Keep right and avoid drifting over the centre line.",
-    "handbookSection": "Chapter 3 - Warning Signs",
-    "image": "/signs/twoWay.svg",
-    "imageAlt": "Two way traffic sign"
+    "explanation": "Chapter 3 says railway signs warn of tracks and crossings where drivers must slow, look, listen, and be ready to stop. In this case, the smaller railway sign shows how many tracks must be crossed.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Railway Signs"
   },
   {
-    "id": "q-094",
+    "id": "q-124",
     "category": "signs",
     "topic": "road-signs",
     "difficulty": "easy",
-    "text": "What does this sign mean for a driver approaching it?",
+    "text": "What does this sign indicate?",
+    "image": "/signs/keep-to-the-right.png",
+    "imageAlt": "Regulatory sign directing drivers to keep right",
     "options": [
       {
         "id": "a",
-        "text": "Do not enter this road or lane"
+        "text": "A stop sign is ahead."
       },
       {
         "id": "b",
-        "text": "Stop and then enter"
+        "text": "Keep to the right of the traffic island or obstruction."
       },
       {
         "id": "c",
-        "text": "Proceed only if turning left"
+        "text": "Survey work is being done on or near the road; take extra care around workers."
       },
       {
         "id": "d",
-        "text": "Parking is forbidden"
+        "text": "Tar has been sprayed on the road ahead; the surface may be slippery and tar may stick to your vehicle."
+      }
+    ],
+    "correctId": "b",
+    "explanation": "Chapter 3 says regulatory signs state laws or rules drivers must obey. In this case, keep to the right of the traffic island or obstruction.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Regulatory Signs"
+  },
+  {
+    "id": "q-125",
+    "category": "signs",
+    "topic": "road-signs",
+    "difficulty": "hard",
+    "text": "What should you expect when you see this sign?",
+    "image": "/signs/flashing-light-unit-caution-mode.png",
+    "imageAlt": "Flashing light unit with lamps arranged in a straight bar",
+    "options": [
+      {
+        "id": "a",
+        "text": "Trucks may be entering or leaving the road ahead."
+      },
+      {
+        "id": "b",
+        "text": "Truck traffic may proceed only in the direction shown by the arrows."
+      },
+      {
+        "id": "c",
+        "text": "A straight bar of lamps is caution mode, warning of a hazard without saying it is safe to pass."
+      },
+      {
+        "id": "d",
+        "text": "This road is a designated truck route."
+      }
+    ],
+    "correctId": "c",
+    "explanation": "Chapter 3 explains that flashing light units warn of lane closures, obstructions, or active hazards. In this case, a straight bar of lamps is caution mode, warning of a hazard without saying it is safe to pass.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Flashing Light Units"
+  },
+  {
+    "id": "q-126",
+    "category": "signs",
+    "topic": "pavement-markings",
+    "difficulty": "hard",
+    "text": "What does this road marking indicate?",
+    "image": "/signs/left-edge-solid-yellow-line-divided-highway.png",
+    "imageAlt": "Pavement marking diagram with a left-edge solid yellow line",
+    "options": [
+      {
+        "id": "a",
+        "text": "Workers are handling overhead electrical or data cables near the road."
+      },
+      {
+        "id": "b",
+        "text": "Workers are active at the site; drive with extra care."
+      },
+      {
+        "id": "c",
+        "text": "Reduce speed, give the right of way, and stop if necessary before proceeding."
+      },
+      {
+        "id": "d",
+        "text": "A solid yellow line marks the left edge of a divided highway; seeing it on the wrong side may mean you are travelling the wrong way."
+      }
+    ],
+    "correctId": "d",
+    "explanation": "Chapter 3 says pavement markings divide lanes, show permitted movements, and warn when passing or lane changes are unsafe. In this case, a solid yellow line marks the left edge of a divided highway; seeing it on the wrong side may mean you are travelling the wrong way.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Pavement Markings"
+  },
+  {
+    "id": "q-127",
+    "category": "signs",
+    "topic": "road-signs",
+    "difficulty": "medium",
+    "text": "What does this sign mean?",
+    "image": "/signs/low-clearance.png",
+    "imageAlt": "Yellow low-clearance warning sign",
+    "options": [
+      {
+        "id": "a",
+        "text": "A low-clearance underpass is ahead; check that your vehicle can pass under it."
+      },
+      {
+        "id": "b",
+        "text": "The maximum speed limit changes ahead; be ready to adjust your speed."
+      },
+      {
+        "id": "c",
+        "text": "Chevron arrows guide drivers around a sharp curve."
+      },
+      {
+        "id": "d",
+        "text": "A divided highway begins ahead."
       }
     ],
     "correctId": "a",
-    "explanation": "No entry means drivers must not enter that road or lane. It often protects one-way streets, ramps, or restricted areas.",
-    "handbookSection": "Chapter 3 - Regulatory Signs",
-    "image": "/signs/noEntry.svg",
-    "imageAlt": "No entry sign"
+    "explanation": "Chapter 3 explains that warning signs alert drivers to hazards or changing road conditions ahead. In this case, a low-clearance underpass is ahead; check that your vehicle can pass under it.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Warning Signs"
+  },
+  {
+    "id": "q-128",
+    "category": "signs",
+    "topic": "road-signs",
+    "difficulty": "easy",
+    "text": "What does this sign indicate?",
+    "image": "/signs/maximum-speed-limit.png",
+    "imageAlt": "White rectangular maximum speed limit sign",
+    "options": [
+      {
+        "id": "a",
+        "text": "No stopping is allowed."
+      },
+      {
+        "id": "b",
+        "text": "This is the maximum speed allowed under ideal conditions."
+      },
+      {
+        "id": "c",
+        "text": "No turns are permitted."
+      },
+      {
+        "id": "d",
+        "text": "Do not make a U-turn to travel in the opposite direction."
+      }
+    ],
+    "correctId": "b",
+    "explanation": "Chapter 3 says regulatory signs state laws or rules drivers must obey. In this case, this is the maximum speed allowed under ideal conditions.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Regulatory Signs"
+  },
+  {
+    "id": "q-129",
+    "category": "signs",
+    "topic": "road-signs",
+    "difficulty": "easy",
+    "text": "What should you expect when you see this sign?",
+    "image": "/signs/merge.png",
+    "imageAlt": "Yellow merge warning sign",
+    "options": [
+      {
+        "id": "a",
+        "text": "A right curve is ahead and the posted advisory speed indicates a safe speed for the turn."
+      },
+      {
+        "id": "b",
+        "text": "The road narrows ahead; watch for hazard markers showing where to position your vehicle."
+      },
+      {
+        "id": "c",
+        "text": "Prepare to merge with other vehicles."
+      },
+      {
+        "id": "d",
+        "text": "A sharp turn or bend is ahead; slow down and follow the arrow direction."
+      }
+    ],
+    "correctId": "c",
+    "explanation": "Chapter 3 explains that warning signs alert drivers to hazards or changing road conditions ahead. In this case, prepare to merge with other vehicles.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Warning Signs"
+  },
+  {
+    "id": "q-130",
+    "category": "signs",
+    "topic": "road-signs",
+    "difficulty": "medium",
+    "text": "What action does this sign require?",
+    "image": "/signs/narrow-structure-ahead.png",
+    "imageAlt": "Yellow warning sign for a narrow structure ahead",
+    "options": [
+      {
+        "id": "a",
+        "text": "A stop sign is ahead."
+      },
+      {
+        "id": "b",
+        "text": "Traffic signal lights are ahead."
+      },
+      {
+        "id": "c",
+        "text": "Trucks may be entering or leaving the road ahead."
+      },
+      {
+        "id": "d",
+        "text": "A narrow road, bridge, culvert, underpass, or similar structure is ahead."
+      }
+    ],
+    "correctId": "d",
+    "explanation": "Chapter 3 explains that warning signs alert drivers to hazards or changing road conditions ahead. In this case, a narrow road, bridge, culvert, underpass, or similar structure is ahead.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Warning Signs"
+  },
+  {
+    "id": "q-131",
+    "category": "signs",
+    "topic": "road-signs",
+    "difficulty": "easy",
+    "text": "What does this sign mean?",
+    "image": "/signs/no-left-turn.png",
+    "imageAlt": "No-left-turn regulatory sign with a red slash",
+    "options": [
+      {
+        "id": "a",
+        "text": "No left turn is permitted."
+      },
+      {
+        "id": "b",
+        "text": "The lane ahead is closed or obstructed; move over and pass only on the side shown by the arrow."
+      },
+      {
+        "id": "c",
+        "text": "The lane ahead is closed or obstructed; it is safe to pass the flashing light unit on either side."
+      },
+      {
+        "id": "d",
+        "text": "Blasting is taking place on or near the road and traffic may be required to stop."
+      }
+    ],
+    "correctId": "a",
+    "explanation": "Chapter 3 says regulatory signs state laws or rules drivers must obey. In this case, no left turn is permitted.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Regulatory Signs"
+  },
+  {
+    "id": "q-132",
+    "category": "signs",
+    "topic": "road-signs",
+    "difficulty": "easy",
+    "text": "What does this sign indicate?",
+    "image": "/signs/no-parking-either-direction.png",
+    "imageAlt": "No-parking sign with arrows in both directions",
+    "options": [
+      {
+        "id": "a",
+        "text": "Passing with care is permitted in both directions when the centre line is broken."
+      },
+      {
+        "id": "b",
+        "text": "No parking is allowed in either direction from this sign."
+      },
+      {
+        "id": "c",
+        "text": "A bump or rough road is ahead; slow down."
+      },
+      {
+        "id": "d",
+        "text": "The maximum speed limit changes ahead; be ready to adjust your speed."
+      }
+    ],
+    "correctId": "b",
+    "explanation": "Chapter 3 says regulatory signs state laws or rules drivers must obey. In this case, no parking is allowed in either direction from this sign.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Regulatory Signs"
+  },
+  {
+    "id": "q-133",
+    "category": "signs",
+    "topic": "road-signs",
+    "difficulty": "medium",
+    "text": "What should you expect when you see this sign?",
+    "image": "/signs/no-right-turn-on-red.png",
+    "imageAlt": "No-right-turn-on-red regulatory sign",
+    "options": [
+      {
+        "id": "a",
+        "text": "Construction starts 1.5 km ahead; choose another route or prepare for delays."
+      },
+      {
+        "id": "b",
+        "text": "Construction traffic may enter or leave the road on the right and may be slower than through traffic."
+      },
+      {
+        "id": "c",
+        "text": "Do not turn right on a red signal; wait for a green light."
+      },
+      {
+        "id": "d",
+        "text": "Continuity lines separate through lanes from entry or exit ramps."
+      }
+    ],
+    "correctId": "c",
+    "explanation": "Chapter 3 says regulatory signs state laws or rules drivers must obey. In this case, do not turn right on a red signal; wait for a green light.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Regulatory Signs"
+  },
+  {
+    "id": "q-134",
+    "category": "signs",
+    "topic": "road-signs",
+    "difficulty": "easy",
+    "text": "What action does this sign require?",
+    "image": "/signs/no-stopping.png",
+    "imageAlt": "No-stopping regulatory sign",
+    "options": [
+      {
+        "id": "a",
+        "text": "A divided highway begins ahead."
+      },
+      {
+        "id": "b",
+        "text": "A divided highway ends and two-way traffic continues ahead."
+      },
+      {
+        "id": "c",
+        "text": "Do not pass; the sign creates an orderly flow before a merge or where passing is unsafe."
+      },
+      {
+        "id": "d",
+        "text": "No stopping is allowed."
+      }
+    ],
+    "correctId": "d",
+    "explanation": "Chapter 3 says regulatory signs state laws or rules drivers must obey. In this case, no stopping is allowed.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Regulatory Signs"
+  },
+  {
+    "id": "q-135",
+    "category": "signs",
+    "topic": "road-signs",
+    "difficulty": "easy",
+    "text": "What does this sign mean?",
+    "image": "/signs/no-turns.png",
+    "imageAlt": "No-turns regulatory sign with a red slash",
+    "options": [
+      {
+        "id": "a",
+        "text": "No turns are permitted."
+      },
+      {
+        "id": "b",
+        "text": "A fire truck entrance is ahead; watch for fire trucks entering or leaving."
+      },
+      {
+        "id": "c",
+        "text": "Hazard marker lines slope left; drive to the left of the sign."
+      },
+      {
+        "id": "d",
+        "text": "Hazard marker lines slope right; drive to the right of the sign."
+      }
+    ],
+    "correctId": "a",
+    "explanation": "Chapter 3 says regulatory signs state laws or rules drivers must obey. In this case, no turns are permitted.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Regulatory Signs"
+  },
+  {
+    "id": "q-136",
+    "category": "signs",
+    "topic": "road-signs",
+    "difficulty": "easy",
+    "text": "What does this sign indicate?",
+    "image": "/signs/no-u-turn.png",
+    "imageAlt": "No-U-turn regulatory sign",
+    "options": [
+      {
+        "id": "a",
+        "text": "The smaller railway sign shows how many tracks must be crossed."
+      },
+      {
+        "id": "b",
+        "text": "Do not make a U-turn to travel in the opposite direction."
+      },
+      {
+        "id": "c",
+        "text": "A straight bar of lamps is caution mode, warning of a hazard without saying it is safe to pass."
+      },
+      {
+        "id": "d",
+        "text": "A solid yellow line marks the left edge of a divided highway; seeing it on the wrong side may mean you are travelling the wrong way."
+      }
+    ],
+    "correctId": "b",
+    "explanation": "Chapter 3 says regulatory signs state laws or rules drivers must obey. In this case, do not make a U-turn to travel in the opposite direction.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Regulatory Signs"
+  },
+  {
+    "id": "q-137",
+    "category": "signs",
+    "topic": "road-signs",
+    "difficulty": "easy",
+    "text": "What should you expect when you see this sign?",
+    "image": "/signs/one-way-sign.png",
+    "imageAlt": "One-way regulatory sign with a directional arrow",
+    "options": [
+      {
+        "id": "a",
+        "text": "A narrow road, bridge, culvert, underpass, or similar structure is ahead."
+      },
+      {
+        "id": "b",
+        "text": "A playground is ahead; reduce speed and watch for children."
+      },
+      {
+        "id": "c",
+        "text": "Traffic may travel only in the direction shown by the arrow."
+      },
+      {
+        "id": "d",
+        "text": "Prepare for unusual road conditions or construction traffic moving at a different speed."
+      }
+    ],
+    "correctId": "c",
+    "explanation": "Chapter 3 says regulatory signs state laws or rules drivers must obey. In this case, traffic may travel only in the direction shown by the arrow.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Regulatory Signs"
+  },
+  {
+    "id": "q-138",
+    "category": "signs",
+    "topic": "road-signs",
+    "difficulty": "easy",
+    "text": "What action does this sign require?",
+    "image": "/signs/passing-permitted.webp",
+    "imageAlt": "Regulatory sign indicating passing is permitted",
+    "options": [
+      {
+        "id": "a",
+        "text": "The road narrows ahead; watch for hazard markers showing where to position your vehicle."
+      },
+      {
+        "id": "b",
+        "text": "The road surface may be rutted, grooved, or otherwise hazardous, especially for bicycles or motorcycles."
+      },
+      {
+        "id": "c",
+        "text": "The road will narrow without reducing the number of lanes; slow because lane width is reduced."
+      },
+      {
+        "id": "d",
+        "text": "Passing is permitted where it is safe and legal."
+      }
+    ],
+    "correctId": "d",
+    "explanation": "Chapter 3 says regulatory signs state laws or rules drivers must obey. In this case, passing is permitted where it is safe and legal.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Regulatory Signs"
+  },
+  {
+    "id": "q-139",
+    "category": "signs",
+    "topic": "road-signs",
+    "difficulty": "easy",
+    "text": "What does this sign mean?",
+    "image": "/signs/pedestrian-crosswalk.png",
+    "imageAlt": "Pedestrian crosswalk sign with a walking person symbol",
+    "options": [
+      {
+        "id": "a",
+        "text": "This marks the location of a pedestrian crosswalk."
+      },
+      {
+        "id": "b",
+        "text": "A school zone is present; slow down and watch for children when they are present."
+      },
+      {
+        "id": "c",
+        "text": "A sharp turn or bend is ahead; slow down and follow the arrow direction."
+      },
+      {
+        "id": "d",
+        "text": "The road may be slippery when wet."
+      }
+    ],
+    "correctId": "a",
+    "explanation": "Chapter 3 says regulatory signs state laws or rules drivers must obey. In this case, this marks the location of a pedestrian crosswalk.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Regulatory Signs"
+  },
+  {
+    "id": "q-140",
+    "category": "signs",
+    "topic": "road-signs",
+    "difficulty": "easy",
+    "text": "What does this sign indicate?",
+    "image": "/signs/playground.png",
+    "imageAlt": "Yellow playground warning sign",
+    "options": [
+      {
+        "id": "a",
+        "text": "A railway crossbuck sign is ahead."
+      },
+      {
+        "id": "b",
+        "text": "A playground is ahead; reduce speed and watch for children."
+      },
+      {
+        "id": "c",
+        "text": "Drivers in this lane must go straight through or turn right."
+      },
+      {
+        "id": "d",
+        "text": "Traffic control persons are using Stop/Slow paddles to manage traffic through the workplace."
+      }
+    ],
+    "correctId": "b",
+    "explanation": "Chapter 3 says school and playground signs warn drivers to watch for children and reduce speed. In this case, a playground is ahead; reduce speed and watch for children.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, School and Playground Signs"
+  },
+  {
+    "id": "q-141",
+    "category": "signs",
+    "topic": "road-signs",
+    "difficulty": "medium",
+    "text": "What should you expect when you see this sign?",
+    "image": "/signs/unusual-road-conditions.png",
+    "imageAlt": "Orange general work-zone warning sign",
+    "options": [
+      {
+        "id": "a",
+        "text": "Traffic signal lights are ahead."
+      },
+      {
+        "id": "b",
+        "text": "Trucks may be entering or leaving the road ahead."
+      },
+      {
+        "id": "c",
+        "text": "Prepare for unusual road conditions or construction traffic moving at a different speed."
+      },
+      {
+        "id": "d",
+        "text": "Truck traffic may proceed only in the direction shown by the arrows."
+      }
+    ],
+    "correctId": "c",
+    "explanation": "Chapter 3 says work-zone signs warn of temporary conditions and require drivers to slow down and act early. In this case, prepare for unusual road conditions or construction traffic moving at a different speed.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Construction / Work Zone Signs"
+  },
+  {
+    "id": "q-142",
+    "category": "signs",
+    "topic": "road-signs",
+    "difficulty": "medium",
+    "text": "What action does this sign require?",
+    "image": "/signs/right-curve-ahead.png",
+    "imageAlt": "Yellow right-curve warning sign with advisory speed",
+    "options": [
+      {
+        "id": "a",
+        "text": "Workers are active at the site; drive with extra care."
+      },
+      {
+        "id": "b",
+        "text": "Reduce speed, give the right of way, and stop if necessary before proceeding."
+      },
+      {
+        "id": "c",
+        "text": "A bridge that can open for boats is ahead."
+      },
+      {
+        "id": "d",
+        "text": "A right curve is ahead and the posted advisory speed indicates a safe speed for the turn."
+      }
+    ],
+    "correctId": "d",
+    "explanation": "Chapter 3 explains that warning signs alert drivers to hazards or changing road conditions ahead. In this case, a right curve is ahead and the posted advisory speed indicates a safe speed for the turn.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Warning Signs"
+  },
+  {
+    "id": "q-143",
+    "category": "signs",
+    "topic": "road-signs",
+    "difficulty": "hard",
+    "text": "What does this sign mean?",
+    "image": "/signs/right-lane-ending-ahead.png",
+    "imageAlt": "Orange work-zone sign showing the right lane ending",
+    "options": [
+      {
+        "id": "a",
+        "text": "The right lane ends ahead; merge left as soon as it is safe."
+      },
+      {
+        "id": "b",
+        "text": "There is a height difference between lanes that could catch a tire and cause loss of control."
+      },
+      {
+        "id": "c",
+        "text": "Do not pass; the sign creates an orderly flow before a merge or where passing is unsafe."
+      },
+      {
+        "id": "d",
+        "text": "Drive to the right of this sign or obstruction."
+      }
+    ],
+    "correctId": "a",
+    "explanation": "Chapter 3 says work-zone signs warn of temporary conditions and require drivers to slow down and act early. In this case, the right lane ends ahead; merge left as soon as it is safe.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Construction / Work Zone Signs"
+  },
+  {
+    "id": "q-144",
+    "category": "signs",
+    "topic": "road-signs",
+    "difficulty": "easy",
+    "text": "What does this sign indicate?",
+    "image": "/signs/right-turn-only-lane.png",
+    "imageAlt": "Lane-use sign showing a right-turn-only arrow",
+    "options": [
+      {
+        "id": "a",
+        "text": "No stopping is allowed."
+      },
+      {
+        "id": "b",
+        "text": "Drivers in this lane must turn right at the intersection."
+      },
+      {
+        "id": "c",
+        "text": "No turns are permitted."
+      },
+      {
+        "id": "d",
+        "text": "Do not make a U-turn to travel in the opposite direction."
+      }
+    ],
+    "correctId": "b",
+    "explanation": "Chapter 3 says regulatory signs state laws or rules drivers must obey. In this case, drivers in this lane must turn right at the intersection.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Regulatory Signs"
+  },
+  {
+    "id": "q-145",
+    "category": "signs",
+    "topic": "road-signs",
+    "difficulty": "medium",
+    "text": "What should you expect when you see this sign?",
+    "image": "/signs/road-narrows-ahead.png",
+    "imageAlt": "Yellow road-narrows warning sign",
+    "options": [
+      {
+        "id": "a",
+        "text": "A right curve is ahead and the posted advisory speed indicates a safe speed for the turn."
+      },
+      {
+        "id": "b",
+        "text": "A sharp turn or bend is ahead; slow down and follow the arrow direction."
+      },
+      {
+        "id": "c",
+        "text": "The road narrows ahead; watch for hazard markers showing where to position your vehicle."
+      },
+      {
+        "id": "d",
+        "text": "The road may be slippery when wet."
+      }
+    ],
+    "correctId": "c",
+    "explanation": "Chapter 3 explains that warning signs alert drivers to hazards or changing road conditions ahead. In this case, the road narrows ahead; watch for hazard markers showing where to position your vehicle.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Warning Signs"
+  },
+  {
+    "id": "q-146",
+    "category": "signs",
+    "topic": "road-signs",
+    "difficulty": "hard",
+    "text": "What action does this sign require?",
+    "image": "/signs/dangerous-road-surface.png",
+    "imageAlt": "Orange sign warning of hazardous road surface conditions",
+    "options": [
+      {
+        "id": "a",
+        "text": "A bridge that can open for boats is ahead."
+      },
+      {
+        "id": "b",
+        "text": "Passing is permitted only when the broken yellow line is on your side and conditions are safe."
+      },
+      {
+        "id": "c",
+        "text": "Passing with care is permitted in both directions when the centre line is broken."
+      },
+      {
+        "id": "d",
+        "text": "The road surface may be rutted, grooved, or otherwise hazardous, especially for bicycles or motorcycles."
+      }
+    ],
+    "correctId": "d",
+    "explanation": "Chapter 3 says work-zone signs warn of temporary conditions and require drivers to slow down and act early. In this case, the road surface may be rutted, grooved, or otherwise hazardous, especially for bicycles or motorcycles.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Construction / Work Zone Signs"
+  },
+  {
+    "id": "q-147",
+    "category": "signs",
+    "topic": "road-signs",
+    "difficulty": "hard",
+    "text": "What does this sign mean?",
+    "image": "/signs/road-will-narrow.png",
+    "imageAlt": "Orange work-zone sign showing narrowed lanes",
+    "options": [
+      {
+        "id": "a",
+        "text": "The road will narrow without reducing the number of lanes; slow because lane width is reduced."
+      },
+      {
+        "id": "b",
+        "text": "Chevron arrows guide drivers around a sharp curve."
+      },
+      {
+        "id": "c",
+        "text": "A climbing lane lets faster traffic pass slower vehicles; keep right unless passing."
+      },
+      {
+        "id": "d",
+        "text": "Continuity lines separate through lanes from entry or exit ramps."
+      }
+    ],
+    "correctId": "a",
+    "explanation": "Chapter 3 says work-zone signs warn of temporary conditions and require drivers to slow down and act early. In this case, the road will narrow without reducing the number of lanes; slow because lane width is reduced.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Construction / Work Zone Signs"
+  },
+  {
+    "id": "q-148",
+    "category": "signs",
+    "topic": "road-signs",
+    "difficulty": "easy",
+    "text": "What does this sign indicate?",
+    "image": "/signs/school-crosswalk-ahead.png",
+    "imageAlt": "School crosswalk ahead warning sign",
+    "options": [
+      {
+        "id": "a",
+        "text": "Hazard marker lines slope right; drive to the right of the sign."
+      },
+      {
+        "id": "b",
+        "text": "A school crosswalk is ahead; watch for children and be ready to stop."
+      },
+      {
+        "id": "c",
+        "text": "A hidden intersection is ahead; side-road drivers may not clearly see approaching traffic."
+      },
+      {
+        "id": "d",
+        "text": "Highway 102 is a controlled-access provincial 100-series highway."
+      }
+    ],
+    "correctId": "b",
+    "explanation": "Chapter 3 says school and playground signs warn drivers to watch for children and reduce speed. In this case, a school crosswalk is ahead; watch for children and be ready to stop.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, School and Playground Signs"
+  },
+  {
+    "id": "q-149",
+    "category": "signs",
+    "topic": "road-signs",
+    "difficulty": "easy",
+    "text": "What should you expect when you see this sign?",
+    "image": "/signs/school-crosswalk.webp",
+    "imageAlt": "School crosswalk sign with children symbols",
+    "options": [
+      {
+        "id": "a",
+        "text": "A straight bar of lamps is caution mode, warning of a hazard without saying it is safe to pass."
+      },
+      {
+        "id": "b",
+        "text": "A solid yellow line marks the left edge of a divided highway; seeing it on the wrong side may mean you are travelling the wrong way."
+      },
+      {
+        "id": "c",
+        "text": "This marks the location of a school crosswalk."
+      },
+      {
+        "id": "d",
+        "text": "A low-clearance underpass is ahead; check that your vehicle can pass under it."
+      }
+    ],
+    "correctId": "c",
+    "explanation": "Chapter 3 says school and playground signs warn drivers to watch for children and reduce speed. In this case, this marks the location of a school crosswalk.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, School and Playground Signs"
+  },
+  {
+    "id": "q-150",
+    "category": "signs",
+    "topic": "road-signs",
+    "difficulty": "easy",
+    "text": "What action does this sign require?",
+    "image": "/signs/school-zone-sign.png",
+    "imageAlt": "Fluorescent yellow-green school zone sign",
+    "options": [
+      {
+        "id": "a",
+        "text": "A narrow road, bridge, culvert, underpass, or similar structure is ahead."
+      },
+      {
+        "id": "b",
+        "text": "No left turn is permitted."
+      },
+      {
+        "id": "c",
+        "text": "No parking is allowed in either direction from this sign."
+      },
+      {
+        "id": "d",
+        "text": "A school zone is present; slow down and watch for children when they are present."
+      }
+    ],
+    "correctId": "d",
+    "explanation": "Chapter 3 says school and playground signs warn drivers to watch for children and reduce speed. In this case, a school zone is present; slow down and watch for children when they are present.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, School and Playground Signs"
+  },
+  {
+    "id": "q-151",
+    "category": "signs",
+    "topic": "road-signs",
+    "difficulty": "medium",
+    "text": "What does this sign mean?",
+    "image": "/signs/sharp-turn-or-bend.png",
+    "imageAlt": "Checkerboard warning sign with an arrow for a sharp bend",
+    "options": [
+      {
+        "id": "a",
+        "text": "A sharp turn or bend is ahead; slow down and follow the arrow direction."
+      },
+      {
+        "id": "b",
+        "text": "This is the maximum speed allowed under ideal conditions."
+      },
+      {
+        "id": "c",
+        "text": "No left turn is permitted."
+      },
+      {
+        "id": "d",
+        "text": "No parking is allowed in either direction from this sign."
+      }
+    ],
+    "correctId": "a",
+    "explanation": "Chapter 3 explains that warning signs alert drivers to hazards or changing road conditions ahead. In this case, a sharp turn or bend is ahead; slow down and follow the arrow direction.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Warning Signs"
+  },
+  {
+    "id": "q-152",
+    "category": "signs",
+    "topic": "road-signs",
+    "difficulty": "medium",
+    "text": "What does this sign indicate?",
+    "image": "/signs/green-circle-permission.png",
+    "imageAlt": "Regulatory sign with a green circle symbol",
+    "options": [
+      {
+        "id": "a",
+        "text": "A straight bar of lamps is caution mode, warning of a hazard without saying it is safe to pass."
+      },
+      {
+        "id": "b",
+        "text": "A green circle gives permission for the movement or action shown."
+      },
+      {
+        "id": "c",
+        "text": "A solid yellow line marks the left edge of a divided highway; seeing it on the wrong side may mean you are travelling the wrong way."
+      },
+      {
+        "id": "d",
+        "text": "A low-clearance underpass is ahead; check that your vehicle can pass under it."
+      }
+    ],
+    "correctId": "b",
+    "explanation": "Chapter 3 says regulatory signs state laws or rules drivers must obey. In this case, a green circle gives permission for the movement or action shown.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Regulatory Signs"
+  },
+  {
+    "id": "q-153",
+    "category": "signs",
+    "topic": "road-signs",
+    "difficulty": "medium",
+    "text": "What should you expect when you see this sign?",
+    "image": "/signs/red-circle-slash-deny-permission.png",
+    "imageAlt": "Regulatory sign with a red circle and slash",
+    "options": [
+      {
+        "id": "a",
+        "text": "A playground is ahead; reduce speed and watch for children."
+      },
+      {
+        "id": "b",
+        "text": "Prepare for unusual road conditions or construction traffic moving at a different speed."
+      },
+      {
+        "id": "c",
+        "text": "A red circle with a slash denies permission for the movement or action shown."
+      },
+      {
+        "id": "d",
+        "text": "A right curve is ahead and the posted advisory speed indicates a safe speed for the turn."
+      }
+    ],
+    "correctId": "c",
+    "explanation": "Chapter 3 says regulatory signs state laws or rules drivers must obey. In this case, a red circle with a slash denies permission for the movement or action shown.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Regulatory Signs"
+  },
+  {
+    "id": "q-154",
+    "category": "signs",
+    "topic": "road-signs",
+    "difficulty": "easy",
+    "text": "What action does this sign require?",
+    "image": "/signs/slippery-when-wet.png",
+    "imageAlt": "Yellow slippery-when-wet warning sign",
+    "options": [
+      {
+        "id": "a",
+        "text": "The road will narrow without reducing the number of lanes; slow because lane width is reduced."
+      },
+      {
+        "id": "b",
+        "text": "A school crosswalk is ahead; watch for children and be ready to stop."
+      },
+      {
+        "id": "c",
+        "text": "This marks the location of a school crosswalk."
+      },
+      {
+        "id": "d",
+        "text": "The road may be slippery when wet."
+      }
+    ],
+    "correctId": "d",
+    "explanation": "Chapter 3 explains that warning signs alert drivers to hazards or changing road conditions ahead. In this case, the road may be slippery when wet.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Warning Signs"
+  },
+  {
+    "id": "q-155",
+    "category": "signs",
+    "topic": "road-signs",
+    "difficulty": "medium",
+    "text": "What does this sign mean?",
+    "image": "/signs/steep-decline-ahead.png",
+    "imageAlt": "Yellow warning sign showing a steep downhill grade",
+    "options": [
+      {
+        "id": "a",
+        "text": "A steep decline is ahead; you may need to use a lower gear."
+      },
+      {
+        "id": "b",
+        "text": "A red circle with a slash denies permission for the movement or action shown."
+      },
+      {
+        "id": "c",
+        "text": "Come to a complete stop and proceed only when the way is clear."
+      },
+      {
+        "id": "d",
+        "text": "Drivers in this lane must go straight through or turn left."
+      }
+    ],
+    "correctId": "a",
+    "explanation": "Chapter 3 explains that warning signs alert drivers to hazards or changing road conditions ahead. In this case, a steep decline is ahead; you may need to use a lower gear.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Warning Signs"
+  },
+  {
+    "id": "q-156",
+    "category": "signs",
+    "topic": "road-signs",
+    "difficulty": "easy",
+    "text": "What does this sign indicate?",
+    "image": "/signs/stop-sign-ahead.png",
+    "imageAlt": "Yellow warning sign showing a stop sign ahead",
+    "options": [
+      {
+        "id": "a",
+        "text": "The road has returned to normal and the work-zone impact has ended."
+      },
+      {
+        "id": "b",
+        "text": "A stop sign is ahead."
+      },
+      {
+        "id": "c",
+        "text": "Traffic may be stopped by traffic control persons ahead; slow gradually to avoid rear-end collisions."
+      },
+      {
+        "id": "d",
+        "text": "A railway crossbuck sign is ahead."
+      }
+    ],
+    "correctId": "b",
+    "explanation": "Chapter 3 explains that warning signs alert drivers to hazards or changing road conditions ahead. In this case, a stop sign is ahead.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Warning Signs"
+  },
+  {
+    "id": "q-157",
+    "category": "signs",
+    "topic": "road-signs",
+    "difficulty": "easy",
+    "text": "What should you expect when you see this sign?",
+    "image": "/signs/stop-sign.png",
+    "imageAlt": "Red octagonal stop sign with white STOP lettering",
+    "options": [
+      {
+        "id": "a",
+        "text": "Traffic signal lights are ahead."
+      },
+      {
+        "id": "b",
+        "text": "Trucks may be entering or leaving the road ahead."
+      },
+      {
+        "id": "c",
+        "text": "Come to a complete stop and proceed only when the way is clear."
+      },
+      {
+        "id": "d",
+        "text": "The centre lane is reserved for left-turning vehicles from both directions; do not use it to pass."
+      }
+    ],
+    "correctId": "c",
+    "explanation": "Chapter 3 says regulatory signs state laws or rules drivers must obey. In this case, come to a complete stop and proceed only when the way is clear.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Regulatory Signs"
+  },
+  {
+    "id": "q-158",
+    "category": "signs",
+    "topic": "road-signs",
+    "difficulty": "medium",
+    "text": "What action does this sign require?",
+    "image": "/signs/straight-through-or-left-turn-only.png",
+    "imageAlt": "Lane-use sign with straight-through and left-turn arrows",
+    "options": [
+      {
+        "id": "a",
+        "text": "Workers are active at the site; drive with extra care."
+      },
+      {
+        "id": "b",
+        "text": "Do not enter this road or lane."
+      },
+      {
+        "id": "c",
+        "text": "Do not litter from your vehicle or along the roadway."
+      },
+      {
+        "id": "d",
+        "text": "Drivers in this lane must go straight through or turn left."
+      }
+    ],
+    "correctId": "d",
+    "explanation": "Chapter 3 says regulatory signs state laws or rules drivers must obey. In this case, drivers in this lane must go straight through or turn left.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Regulatory Signs"
+  },
+  {
+    "id": "q-159",
+    "category": "signs",
+    "topic": "road-signs",
+    "difficulty": "medium",
+    "text": "What does this sign mean?",
+    "image": "/signs/survey-work.png",
+    "imageAlt": "Orange human-activity sign for survey work",
+    "options": [
+      {
+        "id": "a",
+        "text": "Survey work is being done on or near the road; take extra care around workers."
+      },
+      {
+        "id": "b",
+        "text": "Do not pass; the sign creates an orderly flow before a merge or where passing is unsafe."
+      },
+      {
+        "id": "c",
+        "text": "Drive to the right of this sign or obstruction."
+      },
+      {
+        "id": "d",
+        "text": "Prepare for unusual road conditions or construction traffic moving at a different speed."
+      }
+    ],
+    "correctId": "a",
+    "explanation": "Chapter 3 says work-zone signs warn of temporary conditions and require drivers to slow down and act early. In this case, survey work is being done on or near the road; take extra care around workers.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Construction / Work Zone Signs"
+  },
+  {
+    "id": "q-160",
+    "category": "signs",
+    "topic": "road-signs",
+    "difficulty": "hard",
+    "text": "What does this sign indicate?",
+    "image": "/signs/tar-sprayed-on-road.png",
+    "imageAlt": "Orange work-zone sign warning of tar on the road",
+    "options": [
+      {
+        "id": "a",
+        "text": "The road will narrow without reducing the number of lanes; slow because lane width is reduced."
+      },
+      {
+        "id": "b",
+        "text": "Tar has been sprayed on the road ahead; the surface may be slippery and tar may stick to your vehicle."
+      },
+      {
+        "id": "c",
+        "text": "Survey work is being done on or near the road; take extra care around workers."
+      },
+      {
+        "id": "d",
+        "text": "The road has returned to normal and the work-zone impact has ended."
+      }
+    ],
+    "correctId": "b",
+    "explanation": "Chapter 3 says work-zone signs warn of temporary conditions and require drivers to slow down and act early. In this case, tar has been sprayed on the road ahead; the surface may be slippery and tar may stick to your vehicle.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Construction / Work Zone Signs"
+  },
+  {
+    "id": "q-161",
+    "category": "signs",
+    "topic": "road-signs",
+    "difficulty": "medium",
+    "text": "What should you expect when you see this sign?",
+    "image": "/signs/road-work-ended.png",
+    "imageAlt": "Orange end-of-road-work sign",
+    "options": [
+      {
+        "id": "a",
+        "text": "Workers are handling overhead electrical or data cables near the road."
+      },
+      {
+        "id": "b",
+        "text": "Workers are active at the site; drive with extra care."
+      },
+      {
+        "id": "c",
+        "text": "The road has returned to normal and the work-zone impact has ended."
+      },
+      {
+        "id": "d",
+        "text": "The lane ahead is closed or obstructed; move over and pass only on the side shown by the arrow."
+      }
+    ],
+    "correctId": "c",
+    "explanation": "Chapter 3 says work-zone signs warn of temporary conditions and require drivers to slow down and act early. In this case, the road has returned to normal and the work-zone impact has ended.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Construction / Work Zone Signs"
+  },
+  {
+    "id": "q-162",
+    "category": "signs",
+    "topic": "road-signs",
+    "difficulty": "hard",
+    "text": "What action does this sign require?",
+    "image": "/signs/traffic-control-persons-ahead.png",
+    "imageAlt": "Orange combination sign warning of traffic control persons ahead",
+    "options": [
+      {
+        "id": "a",
+        "text": "Passing is permitted only when the broken yellow line is on your side and conditions are safe."
+      },
+      {
+        "id": "b",
+        "text": "Passing with care is permitted in both directions when the centre line is broken."
+      },
+      {
+        "id": "c",
+        "text": "A bump or rough road is ahead; slow down."
+      },
+      {
+        "id": "d",
+        "text": "Traffic may be stopped by traffic control persons ahead; slow gradually to avoid rear-end collisions."
+      }
+    ],
+    "correctId": "d",
+    "explanation": "Chapter 3 says work-zone signs warn of temporary conditions and require drivers to slow down and act early. In this case, traffic may be stopped by traffic control persons ahead; slow gradually to avoid rear-end collisions.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Construction / Work Zone Signs"
+  },
+  {
+    "id": "q-163",
+    "category": "signs",
+    "topic": "road-signs",
+    "difficulty": "medium",
+    "text": "What does this sign mean?",
+    "image": "/signs/railway-crossing-ahead-warning.png",
+    "imageAlt": "Yellow advance railway crossing warning sign",
+    "options": [
+      {
+        "id": "a",
+        "text": "A railway crossbuck sign is ahead."
+      },
+      {
+        "id": "b",
+        "text": "A fire truck entrance is ahead; watch for fire trucks entering or leaving."
+      },
+      {
+        "id": "c",
+        "text": "Hazard marker lines slope left; drive to the left of the sign."
+      },
+      {
+        "id": "d",
+        "text": "Hazard marker lines slope right; drive to the right of the sign."
+      }
+    ],
+    "correctId": "a",
+    "explanation": "Chapter 3 says railway signs warn of tracks and crossings where drivers must slow, look, listen, and be ready to stop. In this case, a railway crossbuck sign is ahead.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Railway Signs"
+  },
+  {
+    "id": "q-164",
+    "category": "signs",
+    "topic": "road-signs",
+    "difficulty": "medium",
+    "text": "What does this sign indicate?",
+    "image": "/signs/through-or-right-turn-only.png",
+    "imageAlt": "Lane-use sign with straight-through and right-turn arrows",
+    "options": [
+      {
+        "id": "a",
+        "text": "The maximum speed limit changes ahead; be ready to adjust your speed."
+      },
+      {
+        "id": "b",
+        "text": "Drivers in this lane must go straight through or turn right."
+      },
+      {
+        "id": "c",
+        "text": "Chevron arrows guide drivers around a sharp curve."
+      },
+      {
+        "id": "d",
+        "text": "A climbing lane lets faster traffic pass slower vehicles; keep right unless passing."
+      }
+    ],
+    "correctId": "b",
+    "explanation": "Chapter 3 says regulatory signs state laws or rules drivers must obey. In this case, drivers in this lane must go straight through or turn right.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Regulatory Signs"
+  },
+  {
+    "id": "q-165",
+    "category": "signs",
+    "topic": "road-signs",
+    "difficulty": "medium",
+    "text": "What should you expect when you see this sign?",
+    "image": "/signs/traffic-control-persons-active.png",
+    "imageAlt": "Orange human-activity sign for traffic control persons",
+    "options": [
+      {
+        "id": "a",
+        "text": "Hazard marker lines slope left; drive to the left of the sign."
+      },
+      {
+        "id": "b",
+        "text": "Hazard marker lines slope right; drive to the right of the sign."
+      },
+      {
+        "id": "c",
+        "text": "Traffic control persons are using Stop/Slow paddles to manage traffic through the workplace."
+      },
+      {
+        "id": "d",
+        "text": "A hidden intersection is ahead; side-road drivers may not clearly see approaching traffic."
+      }
+    ],
+    "correctId": "c",
+    "explanation": "Chapter 3 says work-zone signs warn of temporary conditions and require drivers to slow down and act early. In this case, traffic control persons are using Stop/Slow paddles to manage traffic through the workplace.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Construction / Work Zone Signs"
+  },
+  {
+    "id": "q-166",
+    "category": "signs",
+    "topic": "road-signs",
+    "difficulty": "easy",
+    "text": "What action does this sign require?",
+    "image": "/signs/traffic-signal-lights-ahead.png",
+    "imageAlt": "Yellow traffic-signal-lights-ahead warning sign",
+    "options": [
+      {
+        "id": "a",
+        "text": "The smaller railway sign shows how many tracks must be crossed."
+      },
+      {
+        "id": "b",
+        "text": "Keep to the right of the traffic island or obstruction."
+      },
+      {
+        "id": "c",
+        "text": "A straight bar of lamps is caution mode, warning of a hazard without saying it is safe to pass."
+      },
+      {
+        "id": "d",
+        "text": "Traffic signal lights are ahead."
+      }
+    ],
+    "correctId": "d",
+    "explanation": "Chapter 3 explains that warning signs alert drivers to hazards or changing road conditions ahead. In this case, traffic signal lights are ahead.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Warning Signs"
+  },
+  {
+    "id": "q-167",
+    "category": "signs",
+    "topic": "road-signs",
+    "difficulty": "medium",
+    "text": "What does this sign mean?",
+    "image": "/signs/truck-entering.png",
+    "imageAlt": "Yellow truck-entering warning sign",
+    "options": [
+      {
+        "id": "a",
+        "text": "Trucks may be entering or leaving the road ahead."
+      },
+      {
+        "id": "b",
+        "text": "No left turn is permitted."
+      },
+      {
+        "id": "c",
+        "text": "No parking is allowed in either direction from this sign."
+      },
+      {
+        "id": "d",
+        "text": "Do not turn right on a red signal; wait for a green light."
+      }
+    ],
+    "correctId": "a",
+    "explanation": "Chapter 3 explains that warning signs alert drivers to hazards or changing road conditions ahead. In this case, trucks may be entering or leaving the road ahead.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Warning Signs"
+  },
+  {
+    "id": "q-168",
+    "category": "signs",
+    "topic": "road-signs",
+    "difficulty": "medium",
+    "text": "What does this sign indicate?",
+    "image": "/signs/truck-route-direction.png",
+    "imageAlt": "Truck route sign with directional arrows",
+    "options": [
+      {
+        "id": "a",
+        "text": "A solid yellow line marks the left edge of a divided highway; seeing it on the wrong side may mean you are travelling the wrong way."
+      },
+      {
+        "id": "b",
+        "text": "Truck traffic may proceed only in the direction shown by the arrows."
+      },
+      {
+        "id": "c",
+        "text": "A low-clearance underpass is ahead; check that your vehicle can pass under it."
+      },
+      {
+        "id": "d",
+        "text": "Prepare to merge with other vehicles."
+      }
+    ],
+    "correctId": "b",
+    "explanation": "Chapter 3 says regulatory signs state laws or rules drivers must obey. In this case, truck traffic may proceed only in the direction shown by the arrows.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Regulatory Signs"
+  },
+  {
+    "id": "q-169",
+    "category": "signs",
+    "topic": "road-signs",
+    "difficulty": "easy",
+    "text": "What should you expect when you see this sign?",
+    "image": "/signs/truck-route.png",
+    "imageAlt": "Truck route regulatory sign",
+    "options": [
+      {
+        "id": "a",
+        "text": "Prepare for unusual road conditions or construction traffic moving at a different speed."
+      },
+      {
+        "id": "b",
+        "text": "A right curve is ahead and the posted advisory speed indicates a safe speed for the turn."
+      },
+      {
+        "id": "c",
+        "text": "This road is a designated truck route."
+      },
+      {
+        "id": "d",
+        "text": "The right lane ends ahead; merge left as soon as it is safe."
+      }
+    ],
+    "correctId": "c",
+    "explanation": "Chapter 3 says regulatory signs state laws or rules drivers must obey. In this case, this road is a designated truck route.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Regulatory Signs"
+  },
+  {
+    "id": "q-170",
+    "category": "signs",
+    "topic": "pavement-markings",
+    "difficulty": "medium",
+    "text": "What does this pavement marking mean?",
+    "image": "/signs/two-way-left-turn-lane.png",
+    "imageAlt": "Pavement marking diagram for a two-way left-turn lane",
+    "options": [
+      {
+        "id": "a",
+        "text": "The road may be slippery when wet."
+      },
+      {
+        "id": "b",
+        "text": "A steep decline is ahead; you may need to use a lower gear."
+      },
+      {
+        "id": "c",
+        "text": "A stop sign is ahead."
+      },
+      {
+        "id": "d",
+        "text": "The centre lane is reserved for left-turning vehicles from both directions; do not use it to pass."
+      }
+    ],
+    "correctId": "d",
+    "explanation": "Chapter 3 says pavement markings divide lanes, show permitted movements, and warn when passing or lane changes are unsafe. In this case, the centre lane is reserved for left-turning vehicles from both directions; do not use it to pass.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Pavement Markings"
+  },
+  {
+    "id": "q-171",
+    "category": "signs",
+    "topic": "road-signs",
+    "difficulty": "easy",
+    "text": "What does this sign mean?",
+    "image": "/signs/two-way-traffic.png",
+    "imageAlt": "Yellow two-way-traffic warning sign",
+    "options": [
+      {
+        "id": "a",
+        "text": "Traffic travels in both directions on this section of road."
+      },
+      {
+        "id": "b",
+        "text": "Come to a complete stop and proceed only when the way is clear."
+      },
+      {
+        "id": "c",
+        "text": "Drivers in this lane must go straight through or turn left."
+      },
+      {
+        "id": "d",
+        "text": "Survey work is being done on or near the road; take extra care around workers."
+      }
+    ],
+    "correctId": "a",
+    "explanation": "Chapter 3 explains that warning signs alert drivers to hazards or changing road conditions ahead. In this case, traffic travels in both directions on this section of road.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Warning Signs"
+  },
+  {
+    "id": "q-172",
+    "category": "signs",
+    "topic": "road-signs",
+    "difficulty": "hard",
+    "text": "What does this sign indicate?",
+    "image": "/signs/overhead-cable-work.png",
+    "imageAlt": "Orange human-activity sign for overhead cable work",
+    "options": [
+      {
+        "id": "a",
+        "text": "Drivers in this lane must go straight through or turn left."
+      },
+      {
+        "id": "b",
+        "text": "Workers are handling overhead electrical or data cables near the road."
+      },
+      {
+        "id": "c",
+        "text": "A railway crossbuck sign is ahead."
+      },
+      {
+        "id": "d",
+        "text": "Drivers in this lane must go straight through or turn right."
+      }
+    ],
+    "correctId": "b",
+    "explanation": "Chapter 3 says work-zone signs warn of temporary conditions and require drivers to slow down and act early. In this case, workers are handling overhead electrical or data cables near the road.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Construction / Work Zone Signs"
+  },
+  {
+    "id": "q-173",
+    "category": "signs",
+    "topic": "road-signs",
+    "difficulty": "medium",
+    "text": "What should you expect when you see this sign?",
+    "image": "/signs/workers-active.png",
+    "imageAlt": "Orange human-activity sign showing workers active",
+    "options": [
+      {
+        "id": "a",
+        "text": "Truck traffic may proceed only in the direction shown by the arrows."
+      },
+      {
+        "id": "b",
+        "text": "This road is a designated truck route."
+      },
+      {
+        "id": "c",
+        "text": "Workers are active at the site; drive with extra care."
+      },
+      {
+        "id": "d",
+        "text": "The centre lane is reserved for left-turning vehicles from both directions; do not use it to pass."
+      }
+    ],
+    "correctId": "c",
+    "explanation": "Chapter 3 says work-zone signs warn of temporary conditions and require drivers to slow down and act early. In this case, workers are active at the site; drive with extra care.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Construction / Work Zone Signs"
+  },
+  {
+    "id": "q-174",
+    "category": "signs",
+    "topic": "road-signs",
+    "difficulty": "easy",
+    "text": "What action does this sign require?",
+    "image": "/signs/yield-sign.png",
+    "imageAlt": "Red and white triangular yield sign",
+    "options": [
+      {
+        "id": "a",
+        "text": "Do not enter this road or lane."
+      },
+      {
+        "id": "b",
+        "text": "Do not litter from your vehicle or along the roadway."
+      },
+      {
+        "id": "c",
+        "text": "Do not pass other vehicles."
+      },
+      {
+        "id": "d",
+        "text": "Reduce speed, give the right of way, and stop if necessary before proceeding."
+      }
+    ],
+    "correctId": "d",
+    "explanation": "Chapter 3 says regulatory signs state laws or rules drivers must obey. In this case, reduce speed, give the right of way, and stop if necessary before proceeding.",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Regulatory Signs"
   }
 ]

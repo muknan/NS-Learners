@@ -1,0 +1,254 @@
+[
+  {
+    "id": "fc-001",
+    "chapter": "Driver's Handbook — Introduction",
+    "title": "Graduated Licensing Stages",
+    "summary": "Nova Scotia's GDL system moves new drivers through learner, newly licensed, and restricted individual stages. Each stage limits risk while drivers build experience.",
+    "category": "general"
+  },
+  {
+    "id": "fc-002",
+    "chapter": "Driver's Handbook — Introduction",
+    "title": "Restricted Individual Stage",
+    "summary": "The restricted individual stage lasts two full years after the newly licensed stage. Drivers must have zero alcohol or drugs in the body and cannot supervise another driver.",
+    "category": "rules"
+  },
+  {
+    "id": "fc-003",
+    "chapter": "Driver's Handbook — Introduction",
+    "title": "Yielding to Transit Buses",
+    "summary": "When a stopped transit bus signals to re-enter traffic, drivers approaching from behind must yield where the posted limit is 60 km/h or less and it is safe to do so.",
+    "category": "rules"
+  },
+  {
+    "id": "fc-004",
+    "chapter": "Driver's Handbook — Introduction",
+    "title": "Using the Handbook",
+    "summary": "The handbook explains the basic driving laws in plain language, but drivers are still responsible for knowing current rules and staying alert for updates.",
+    "category": "general"
+  },
+  {
+    "id": "fc-005",
+    "chapter": "Chapter 1 — Your Driver's Licence",
+    "title": "Class 7 Eligibility",
+    "summary": "A Nova Scotia resident can apply for a Class 7 learner's licence at age 16. Applicants who are 16 or 17 need written consent from a parent or guardian.",
+    "category": "rules"
+  },
+  {
+    "id": "fc-006",
+    "chapter": "Chapter 1 — Your Driver's Licence",
+    "title": "Knowledge Test Pass Mark",
+    "summary": "The learner test includes a road sign test and a rules test. Each part has 20 multiple-choice questions, and 16 correct answers are required to pass each part.",
+    "category": "general"
+  },
+  {
+    "id": "fc-007",
+    "chapter": "Chapter 1 — Your Driver's Licence",
+    "title": "Learner Restrictions",
+    "summary": "Learners must drive with an experienced driver in the front seat and no other passengers. Their blood alcohol level must remain zero.",
+    "category": "rules"
+  },
+  {
+    "id": "fc-008",
+    "chapter": "Chapter 1 — Your Driver's Licence",
+    "title": "Demerit Points",
+    "summary": "Demerit points are assigned for Motor Vehicle Act convictions and affect learner and newly licensed drivers sooner than experienced drivers. Serious offences can delay progress through GDL.",
+    "category": "safety"
+  },
+  {
+    "id": "fc-009",
+    "chapter": "Chapter 2 — Rules of the Road",
+    "title": "Traffic Signals",
+    "summary": "Green means proceed only when safe, yellow means stop if you can do so safely, and red means stop before entering the intersection. A flashing red works like a stop sign.",
+    "category": "rules"
+  },
+  {
+    "id": "fc-010",
+    "chapter": "Chapter 2 — Rules of the Road",
+    "title": "Crosswalk Priority",
+    "summary": "Pedestrians have the right of way in marked and unmarked crosswalks at intersections. If a signal changes while someone is crossing, let them finish safely.",
+    "category": "safety"
+  },
+  {
+    "id": "fc-011",
+    "chapter": "Chapter 2 — Rules of the Road",
+    "title": "Intersection Right of Way",
+    "summary": "A vehicle already in an intersection has priority over one that has not entered. When vehicles arrive together, the driver on the left yields to the driver on the right.",
+    "category": "rules"
+  },
+  {
+    "id": "fc-012",
+    "chapter": "Chapter 2 — Rules of the Road",
+    "title": "Emergency Vehicles",
+    "summary": "When an emergency vehicle approaches with lights and siren, move to the right edge or curb and stop until it passes. Never follow a responding fire vehicle within 150 metres.",
+    "category": "safety"
+  },
+  {
+    "id": "fc-013",
+    "chapter": "Chapter 3 — Signs, Pavement Markings and Work Zones",
+    "title": "Regulatory Signs",
+    "summary": "Regulatory signs state laws and instructions drivers must obey. Stop, yield, turn restrictions, no-entry signs, and many lane-use signs fall into this group.",
+    "category": "signs"
+  },
+  {
+    "id": "fc-014",
+    "chapter": "Chapter 3 — Signs, Pavement Markings and Work Zones",
+    "title": "Warning Signs",
+    "summary": "Warning signs alert drivers to hazards or changes ahead, such as curves, merging traffic, hidden intersections, narrow structures, or slippery surfaces.",
+    "category": "signs"
+  },
+  {
+    "id": "fc-015",
+    "chapter": "Chapter 3 — Signs, Pavement Markings and Work Zones",
+    "title": "Pavement Markings",
+    "summary": "Yellow lines separate opposing traffic and white lines separate traffic moving the same direction. Solid and broken lines tell drivers when passing or lane changes are allowed.",
+    "category": "signs"
+  },
+  {
+    "id": "fc-016",
+    "chapter": "Chapter 3 — Signs, Pavement Markings and Work Zones",
+    "title": "Work Zones",
+    "summary": "Orange work-zone signs warn about temporary hazards, lane changes, workers, and construction traffic. Slow down early, follow instructions, and leave extra space.",
+    "category": "safety"
+  },
+  {
+    "id": "fc-017",
+    "chapter": "Chapter 4 — Safety",
+    "title": "Vehicle Readiness",
+    "summary": "Before driving, keep safety equipment such as brakes, lights, tires, mirrors, horn, and wipers in good condition. Regular checks reduce preventable breakdowns and collisions.",
+    "category": "safety"
+  },
+  {
+    "id": "fc-018",
+    "chapter": "Chapter 4 — Safety",
+    "title": "Seat Belts",
+    "summary": "Seat belts and child restraints reduce injury risk and help keep occupants inside the vehicle during a sudden stop or collision. Airbags do not replace seat belts.",
+    "category": "safety"
+  },
+  {
+    "id": "fc-019",
+    "chapter": "Chapter 4 — Safety",
+    "title": "Mirrors and Blind Spots",
+    "summary": "Adjust mirrors before moving and use them frequently, but remember mirrors do not remove blind spots. Shoulder checks are still needed before changing lanes.",
+    "category": "safety"
+  },
+  {
+    "id": "fc-020",
+    "chapter": "Chapter 4 — Safety",
+    "title": "Smooth Braking",
+    "summary": "Brake smoothly and avoid locking the wheels. If your vehicle has ABS, press the brake steadily and firmly rather than pumping it.",
+    "category": "safety"
+  },
+  {
+    "id": "fc-021",
+    "chapter": "Chapter 5 — Adverse Driving Conditions",
+    "title": "Night Driving",
+    "summary": "At night, use headlights properly and reduce speed because you can only see as far as your lights reach. Dim high beams for oncoming or closely followed traffic.",
+    "category": "safety"
+  },
+  {
+    "id": "fc-022",
+    "chapter": "Chapter 5 — Adverse Driving Conditions",
+    "title": "Rain, Snow, and Fog",
+    "summary": "Poor weather reduces visibility and traction. Slow down gradually, avoid sudden stops, increase following distance, and use low-beam headlights when visibility is reduced.",
+    "category": "safety"
+  },
+  {
+    "id": "fc-023",
+    "chapter": "Chapter 5 — Adverse Driving Conditions",
+    "title": "Hydroplaning and Ice",
+    "summary": "Hydroplaning happens when tires ride on water and lose contact with the road. Bridges, overpasses, and shaded areas can freeze before the rest of the road.",
+    "category": "safety"
+  },
+  {
+    "id": "fc-024",
+    "chapter": "Chapter 5 — Adverse Driving Conditions",
+    "title": "Brake Failure",
+    "summary": "If brakes fail, pump the brake pedal several times to build pressure. If that does not work, apply the parking brake gently while holding the release button.",
+    "category": "safety"
+  },
+  {
+    "id": "fc-025",
+    "chapter": "Chapter 6 — Driving and Impairment",
+    "title": "Alcohol Impairment",
+    "summary": "Alcohol-induced impairment begins with the first drink. Legal impairment is defined at 0.08 BAC or more, but drivers can still be charged below that level if impaired.",
+    "category": "safety"
+  },
+  {
+    "id": "fc-026",
+    "chapter": "Chapter 6 — Driving and Impairment",
+    "title": "Medication and Drugs",
+    "summary": "Prescription drugs, non-prescription medication, herbal remedies, and illegal drugs can impair driving. Read warnings and ask a pharmacist when unsure.",
+    "category": "safety"
+  },
+  {
+    "id": "fc-027",
+    "chapter": "Chapter 6 — Driving and Impairment",
+    "title": "Warn Range",
+    "summary": "A roadside screening result between 0.05 and 0.08 may lead to a licence suspension. Learners and GDL drivers must maintain zero alcohol.",
+    "category": "rules"
+  },
+  {
+    "id": "fc-028",
+    "chapter": "Chapter 6 — Driving and Impairment",
+    "title": "Plan a Sober Ride",
+    "summary": "Judgment gets worse as impairment increases, so plan transportation before drinking or using impairing substances. Time is the only reliable way alcohol leaves the body.",
+    "category": "safety"
+  },
+  {
+    "id": "fc-029",
+    "chapter": "Chapter 7 — Vehicle Registration and Insurance",
+    "title": "Road-Ready Vehicle",
+    "summary": "Before a vehicle is operated on a Nova Scotia highway, it must be registered, permitted, inspected, plated, and insured. Proof documents must be kept available.",
+    "category": "rules"
+  },
+  {
+    "id": "fc-030",
+    "chapter": "Chapter 7 — Vehicle Registration and Insurance",
+    "title": "Registration Basics",
+    "summary": "A Certificate of Registration shows ownership details such as the owner's name, VIN, issue date, and vehicle description. The certificate remains valid while you own the vehicle.",
+    "category": "general"
+  },
+  {
+    "id": "fc-031",
+    "chapter": "Chapter 7 — Vehicle Registration and Insurance",
+    "title": "Annual Safety Inspection",
+    "summary": "Registered vehicles and trailers need an annual safety inspection at an official station. If a vehicle fails, defects must be corrected and reinspected within the allowed period.",
+    "category": "safety"
+  },
+  {
+    "id": "fc-032",
+    "chapter": "Chapter 7 — Vehicle Registration and Insurance",
+    "title": "Insurance Responsibility",
+    "summary": "Drivers must have liability insurance or another accepted proof of financial responsibility. The handbook lists the legal minimum at $500,000 in third-party liability coverage.",
+    "category": "rules"
+  },
+  {
+    "id": "fc-033",
+    "chapter": "Chapter 8 — Motorcycles",
+    "title": "Motorcycle Licensing",
+    "summary": "Motorcycle riders need either a motorcycle driver's licence or an endorsement on a regular licence. New motorcycle riders move through GDL and must pass motorcycle-specific tests.",
+    "category": "rules"
+  },
+  {
+    "id": "fc-034",
+    "chapter": "Chapter 8 — Motorcycles",
+    "title": "Learner Motorcycle Limits",
+    "summary": "Learner motorcycle drivers must keep zero blood alcohol, carry no passengers, and ride only from one half-hour before sunrise to one half-hour after sunset.",
+    "category": "rules"
+  },
+  {
+    "id": "fc-035",
+    "chapter": "Chapter 8 — Motorcycles",
+    "title": "Motorcycle Visibility",
+    "summary": "Motorcyclists should avoid other drivers' blind spots and choose a lane position that makes them visible. Each motorcycle is entitled to the full use of a traffic lane.",
+    "category": "safety"
+  },
+  {
+    "id": "fc-036",
+    "chapter": "Chapter 8 — Motorcycles",
+    "title": "Protective Gear",
+    "summary": "Motorcycle riders and passengers must wear approved, properly fastened helmets. Eye protection and protective clothing help prevent loss of control and reduce injury.",
+    "category": "safety"
+  }
+]
