@@ -30,7 +30,19 @@ export function ExamCard({
   const showFeedback = instantFeedback && selectedId !== null && session.phase === 'review';
   const orderedOptions = getOrderedOptions(question, session);
   const feedbackRef = useRef<HTMLDetailsElement>(null);
+  const questionRef = useRef<HTMLHeadingElement>(null);
+  const answerListRef = useRef<HTMLDivElement>(null);
   const hasImage = Boolean(question.image);
+
+  useEffect(() => {
+    if (questionRef.current) {
+      questionRef.current.scrollTop = 0;
+    }
+
+    if (answerListRef.current) {
+      answerListRef.current.scrollTop = 0;
+    }
+  }, [question.id]);
 
   useEffect(() => {
     if (showFeedback) {
@@ -58,11 +70,16 @@ export function ExamCard({
           </span>
         </div>
 
-        <h1 className="exam-question" data-testid="exam-question" tabIndex={-1}>
+        <h1 className="exam-question" data-testid="exam-question" ref={questionRef} tabIndex={-1}>
           {question.text}
         </h1>
 
-        <div className="answer-list" role="radiogroup" aria-label="Answer choices">
+        <div
+          className="answer-list"
+          ref={answerListRef}
+          role="radiogroup"
+          aria-label="Answer choices"
+        >
           {orderedOptions.map((option, index) => (
             <AnswerOption
               correct={option.id === question.correctId}

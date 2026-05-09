@@ -169,11 +169,12 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
   );
   const [keyboardHintVisible, setKeyboardHintVisible] = useState(false);
   const [autoAdvanceActive, setAutoAdvanceActive] = useState(false);
+  const [timerAnnouncement, setTimerAnnouncement] = useState('');
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
-  const examMainRef = useRef<HTMLDivElement>(null);
   const pointerStartX = useRef<number | null>(null);
   const pointerStartY = useRef<number | null>(null);
   const autoAdvanceTimerRef = useRef<number | null>(null);
+  const announcedTimerMilestonesRef = useRef(new Set<number>());
   const sessionRef = useRef(session);
   const currentQuestionRef = useRef(currentQuestion);
   const overlayOpenRef = useRef({
@@ -271,6 +272,7 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
     [dispatch, questionsById, router, session],
   );
   const handleTimerExpire = useCallback(() => {
+    setTimerAnnouncement("Time's up");
     addToast("Time's up - your exam has been submitted", 'warning');
     submitExam(true);
   }, [addToast, submitExam]);
@@ -290,12 +292,6 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
   }, []);
 
   useEffect(() => {
-    if (examMainRef.current) {
-      examMainRef.current.scrollTop = 0;
-    }
-  }, [session.currentIndex]);
-
-  useEffect(() => {
     document.documentElement.classList.add('exam-route-active');
     document.body.classList.add('exam-route-active');
 
@@ -304,6 +300,32 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
       document.body.classList.remove('exam-route-active');
     };
   }, []);
+
+  useEffect(() => {
+    announcedTimerMilestonesRef.current.clear();
+    setTimerAnnouncement('');
+  }, [session.id, session.expiresAt]);
+
+  useEffect(() => {
+    if (remaining === null || remaining <= 0) {
+      return;
+    }
+
+    const milestone = remaining <= 30 ? 30 : remaining <= 60 ? 60 : remaining <= 300 ? 300 : null;
+
+    if (milestone === null || announcedTimerMilestonesRef.current.has(milestone)) {
+      return;
+    }
+
+    announcedTimerMilestonesRef.current.add(milestone);
+    setTimerAnnouncement(
+      milestone === 300
+        ? '5 minutes remaining'
+        : milestone === 60
+          ? '1 minute remaining'
+          : '30 seconds remaining',
+    );
+  }, [remaining]);
 
   useEffect(() => {
     if (autoAdvanceTimerRef.current !== null) {
@@ -553,7 +575,7 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
         totalQuestions={session.questionIds.length}
       />
 
-      <div className="exam-main" ref={examMainRef}>
+      <div className="exam-main">
         {showSectionBreak ? (
           <section className="section-break" role="status">
             <Badge tone="success">Section 1 complete</Badge>
@@ -626,6 +648,10 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
           </button>
         </div>
       ) : null}
+
+      <div className="sr-only" aria-live="polite">
+        {timerAnnouncement}
+      </div>
 
       {submitModalOpen ? (
         <Modal title="Submit practice exam?" onClose={() => setSubmitModalOpen(false)}>

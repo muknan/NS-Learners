@@ -79,7 +79,7 @@ export function toHistoryEntry(
   session: ExamSession,
   questionsById: Map<string, Question>,
 ): HistoryEntry {
-  const summary = scoreSession(session, questionsById);
+  const summary = scoreSession(session, questionsById, session.mode);
 
   return {
     ...summary,
@@ -94,7 +94,7 @@ export function buildShareSummary(
   session: ExamSession,
   questionsById: Map<string, Question>,
 ): string {
-  const summary = scoreSession(session, questionsById);
+  const summary = scoreSession(session, questionsById, session.mode);
   const label = getExamMode(session.mode).label;
   const rules = summary.byCategory.find((item) => item.category === 'rules');
   const signs = summary.byCategory.find((item) => item.category === 'signs');
@@ -134,7 +134,7 @@ function getSectionBreakdown(
 ): SectionBreakdown[] {
   const shouldSplitSections = modeId === 'full-test' && results.length === 40;
   const sectionSize = shouldSplitSections ? 20 : results.length;
-  const sections = shouldSplitSections ? ['Section 1', 'Section 2'] : [getExamMode(modeId).label];
+  const sections = shouldSplitSections ? ['Section 1', 'Section 2'] : ['Practice'];
 
   return sections.map((section, index) => {
     const chunk = results.slice(index * sectionSize, (index + 1) * sectionSize);
@@ -185,7 +185,7 @@ export function isPassing(
   session: ExamSession,
   questionsById: Map<string, Question>,
 ): boolean | null {
-  return scoreSession(session, questionsById).passed;
+  return scoreSession(session, questionsById, session.mode).passed;
 }
 
 function getTopicBreakdown(results: readonly QuestionResult[]): TopicBreakdown[] {

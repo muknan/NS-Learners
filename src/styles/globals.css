@@ -1533,69 +1533,6 @@ input[type='range'] {
   outline-offset: 2px;
 }
 
-.settings-grid fieldset {
-  min-width: 0;
-  margin: 0;
-  border: 0;
-  padding: 0;
-}
-
-.settings-grid legend {
-  margin-block-end: 8px;
-  color: var(--color-text-secondary);
-  font-size: var(--text-14);
-  font-weight: 500;
-}
-
-.segmented-control {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 4px;
-  border: 1px solid var(--color-border-default);
-  border-radius: var(--radius-control);
-  padding: 4px;
-  background: var(--color-surface-muted);
-}
-
-.segmented-control button {
-  min-height: 40px;
-  border: 0;
-  border-radius: 6px;
-  background: transparent;
-  color: var(--color-text-secondary);
-  font-size: var(--text-14);
-  font-weight: 500;
-}
-
-.segmented-control button.is-active {
-  background: var(--color-surface-card);
-  color: var(--color-brand-primary);
-}
-
-.toggle-row {
-  display: flex;
-  gap: 12px;
-  align-items: start;
-  border: 1px solid var(--color-border-default);
-  border-radius: var(--radius-card);
-  padding: 12px;
-}
-
-.toggle-row input {
-  width: 20px;
-  height: 20px;
-  accent-color: var(--color-brand-primary);
-}
-
-.toggle-row strong,
-.toggle-row small {
-  display: block;
-}
-
-.toggle-row small {
-  color: var(--color-text-muted);
-}
-
 .submit-warning {
   display: flex;
   align-items: center;

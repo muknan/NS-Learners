@@ -46,7 +46,7 @@ const jsonLd = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html data-scroll-behavior="smooth" lang="en-CA" suppressHydrationWarning>
+    <html lang="en-CA" suppressHydrationWarning>
       <body>
         <a className="skip-link" href="#main-content">
           Skip to content

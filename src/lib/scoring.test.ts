@@ -6,7 +6,6 @@ const sampleQuestions: Question[] = [
   {
     id: 'q-1',
     category: 'rules',
-    section: 'Rules of the Road',
     topic: 'speed-limits',
     difficulty: 'easy',
     text: 'What is the default urban speed limit?',
@@ -22,7 +21,6 @@ const sampleQuestions: Question[] = [
   {
     id: 'q-2',
     category: 'signs',
-    section: 'Road Sign Recognition',
     topic: 'road-signs',
     difficulty: 'easy',
     text: 'What does an octagon mean?',
@@ -78,7 +76,8 @@ function makeSession(
 
 describe('scoreSession', () => {
   it('scores totals, percentages, pass state, and section breakdowns', () => {
-    const score = scoreSession(makeSession({ 'q-1': 'a', 'q-2': 'a' }), questionMap);
+    const session = makeSession({ 'q-1': 'a', 'q-2': 'a' });
+    const score = scoreSession(session, questionMap, session.mode);
 
     expect(score.correct).toBe(1);
     expect(score.total).toBe(2);
@@ -100,11 +99,12 @@ describe('scoreSession', () => {
     const answers = Object.fromEntries(
       questions.map((question) => [question.id, question.correctId]),
     ) as ExamSession['answers'];
-    const score = scoreSession(makeSession(answers, questions, 'all-questions'), questionsById);
+    const session = makeSession(answers, questions, 'all-questions');
+    const score = scoreSession(session, questionsById, session.mode);
 
     expect(score.bySection).toEqual([
       {
-        section: 'All Questions Revision',
+        section: 'Practice',
         correct: 40,
         total: 40,
         percentage: 100,

@@ -5,7 +5,6 @@ import type { Question } from '@/types/exam';
 const questions: Question[] = Array.from({ length: 8 }, (_, index) => ({
   id: `q-${index}`,
   category: index % 2 ? 'signs' : 'rules',
-  section: index % 2 ? 'Road Sign Recognition' : 'Rules of the Road',
   topic: index % 2 ? 'road-signs' : 'right-of-way',
   difficulty: 'easy',
   text: `Question ${index}`,
@@ -63,7 +62,6 @@ describe('createExamSession', () => {
     const mixedBank: Question[] = Array.from({ length: 50 }, (_, index) => ({
       id: `mixed-${index}`,
       category: index % 2 === 0 ? 'rules' : 'signs',
-      section: index % 2 === 0 ? 'Rules of the Road' : 'Road Sign Recognition',
       topic: index % 2 === 0 ? 'right-of-way' : 'road-signs',
       difficulty: 'easy',
       text: `Mixed question ${index}`,

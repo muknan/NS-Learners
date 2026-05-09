@@ -9,7 +9,6 @@ const questions: Question[] = [
   {
     id: 'q-restore',
     category: 'rules',
-    section: 'Rules of the Road',
     topic: 'right-of-way',
     difficulty: 'easy',
     text: 'Who has the right of way?',

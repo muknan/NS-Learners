@@ -26,7 +26,6 @@ export interface Question {
   category: QuestionCategory;
   topic: QuestionTopic;
   difficulty: 'easy' | 'medium' | 'hard';
-  section?: string | undefined;
   text: string;
   image?: string | undefined;
   imageAlt?: string | undefined;
@@ -34,7 +33,6 @@ export interface Question {
   correctId: 'a' | 'b' | 'c' | 'd';
   explanation: string;
   handbookSection?: string | undefined;
-  referenceSection?: string | undefined;
 }
 
 export interface OfficialMaterial {
@@ -121,18 +119,4 @@ export interface HistoryEntry extends ScoreSummary {
   completedAt: number;
   source: ExamSource;
   mode: ModeId;
-}
-
-export interface ScoreRecord {
-  id: string;
-  modeId: ModeId;
-  score: number;
-  total: number;
-  percent: number;
-  passed: boolean | null;
-  section1?: { score: number; total: number } | undefined;
-  section2?: { score: number; total: number } | undefined;
-  topicBreakdown: Record<string, { correct: number; total: number }>;
-  completedAt: number;
-  durationMs: number;
 }
