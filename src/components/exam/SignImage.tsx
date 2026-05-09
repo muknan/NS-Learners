@@ -1,4 +1,6 @@
-import Image from 'next/image';
+'use client';
+
+import { useEffect, useState } from 'react';
 import type { Question } from '@/types/exam';
 
 export function SignImage({
@@ -8,6 +10,12 @@ export function SignImage({
   question: Question;
   compact?: boolean;
 }) {
+  const [src, setSrc] = useState(question.image);
+
+  useEffect(() => {
+    setSrc(question.image);
+  }, [question.image]);
+
   if (!question.image) {
     return null;
   }
@@ -17,13 +25,13 @@ export function SignImage({
       className={compact ? 'sign-figure sign-figure--compact' : 'sign-figure'}
       data-testid="sign-image"
     >
-      <Image
+      {/* eslint-disable-next-line @next/next/no-img-element -- Native img avoids SVG rendering issues in static export. */}
+      <img
         alt={question.imageAlt ?? 'Road sign for this question'}
-        height={compact ? 96 : 180}
-        priority={!compact}
-        src={question.image}
-        unoptimized
-        width={compact ? 96 : 180}
+        decoding="async"
+        loading={compact ? 'lazy' : 'eager'}
+        onError={() => setSrc('/signs/_unknown.svg')}
+        src={src ?? '/signs/_unknown.svg'}
       />
     </figure>
   );

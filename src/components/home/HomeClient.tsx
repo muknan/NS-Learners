@@ -1,7 +1,6 @@
 'use client';
 
 import { Play, RotateCcw, ShieldCheck, Trash2 } from 'lucide-react';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
@@ -89,12 +88,13 @@ export function HomeClient({ stats }: HomeClientProps) {
 
         <div className="hero-sign-wall" aria-hidden="true">
           {['stop', 'yield', 'school', 'speed50'].map((sign) => (
-            <Image
+            // eslint-disable-next-line @next/next/no-img-element -- Native img avoids SVG rendering issues in static export.
+            <img
               alt=""
               height={120}
               key={sign}
+              loading="lazy"
               src={`/signs/${sign}.svg`}
-              unoptimized
               width={120}
             />
           ))}
