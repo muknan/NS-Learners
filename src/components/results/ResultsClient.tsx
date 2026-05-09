@@ -43,6 +43,13 @@ export function ResultsClient({ questions }: { questions: Question[] }) {
     [questionsById, session],
   );
   const missed = useMemo(() => results.filter((result) => !result.isCorrect), [results]);
+  const lowestTopics = useMemo(
+    () =>
+      score
+        ? [...score.byTopic].sort((left, right) => left.percentage - right.percentage).slice(0, 8)
+        : [],
+    [score],
+  );
 
   useEffect(() => {
     setSession(readCompletedSession());
@@ -162,12 +169,30 @@ export function ResultsClient({ questions }: { questions: Question[] }) {
             </article>
           ))}
         </div>
+        {lowestTopics.length ? (
+          <div className="breakdown-subsection">
+            <h3>Lowest topic scores</h3>
+            <div className="breakdown-grid">
+              {lowestTopics.map((topic) => (
+                <article className="breakdown-item" key={topic.topic}>
+                  <div>
+                    <strong>{getTopicLabel(topic.topic)}</strong>
+                    <span>
+                      {topic.correct}/{topic.total}
+                    </span>
+                  </div>
+                  <ProgressBar value={topic.percentage} label={`${topic.topic} topic score`} />
+                </article>
+              ))}
+            </div>
+          </div>
+        ) : null}
       </section>
 
       <section className="results-actions" aria-label="Result actions">
         <Button
           disabled={!missed.length}
-          icon={<Target aria-hidden="true" suppressHydrationWarning />}
+          icon={<Target aria-hidden="true" />}
           onClick={retakeMissed}
         >
           Retake missed only
@@ -175,15 +200,11 @@ export function ResultsClient({ questions }: { questions: Question[] }) {
         <ButtonLink
           href="/exam?mode=full-test"
           tone="secondary"
-          icon={<RotateCcw aria-hidden="true" suppressHydrationWarning />}
+          icon={<RotateCcw aria-hidden="true" />}
         >
           Retake full exam
         </ButtonLink>
-        <Button
-          tone="ghost"
-          icon={<Clipboard aria-hidden="true" suppressHydrationWarning />}
-          onClick={shareResult}
-        >
+        <Button tone="ghost" icon={<Clipboard aria-hidden="true" />} onClick={shareResult}>
           Copy result summary
         </Button>
       </section>
@@ -242,7 +263,7 @@ function WrongAnswerList({ results }: { results: QuestionResult[] }) {
             <h3>{result.question.text}</h3>
             <div className="answer-comparison">
               <span className="is-wrong">
-                <X aria-hidden="true" suppressHydrationWarning />
+                <X aria-hidden="true" />
                 Your answer: {result.selectedText ?? 'No answer'}
               </span>
               <span className="is-correct">Correct answer: {result.correctText}</span>

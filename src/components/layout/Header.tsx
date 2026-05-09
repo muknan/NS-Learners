@@ -42,6 +42,7 @@ export function Header() {
     } catch {
       // Theme persistence is best-effort only.
     }
+    window.dispatchEvent(new Event('ns-learner-theme-change'));
   }
 
   function startExam(): void {
@@ -77,7 +78,7 @@ export function Header() {
           Handbooks
         </Link>
         <button type="button" onClick={() => setSettingsOpen(true)}>
-          <Settings aria-hidden="true" suppressHydrationWarning />
+          <Settings aria-hidden="true" />
           Settings
         </button>
         <button
@@ -85,13 +86,9 @@ export function Header() {
           onClick={toggleTheme}
           aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
         >
-          {theme === 'dark' ? (
-            <Sun aria-hidden="true" suppressHydrationWarning />
-          ) : (
-            <Moon aria-hidden="true" suppressHydrationWarning />
-          )}
+          {theme === 'dark' ? <Sun aria-hidden="true" /> : <Moon aria-hidden="true" />}
         </button>
-        <Button icon={<Play aria-hidden="true" suppressHydrationWarning />} onClick={startExam}>
+        <Button icon={<Play aria-hidden="true" />} onClick={startExam}>
           Start
         </Button>
       </nav>

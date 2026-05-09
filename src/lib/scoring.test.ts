@@ -55,6 +55,7 @@ function makeSession(answers: ExamSession['answers']): ExamSession {
     flaggedIds: [],
     instantFeedback: false,
     autoAdvance: false,
+    previousAutoAdvance: false,
     autoAdvanceDurationMs: 3000,
     autoAdvancedIds: [],
     shouldAutoAdvance: false,

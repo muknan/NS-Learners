@@ -42,7 +42,7 @@ export default function HandbooksPage() {
                 target="_blank"
               >
                 <span className="pdf-card__icon" aria-hidden="true">
-                  <FileText suppressHydrationWarning />
+                  <FileText />
                 </span>
                 <span>
                   <strong>{material.label}</strong>
@@ -55,7 +55,7 @@ export default function HandbooksPage() {
                 <Badge tone={material.fileSize === 'Primary source' ? 'brand' : 'neutral'}>
                   {material.fileSize}
                 </Badge>
-                <Download aria-hidden="true" suppressHydrationWarning />
+                <Download aria-hidden="true" />
               </a>
             ))}
           </div>

@@ -1,4 +1,6 @@
 import nextDynamic from 'next/dynamic';
+import { Suspense } from 'react';
+import { Badge } from '@/components/ui/Badge';
 import { questions } from '@/lib/questions';
 
 export const dynamic = 'force-static';
@@ -10,7 +12,19 @@ const ExamClient = nextDynamic(() =>
 export default function ExamPage() {
   return (
     <main id="main-content" className="exam-page-shell">
-      <ExamClient questions={questions} />
+      <Suspense fallback={<ExamLoadingFallback />}>
+        <ExamClient questions={questions} />
+      </Suspense>
     </main>
+  );
+}
+
+function ExamLoadingFallback() {
+  return (
+    <section className="loading-state" role="status">
+      <Badge tone="brand">Loading</Badge>
+      <h1>Preparing your practice exam.</h1>
+      <p>Did you know? Learners in Nova Scotia must maintain zero blood alcohol level.</p>
+    </section>
   );
 }

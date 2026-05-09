@@ -68,6 +68,33 @@ test('home renders at required responsive widths', async ({ page }) => {
   }
 });
 
+test('retake with no missed questions shows an empty state', async ({ page }) => {
+  await page.goto('/');
+  await page.evaluate(() => {
+    window.localStorage.setItem('nsLearner.keyboardHintSeen', 'true');
+    for (const storage of [window.localStorage, window.sessionStorage]) {
+      for (const key of Object.keys(storage)) {
+        if (
+          key.startsWith('ns-exam-session-') ||
+          key === 'nsLearner.currentSession' ||
+          key === 'ns-retake-questions'
+        ) {
+          storage.removeItem(key);
+        }
+      }
+    }
+  });
+
+  await page.goto('/exam?mode=retake');
+
+  await expect(page.getByRole('heading', { name: /no missed questions to retake/i })).toBeVisible();
+  await expect(page.getByText(/no missed questions saved for a retake/i)).toBeVisible();
+
+  await page.getByRole('link', { name: /start fresh full test/i }).click();
+
+  await expect(page).toHaveURL(/\/exam.*mode=full-test/);
+});
+
 test('auto-advances after an answer when instant feedback is off', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');

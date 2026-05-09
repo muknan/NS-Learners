@@ -3,6 +3,7 @@
 import { Info } from 'lucide-react';
 import { AnswerOption } from '@/components/exam/AnswerOption';
 import { SignImage } from '@/components/exam/SignImage';
+import { Badge } from '@/components/ui/Badge';
 import type { AnswerOption as AnswerOptionValue, ExamSession, Question } from '@/types/exam';
 import { getOrderedOptions } from '@/lib/session';
 import { getTopicLabel } from '@/lib/questions';
@@ -48,6 +49,9 @@ export function ExamCard({
       <div className="exam-card__content-pane">
         <div className="exam-card__meta">
           <span>{getTopicLabel(question.topic)}</span>
+          <Badge className="exam-card__difficulty" tone={getDifficultyTone(question.difficulty)}>
+            {question.difficulty}
+          </Badge>
           <span aria-hidden="true">·</span>
           <span>
             Q {questionIndex + 1} / {totalQuestions}
@@ -78,7 +82,7 @@ export function ExamCard({
       {showFeedback ? (
         <details className="explanation-panel" ref={feedbackRef} tabIndex={-1} open>
           <summary>
-            <Info aria-hidden="true" suppressHydrationWarning />
+            <Info aria-hidden="true" />
             Explanation
           </summary>
           <p>{question.explanation}</p>
@@ -87,4 +91,15 @@ export function ExamCard({
       ) : null}
     </article>
   );
+}
+
+function getDifficultyTone(difficulty: Question['difficulty']): 'neutral' | 'warning' | 'error' {
+  switch (difficulty) {
+    case 'hard':
+      return 'error';
+    case 'medium':
+      return 'warning';
+    case 'easy':
+      return 'neutral';
+  }
 }

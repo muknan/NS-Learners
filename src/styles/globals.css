@@ -507,7 +507,7 @@ p {
 
 .mode-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 12px;
 }
 
@@ -961,6 +961,11 @@ p {
   text-transform: uppercase;
 }
 
+.exam-card__difficulty {
+  min-height: 22px;
+  text-transform: capitalize;
+}
+
 .exam-question {
   max-height: min(5.25em, 24vh);
   margin: 0;
@@ -1286,7 +1291,7 @@ p {
   font-weight: 500;
 }
 
-.modal-backdrop {
+.modal-layer {
   position: fixed;
   inset: 0;
   z-index: 30;
@@ -1296,7 +1301,17 @@ p {
   background: color-mix(in srgb, var(--color-brand-dark) 38%, transparent);
 }
 
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  padding: 0;
+  background: transparent;
+}
+
 .modal {
+  position: relative;
+  z-index: 1;
   display: grid;
   width: min(440px, 100%);
   max-height: min(640px, 100%);
@@ -1332,6 +1347,15 @@ p {
   display: grid;
   gap: 14px;
   padding: 14px;
+}
+
+.confirm-dialog {
+  padding: 14px;
+}
+
+.confirm-dialog p {
+  margin: 0;
+  color: var(--color-text-secondary);
 }
 
 .settings-section {
@@ -1689,6 +1713,17 @@ input[type='range'] {
   gap: 12px;
 }
 
+.breakdown-subsection {
+  display: grid;
+  gap: 12px;
+  margin-block-start: 8px;
+}
+
+.breakdown-subsection h3 {
+  margin: 0;
+  font-size: var(--text-16);
+}
+
 .wrong-list {
   display: grid;
   gap: 12px;
@@ -1786,12 +1821,29 @@ input[type='range'] {
 }
 
 .toast {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
   border: 1px solid var(--color-border-strong);
   border-radius: var(--radius-card);
   padding: 12px;
   background: var(--color-surface-card);
   color: var(--color-text-primary);
   box-shadow: 0 12px 32px var(--color-border-default);
+}
+
+.toast button {
+  display: inline-flex;
+  width: 28px;
+  height: 28px;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: inherit;
 }
 
 .toast--success {

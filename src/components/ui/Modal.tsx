@@ -1,8 +1,9 @@
 'use client';
 
 import { X } from 'lucide-react';
-import { useEffect, useRef, type ReactNode } from 'react';
+import { useEffect, useId, useRef, type ReactNode } from 'react';
 import { Button } from '@/components/ui/Button';
+import { lockBodyScroll } from '@/components/ui/scrollLock';
 
 export function Modal({
   title,
@@ -14,6 +15,7 @@ export function Modal({
   onClose: () => void;
 }) {
   const modalRef = useRef<HTMLElement>(null);
+  const titleId = useId();
 
   useEffect(() => {
     const previousActiveElement =
@@ -21,6 +23,7 @@ export function Modal({
     const focusableSelector =
       'a[href], button:not([disabled]), textarea, input, select, summary, [tabindex]:not([tabindex="-1"])';
     const firstFocusable = modalRef.current?.querySelector<HTMLElement>(focusableSelector);
+    const unlockBodyScroll = lockBodyScroll();
     firstFocusable?.focus();
 
     function handleKeyDown(event: KeyboardEvent): void {
@@ -55,23 +58,30 @@ export function Modal({
 
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
+      unlockBodyScroll();
       previousActiveElement?.focus();
     };
   }, [onClose]);
 
   return (
-    <div className="modal-backdrop" role="presentation">
+    <div className="modal-layer" role="presentation">
+      <button
+        aria-label="Close dialog"
+        className="modal-backdrop"
+        onClick={onClose}
+        type="button"
+      />
       <section
         className="modal"
         ref={modalRef}
         role="dialog"
         aria-modal="true"
-        aria-labelledby="modal-title"
+        aria-labelledby={titleId}
       >
         <header className="modal__header">
-          <h2 id="modal-title">{title}</h2>
+          <h2 id={titleId}>{title}</h2>
           <Button tone="ghost" size="icon" onClick={onClose} aria-label="Close dialog">
-            <X aria-hidden="true" suppressHydrationWarning />
+            <X aria-hidden="true" />
           </Button>
         </header>
         {children}

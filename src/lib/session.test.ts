@@ -58,4 +58,33 @@ describe('createExamSession', () => {
         .sort(),
     ).toEqual(['a', 'b', 'c', 'd']);
   });
+
+  it('orders full-test sections as 20 rules followed by 20 signs', () => {
+    const mixedBank: Question[] = Array.from({ length: 50 }, (_, index) => ({
+      id: `mixed-${index}`,
+      category: index % 2 === 0 ? 'rules' : 'signs',
+      section: index % 2 === 0 ? 'Rules of the Road' : 'Road Sign Recognition',
+      topic: index % 2 === 0 ? 'right-of-way' : 'road-signs',
+      difficulty: 'easy',
+      text: `Mixed question ${index}`,
+      options: [
+        { id: 'a', text: 'A' },
+        { id: 'b', text: 'B' },
+        { id: 'c', text: 'C' },
+        { id: 'd', text: 'D' },
+      ],
+      correctId: 'a',
+      explanation: 'Sample explanation.',
+    }));
+    const byId = new Map(mixedBank.map((question) => [question.id, question]));
+    const session = createExamSession({ questions: mixedBank, mode: 'full-test' });
+
+    expect(session.questionIds).toHaveLength(40);
+    expect(session.questionIds.slice(0, 20).every((id) => byId.get(id)?.category === 'rules')).toBe(
+      true,
+    );
+    expect(session.questionIds.slice(20).every((id) => byId.get(id)?.category === 'signs')).toBe(
+      true,
+    );
+  });
 });

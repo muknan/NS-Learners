@@ -23,7 +23,7 @@ import { useProgress } from '@/hooks/useProgress';
 import { useTimer } from '@/hooks/useTimer';
 import { getExamMode } from '@/lib/modes';
 import { getQuestionById, getSessionQuestions } from '@/lib/questions';
-import { toHistoryEntry } from '@/lib/scoring';
+import { getQuestionResults, toHistoryEntry } from '@/lib/scoring';
 import {
   completeSession,
   createExamSession,
@@ -38,6 +38,7 @@ import {
   readAdvanceDuration,
   readSessionForMode,
   readSettings,
+  RETAKE_QUESTIONS_KEY,
   saveBooleanFlag,
   saveCompletedSession,
   saveSessionForMode,
@@ -47,6 +48,8 @@ import { drivingTips } from '@/lib/tips';
 import type { AnswerOption, ExamSession, Question } from '@/types/exam';
 
 type LoadState = 'loading' | 'ready' | 'empty';
+const SWIPE_INTERACTIVE_SELECTOR =
+  'button, a, input, textarea, select, details, summary, [role="button"]';
 
 export function ExamClient({ questions }: { questions: Question[] }) {
   const searchParams = useSearchParams();
@@ -55,27 +58,36 @@ export function ExamClient({ questions }: { questions: Question[] }) {
   const [session, setSession] = useState<ExamSession | null>(null);
 
   useEffect(() => {
+    const retakeIds =
+      mode.id === 'retake'
+        ? (sessionStorage.getItem(RETAKE_QUESTIONS_KEY) ?? '')
+            .split(',')
+            .map((id) => id.trim())
+            .filter(Boolean)
+        : [];
+    const retakeQuestions = retakeIds.flatMap((id) => {
+      const question = getQuestionById(id);
+      return question ? [question] : [];
+    });
+
+    if (mode.id === 'retake' && retakeQuestions.length === 0) {
+      setSession(null);
+      setLoadState('empty');
+      return;
+    }
+
     const restored = readSessionForMode(mode.id);
-    if (restored) {
+    if (
+      restored &&
+      (mode.id !== 'retake' || sameQuestionIds(restored.questionIds, retakeQuestions))
+    ) {
       setSession(restored);
       setLoadState('ready');
       return;
     }
 
-    const retakeIds =
-      mode.id === 'retake'
-        ? (sessionStorage.getItem('ns-retake-questions') ?? '')
-            .split(',')
-            .map((id) => id.trim())
-            .filter(Boolean)
-        : [];
     const selectedQuestions =
-      mode.id === 'retake' && retakeIds.length
-        ? retakeIds.flatMap((id) => {
-            const question = getQuestionById(id);
-            return question ? [question] : [];
-          })
-        : getSessionQuestions(mode.filter, mode.questionCount);
+      mode.id === 'retake' ? retakeQuestions : getSessionQuestions(mode.filter, mode.questionCount);
     const created = createExamSession({
       questions: selectedQuestions,
       settings: readSettings(),
@@ -95,14 +107,22 @@ export function ExamClient({ questions }: { questions: Question[] }) {
   if (!session || loadState === 'empty') {
     return (
       <section className="empty-exam">
-        <Badge tone="warning">No active session</Badge>
-        <h1>Start a fresh practice exam.</h1>
-        <p>Settings are saved locally, and the exam will be stored in this tab until submitted.</p>
+        <Badge tone="warning">
+          {mode.id === 'retake' ? 'No missed questions' : 'No active session'}
+        </Badge>
+        <h1>
+          {mode.id === 'retake' ? 'No missed questions to retake.' : 'Start a fresh practice exam.'}
+        </h1>
+        <p>
+          {mode.id === 'retake'
+            ? 'There are no missed questions saved for a retake. Start a fresh full test when you are ready.'
+            : 'Settings are saved locally, and the exam will be stored in this tab until submitted.'}
+        </p>
         <ButtonLink
-          href={`/exam?mode=${mode.id}`}
-          icon={<RotateCcw aria-hidden="true" suppressHydrationWarning />}
+          href={mode.id === 'retake' ? '/exam?mode=full-test' : `/exam?mode=${mode.id}`}
+          icon={<RotateCcw aria-hidden="true" />}
         >
-          Start exam
+          {mode.id === 'retake' ? 'Start fresh full test' : 'Start exam'}
         </ButtonLink>
       </section>
     );
@@ -113,6 +133,15 @@ export function ExamClient({ questions }: { questions: Question[] }) {
       <ExamWorkspace questions={questions} />
     </ExamProvider>
   );
+}
+
+function sameQuestionIds(questionIds: readonly string[], questions: readonly Question[]): boolean {
+  if (questionIds.length !== questions.length) {
+    return false;
+  }
+
+  const expectedIds = new Set(questions.map((question) => question.id));
+  return questionIds.every((id) => expectedIds.has(id));
 }
 
 function ExamWorkspace({ questions }: { questions: Question[] }) {
@@ -134,9 +163,10 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
   const [autoAdvanceActive, setAutoAdvanceActive] = useState(false);
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
   const pointerStartX = useRef<number | null>(null);
+  const pointerStartY = useRef<number | null>(null);
   const autoAdvanceTimerRef = useRef<number | null>(null);
   const questionNumber = session.currentIndex + 1;
-  const tip = drivingTips[session.currentIndex % drivingTips.length] ?? drivingTips[0];
+  const tip = drivingTips[session.currentIndex % drivingTips.length]!;
   const flaggedCount = session.flaggedIds.length;
   const modeLabel = getExamMode(session.mode).label;
   const isLastQuestion = session.currentIndex === session.questionIds.length - 1;
@@ -147,6 +177,29 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
     session.questionIds[19] !== undefined &&
     session.answers[session.questionIds[19]] !== undefined &&
     !sectionBreakSeen;
+  const sectionOneScore = useMemo(() => {
+    if (!showSectionBreak) {
+      return null;
+    }
+
+    const sectionQuestionIds = session.questionIds.slice(0, 20);
+    const sectionResults = getQuestionResults(
+      {
+        ...session,
+        questionIds: sectionQuestionIds,
+        answers: Object.fromEntries(
+          sectionQuestionIds.flatMap((questionId) => {
+            const answer = session.answers[questionId];
+            return answer ? [[questionId, answer]] : [];
+          }),
+        ),
+      },
+      questionsById,
+    );
+    const correct = sectionResults.filter((result) => result.isCorrect).length;
+
+    return { correct, total: sectionResults.length };
+  }, [questionsById, session, showSectionBreak]);
 
   const dismissToast = useCallback((id: string): void => {
     setToasts((current) => current.filter((toast) => toast.id !== id));
@@ -369,23 +422,50 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
   }
 
   function handlePointerDown(event: ReactPointerEvent<HTMLElement>): void {
-    pointerStartX.current = event.clientX;
-  }
-
-  function handlePointerUp(event: ReactPointerEvent<HTMLElement>): void {
-    if (pointerStartX.current === null) {
+    if (event.pointerType !== 'touch') {
+      pointerStartX.current = null;
+      pointerStartY.current = null;
       return;
     }
 
-    const delta = event.clientX - pointerStartX.current;
-    pointerStartX.current = null;
+    const target = event.target;
+    if (!(target instanceof Element) || target.closest(SWIPE_INTERACTIVE_SELECTOR)) {
+      pointerStartX.current = null;
+      pointerStartY.current = null;
+      return;
+    }
 
-    if (Math.abs(delta) < 70) {
+    pointerStartX.current = event.clientX;
+    pointerStartY.current = event.clientY;
+  }
+
+  function handlePointerUp(event: ReactPointerEvent<HTMLElement>): void {
+    if (
+      event.pointerType !== 'touch' ||
+      pointerStartX.current === null ||
+      pointerStartY.current === null
+    ) {
+      pointerStartX.current = null;
+      pointerStartY.current = null;
+      return;
+    }
+
+    const horizontalDelta = event.clientX - pointerStartX.current;
+    const verticalDelta = Math.abs(event.clientY - pointerStartY.current);
+    pointerStartX.current = null;
+    pointerStartY.current = null;
+
+    if (Math.abs(horizontalDelta) < Math.max(70, 1.5 * verticalDelta)) {
       return;
     }
 
     cancelAutoAdvance();
-    dispatch({ type: delta < 0 ? 'next' : 'previous' });
+    if (horizontalDelta < 0 && isLastQuestion) {
+      requestSubmit();
+      return;
+    }
+
+    dispatch({ type: horizontalDelta < 0 ? 'next' : 'previous' });
   }
 
   return (
@@ -410,7 +490,9 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
           <section className="section-break" role="status">
             <Badge tone="success">Section 1 complete</Badge>
             <h1>Section 1 complete</h1>
-            <p>You answered 20 questions.</p>
+            <p>
+              Section 1: {sectionOneScore?.correct ?? 0} / {sectionOneScore?.total ?? 20} correct
+            </p>
             <p>Take a moment before starting Section 2.</p>
             <Button onClick={() => setSectionBreakSeen(true)}>Continue to Section 2 →</Button>
           </section>
@@ -468,8 +550,8 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
       />
 
       {keyboardHintVisible ? (
-        <div className="keyboard-hint" role="status">
-          <Keyboard aria-hidden="true" suppressHydrationWarning />
+        <div className="keyboard-hint" role="region" aria-label="Keyboard shortcuts hint">
+          <Keyboard aria-hidden="true" />
           <span>Keyboard shortcuts available - press ? to see them.</span>
           <button onClick={dismissKeyboardHint} type="button">
             Got it
@@ -480,7 +562,7 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
       {submitModalOpen ? (
         <Modal title="Submit practice exam?" onClose={() => setSubmitModalOpen(false)}>
           <div className="submit-warning">
-            <AlertTriangle aria-hidden="true" suppressHydrationWarning />
+            <AlertTriangle aria-hidden="true" />
             <p>
               You have {getUnansweredQuestionNumbers(session).length} unanswered questions. Submit
               anyway?
@@ -503,7 +585,7 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
       {exitModalOpen ? (
         <Modal title="Exit exam?" onClose={() => setExitModalOpen(false)}>
           <div className="submit-warning">
-            <AlertTriangle aria-hidden="true" suppressHydrationWarning />
+            <AlertTriangle aria-hidden="true" />
             <p>Your progress will be lost.</p>
           </div>
           <footer className="modal__footer">
@@ -531,6 +613,10 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
             <div>
               <dt>N / P</dt>
               <dd>Next or previous question</dd>
+            </div>
+            <div>
+              <dt>Enter / Space</dt>
+              <dd>Continue or submit</dd>
             </div>
             <div>
               <dt>F</dt>

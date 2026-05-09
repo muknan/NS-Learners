@@ -94,7 +94,7 @@ export function ExamActionBar({
             aria-label="Exam settings"
             tone="ghost"
             size="icon"
-            icon={<Settings2 aria-hidden="true" suppressHydrationWarning />}
+            icon={<Settings2 aria-hidden="true" />}
             onClick={() => setSettingsOpen((open) => !open)}
           />
           {settingsOpen ? (
@@ -110,7 +110,7 @@ export function ExamActionBar({
         <Button
           aria-pressed={flagged}
           className="exam-action-bar__flag"
-          icon={<Flag aria-hidden="true" suppressHydrationWarning />}
+          icon={<Flag aria-hidden="true" />}
           onClick={onFlag}
           tone={flagged ? 'secondary' : 'ghost'}
         >
@@ -119,7 +119,7 @@ export function ExamActionBar({
         {isLast ? (
           <Button
             className="exam-action-bar__next"
-            icon={<Send aria-hidden="true" suppressHydrationWarning />}
+            icon={<Send aria-hidden="true" />}
             onClick={onSubmit}
           >
             Submit
@@ -133,7 +133,7 @@ export function ExamActionBar({
             ]
               .filter(Boolean)
               .join(' ')}
-            icon={<ArrowRight aria-hidden="true" suppressHydrationWarning />}
+            icon={<ArrowRight aria-hidden="true" />}
             onClick={onNext}
             style={{ '--advance-duration': `${autoAdvanceDurationMs}ms` } as CSSProperties}
           >

@@ -16,20 +16,20 @@ export function ToggleSwitch({
   disabled = false,
 }: ToggleSwitchProps) {
   return (
-    <label htmlFor={id} className={`toggle-switch${disabled ? ' toggle-switch--disabled' : ''}`}>
+    <span className={`toggle-switch${disabled ? ' toggle-switch--disabled' : ''}`}>
       <span className="toggle-switch__label">{label}</span>
       <button
         id={id}
         role="switch"
         type="button"
         aria-checked={checked}
-        aria-label={label}
+        aria-label={`${label}: ${checked ? 'on' : 'off'}`}
         disabled={disabled}
         onClick={() => !disabled && onChange(!checked)}
         className={`toggle-switch__track${checked ? ' toggle-switch__track--on' : ''}`}
       >
         <span className="toggle-switch__thumb" />
       </button>
-    </label>
+    </span>
   );
 }

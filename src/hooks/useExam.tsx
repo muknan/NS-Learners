@@ -121,7 +121,10 @@ function examReducer(state: ExamState, action: ExamAction): ExamState {
     case 'set-instant-feedback': {
       const phase =
         action.value && currentQuestionAnswered(state.session) ? 'review' : 'in-progress';
-      const nextAutoAdvance = action.value ? false : state.session.autoAdvance;
+      const previousAutoAdvance = state.session.instantFeedback
+        ? state.session.previousAutoAdvance
+        : state.session.autoAdvance;
+      const nextAutoAdvance = action.value ? false : previousAutoAdvance;
 
       return {
         phase,
@@ -130,6 +133,7 @@ function examReducer(state: ExamState, action: ExamAction): ExamState {
           phase,
           instantFeedback: action.value,
           autoAdvance: nextAutoAdvance,
+          previousAutoAdvance,
           shouldAutoAdvance: false,
           settings: {
             ...state.session.settings,
@@ -146,6 +150,7 @@ function examReducer(state: ExamState, action: ExamAction): ExamState {
         session: {
           ...state.session,
           autoAdvance: action.value,
+          previousAutoAdvance: action.value,
           shouldAutoAdvance: false,
           settings: {
             ...state.session.settings,

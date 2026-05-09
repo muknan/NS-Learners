@@ -4,11 +4,18 @@ import { Play, RotateCcw, ShieldCheck, Trash2 } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { EXAM_MODES, getExamMode } from '@/lib/modes';
-import { HISTORY_KEY, readCurrentSession, readHistory } from '@/lib/storage';
+import {
+  clearSessionForMode,
+  HISTORY_KEY,
+  readCurrentSession,
+  readHistory,
+  readSessionForMode,
+} from '@/lib/storage';
 import type { ExamMode, ExamSession, HistoryEntry } from '@/types/exam';
 
 interface HomeClientProps {
@@ -24,11 +31,14 @@ const modes = Object.values(EXAM_MODES);
 export function HomeClient({ stats }: HomeClientProps) {
   const router = useRouter();
   const [session, setSession] = useState<ExamSession | null>(null);
+  const [fullTestSession, setFullTestSession] = useState<ExamSession | null>(null);
   const [history, setHistory] = useState<HistoryEntry[]>([]);
   const [historyLoaded, setHistoryLoaded] = useState(false);
+  const [clearHistoryOpen, setClearHistoryOpen] = useState(false);
 
   useEffect(() => {
     setSession(readCurrentSession());
+    setFullTestSession(readSessionForMode('full-test'));
     setHistory(readHistory());
     setHistoryLoaded(true);
   }, []);
@@ -37,17 +47,21 @@ export function HomeClient({ stats }: HomeClientProps) {
     router.push(`/exam?mode=${mode}`);
   }
 
-  function clearHistory(): void {
-    if (!window.confirm('Clear recent score history?')) {
-      return;
-    }
+  function startFreshFullTest(): void {
+    clearSessionForMode('full-test');
+    setFullTestSession(null);
+    setSession((current) => (current?.mode === 'full-test' ? null : current));
+    router.push('/exam?mode=full-test');
+  }
 
+  function clearHistory(): void {
     try {
       window.localStorage.removeItem(HISTORY_KEY);
     } catch {
       // Best effort only.
     }
     setHistory([]);
+    setClearHistoryOpen(false);
   }
 
   return (
@@ -59,12 +73,17 @@ export function HomeClient({ stats }: HomeClientProps) {
           <p>Free · No account · Works offline</p>
           <div className="hero-section__actions">
             <Button
-              icon={<Play aria-hidden="true" suppressHydrationWarning />}
+              icon={<Play aria-hidden="true" />}
               size="lg"
               onClick={() => startExam('full-test')}
             >
-              Start Practice Exam
+              {fullTestSession ? 'Resume Practice Exam' : 'Start Practice Exam'}
             </Button>
+            {fullTestSession ? (
+              <Button tone="secondary" size="lg" onClick={startFreshFullTest}>
+                Start Fresh
+              </Button>
+            ) : null}
           </div>
         </div>
 
@@ -112,7 +131,7 @@ export function HomeClient({ stats }: HomeClientProps) {
         </div>
       </section>
 
-      {session && session.phase !== 'complete' ? (
+      {session && session.phase !== 'complete' && session.mode !== 'full-test' ? (
         <Card className="resume-card" aria-label="Resume your session">
           <div>
             <Badge tone="warning">In progress</Badge>
@@ -123,7 +142,7 @@ export function HomeClient({ stats }: HomeClientProps) {
           </div>
           <Button
             tone="secondary"
-            icon={<RotateCcw aria-hidden="true" suppressHydrationWarning />}
+            icon={<RotateCcw aria-hidden="true" />}
             onClick={() => router.push('/exam')}
           >
             Resume
@@ -147,7 +166,7 @@ export function HomeClient({ stats }: HomeClientProps) {
             <div className="history-list">
               {history.slice(0, 5).map((entry) => (
                 <article className="history-item" key={entry.id}>
-                  <ShieldCheck aria-hidden="true" suppressHydrationWarning />
+                  <ShieldCheck aria-hidden="true" />
                   <strong>{getExamMode(entry.mode).label}</strong>
                   <span>
                     {entry.correct}/{entry.total} ({entry.percentage}%)
@@ -164,8 +183,8 @@ export function HomeClient({ stats }: HomeClientProps) {
             <Button
               tone="ghost"
               size="sm"
-              icon={<Trash2 aria-hidden="true" suppressHydrationWarning />}
-              onClick={clearHistory}
+              icon={<Trash2 aria-hidden="true" />}
+              onClick={() => setClearHistoryOpen(true)}
             >
               Clear history
             </Button>
@@ -198,6 +217,13 @@ export function HomeClient({ stats }: HomeClientProps) {
           </article>
         </div>
       </section>
+      <ConfirmDialog
+        open={clearHistoryOpen}
+        title="Clear recent score history?"
+        description="This removes the saved scores shown on the home page from this browser."
+        onCancel={() => setClearHistoryOpen(false)}
+        onConfirm={clearHistory}
+      />
     </div>
   );
 }

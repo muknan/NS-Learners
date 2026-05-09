@@ -84,6 +84,23 @@ export const EXAM_MODES: Record<Exclude<ModeId, 'retake'>, ExamModeConfig> = {
     sectionBreak: false,
     passMark: null,
   },
+  'all-questions': {
+    id: 'all-questions',
+    label: 'All Questions Revision',
+    categoryLabel: 'Full bank',
+    description:
+      'Run through every question in the bank with end-of-exam scoring. Best for a final pre-test sweep.',
+    stats: ['All questions', 'Untimed', 'End-of-exam feedback'],
+    ctaLabel: 'Revise',
+    ctaVariant: 'secondary',
+    filter: 'all',
+    questionCount: null,
+    defaultInstantFeedback: false,
+    defaultAutoAdvance: false,
+    timerMinutes: null,
+    sectionBreak: false,
+    passMark: null,
+  },
 };
 
 export const RETAKE_MODE: ExamModeConfig = {
@@ -122,9 +139,10 @@ export function normalizeModeId(modeId: string | null | undefined): Exclude<Mode
     case 'signs-drill':
       return 'signs-drill';
     case 'assisted':
+      return 'assisted';
     case 'all':
     case 'all-questions':
-      return 'assisted';
+      return 'all-questions';
     default:
       return 'full-test';
   }

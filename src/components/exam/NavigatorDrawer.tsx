@@ -6,6 +6,7 @@ import { QuestionNav } from '@/components/exam/QuestionNav';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { ProgressBar } from '@/components/ui/ProgressBar';
+import { lockBodyScroll } from '@/components/ui/scrollLock';
 import type { ExamSession, Question } from '@/types/exam';
 
 interface NavigatorDrawerProps {
@@ -48,6 +49,7 @@ export function NavigatorDrawer({
       'a[href], button:not([disabled]), textarea, input, select, summary, [tabindex]:not([tabindex="-1"])';
 
     document.body.classList.add('exam-overlay-open');
+    const unlockBodyScroll = lockBodyScroll();
     window.setTimeout(() => {
       drawerRef.current?.querySelector<HTMLElement>(focusableSelector)?.focus();
     }, 0);
@@ -84,6 +86,7 @@ export function NavigatorDrawer({
 
     return () => {
       document.body.classList.remove('exam-overlay-open');
+      unlockBodyScroll();
       window.removeEventListener('keydown', handleKeyDown);
       previousActiveElement?.focus();
     };
@@ -120,7 +123,7 @@ export function NavigatorDrawer({
             aria-label="Close question navigator"
             tone="ghost"
             size="icon"
-            icon={<X aria-hidden="true" suppressHydrationWarning />}
+            icon={<X aria-hidden="true" />}
             onClick={onClose}
           />
         </header>
@@ -148,11 +151,7 @@ export function NavigatorDrawer({
         </div>
 
         <footer className="navigator-drawer__footer">
-          <Button
-            tone="ghost"
-            icon={<ArrowLeft aria-hidden="true" suppressHydrationWarning />}
-            onClick={onRequestExit}
-          >
+          <Button tone="ghost" icon={<ArrowLeft aria-hidden="true" />} onClick={onRequestExit}>
             Exit to home
           </Button>
         </footer>

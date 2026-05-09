@@ -37,9 +37,9 @@ export function QuestionNav({ session, questionsById, onSelect }: QuestionNavPro
             type="button"
           >
             <span>{index + 1}</span>
-            {flagged ? <Flag aria-hidden="true" suppressHydrationWarning /> : null}
-            {correct ? <Check aria-hidden="true" suppressHydrationWarning /> : null}
-            {wrong ? <X aria-hidden="true" suppressHydrationWarning /> : null}
+            {flagged ? <Flag aria-hidden="true" /> : null}
+            {correct ? <Check aria-hidden="true" /> : null}
+            {wrong ? <X aria-hidden="true" /> : null}
             <span className="sr-only">
               {selected ? ', answered' : ', unanswered'}
               {flagged ? ', flagged' : ''}

@@ -85,12 +85,17 @@ export function readSessionForMode(modeId: string): ExamSession | null {
 
 export function saveSessionForMode(session: ExamSession): void {
   writeJson(getModeSessionKey(session.mode), session, 'session');
-  writeJson(CURRENT_SESSION_KEY, session, 'session');
 }
 
 export function clearSessionForMode(modeId: string): void {
+  const modeSession = readSessionForMode(modeId);
+  const currentSession = readCurrentSession();
+
   getStorage('session')?.removeItem(getModeSessionKey(modeId));
-  getStorage('session')?.removeItem(CURRENT_SESSION_KEY);
+
+  if (modeSession && currentSession?.id === modeSession.id) {
+    getStorage('session')?.removeItem(CURRENT_SESSION_KEY);
+  }
 }
 
 export function readCompletedSession(): ExamSession | null {
@@ -214,6 +219,10 @@ function normalizeSession(value: unknown): ExamSession | null {
     autoAdvance:
       typeof candidate.autoAdvance === 'boolean'
         ? candidate.autoAdvance
+        : normalizeSettings(candidate.settings).autoAdvance,
+    previousAutoAdvance:
+      typeof candidate.previousAutoAdvance === 'boolean'
+        ? candidate.previousAutoAdvance
         : normalizeSettings(candidate.settings).autoAdvance,
     autoAdvanceDurationMs: normalizeAdvanceDurationMs(candidate.autoAdvanceDurationMs),
     autoAdvancedIds: Array.isArray(candidate.autoAdvancedIds)

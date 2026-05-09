@@ -1,29 +1,48 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export function useTimer(expiresAt: number | null, onExpire: () => void): number | null {
   const [remaining, setRemaining] = useState(() => getRemainingSeconds(expiresAt));
+  const onExpireRef = useRef(onExpire);
 
   useEffect(() => {
-    setRemaining(getRemainingSeconds(expiresAt));
+    onExpireRef.current = onExpire;
+  }, [onExpire]);
+
+  useEffect(() => {
+    let expired = false;
+
+    function syncRemaining(): void {
+      const nextRemaining = getRemainingSeconds(expiresAt);
+      setRemaining(nextRemaining);
+
+      if (!expired && nextRemaining !== null && nextRemaining <= 0) {
+        expired = true;
+        onExpireRef.current();
+      }
+    }
+
+    syncRemaining();
 
     if (!expiresAt) {
       return undefined;
     }
 
-    const timer = window.setInterval(() => {
-      const nextRemaining = getRemainingSeconds(expiresAt);
-      setRemaining(nextRemaining);
-
-      if (nextRemaining !== null && nextRemaining <= 0) {
-        window.clearInterval(timer);
-        onExpire();
+    function handleVisibilityChange(): void {
+      if (document.visibilityState === 'visible') {
+        syncRemaining();
       }
-    }, 1000);
+    }
 
-    return () => window.clearInterval(timer);
-  }, [expiresAt, onExpire]);
+    const timer = window.setInterval(syncRemaining, 250);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      window.clearInterval(timer);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [expiresAt]);
 
   return remaining;
 }

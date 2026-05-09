@@ -11,7 +11,7 @@ export function Timer({ remaining }: { remaining: number | null }) {
       aria-label="Time remaining"
       aria-live="polite"
     >
-      <Clock aria-hidden="true" suppressHydrationWarning />
+      <Clock aria-hidden="true" />
       <span>{remaining === null ? 'Timer off' : formatDuration(remaining)}</span>
     </div>
   );

@@ -64,7 +64,7 @@ export function ExamTopBar({
         className="exam-top-bar__exit"
         tone="ghost"
         size="sm"
-        icon={<LogOut aria-hidden="true" suppressHydrationWarning />}
+        icon={<LogOut aria-hidden="true" />}
         onClick={onExit}
       >
         Exit
@@ -77,7 +77,7 @@ export function ExamTopBar({
       <div className="exam-top-bar__metrics">
         <Timer remaining={remaining} />
         <Badge tone={flaggedCount ? 'warning' : 'neutral'}>
-          <Flag aria-hidden="true" suppressHydrationWarning />
+          <Flag aria-hidden="true" />
           <span className="exam-top-bar__flag-label">{flaggedCount}</span>
         </Badge>
       </div>
@@ -87,7 +87,7 @@ export function ExamTopBar({
         className="exam-top-bar__icon-button"
         tone="ghost"
         size="icon"
-        icon={<Menu aria-hidden="true" suppressHydrationWarning />}
+        icon={<Menu aria-hidden="true" />}
         onClick={onOpenNavigator}
       />
 
@@ -96,13 +96,7 @@ export function ExamTopBar({
         className="exam-top-bar__icon-button"
         tone="ghost"
         size="icon"
-        icon={
-          theme === 'dark' ? (
-            <Sun aria-hidden="true" suppressHydrationWarning />
-          ) : (
-            <Moon aria-hidden="true" suppressHydrationWarning />
-          )
-        }
+        icon={theme === 'dark' ? <Sun aria-hidden="true" /> : <Moon aria-hidden="true" />}
         onClick={toggleTheme}
       />
     </header>

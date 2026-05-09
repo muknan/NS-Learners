@@ -5,6 +5,7 @@ import type {
   ExamSettings,
   Question,
   QuestionCount,
+  QuestionFilter,
   TimerMinutes,
 } from '@/types/exam';
 import { getExamMode } from '@/lib/modes';
@@ -66,7 +67,12 @@ export function createExamSession({
 }): ExamSession {
   const modeConfig = getExamMode(mode);
   const questionCount = questionIds?.length ? 'all' : modeConfig.questionCount;
-  const selectedQuestions = selectQuestions(questions, questionCount, questionIds);
+  const selectedQuestions = selectQuestions(
+    questions,
+    questionCount,
+    questionIds,
+    modeConfig.filter,
+  );
   const now = Date.now();
   const instantFeedback = modeConfig.defaultInstantFeedback;
   const sessionSettings: ExamSettings = {
@@ -96,6 +102,7 @@ export function createExamSession({
     flaggedIds: [],
     instantFeedback,
     autoAdvance: modeConfig.defaultAutoAdvance,
+    previousAutoAdvance: modeConfig.defaultAutoAdvance,
     autoAdvanceDurationMs,
     autoAdvancedIds: [],
     shouldAutoAdvance: false,
@@ -154,6 +161,7 @@ function selectQuestions(
   questions: readonly Question[],
   count: QuestionCount,
   forcedQuestionIds?: readonly string[],
+  filter: QuestionFilter = 'all',
 ): Question[] {
   if (forcedQuestionIds?.length) {
     const forced = new Set(forcedQuestionIds);
@@ -163,6 +171,21 @@ function selectQuestions(
 
   if (count === 'all' || count === null) {
     return shuffle(questions);
+  }
+
+  if (count === 40 && filter === 'all') {
+    const rules = shuffle(questions.filter((question) => question.category === 'rules')).slice(
+      0,
+      20,
+    );
+    const signs = shuffle(questions.filter((question) => question.category === 'signs')).slice(
+      0,
+      20,
+    );
+
+    if (rules.length === 20 && signs.length === 20) {
+      return [...rules, ...signs];
+    }
   }
 
   const byCategory = new Map<string, Question[]>();

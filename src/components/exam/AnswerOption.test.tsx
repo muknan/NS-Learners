@@ -25,6 +25,7 @@ describe('AnswerOption', () => {
     await user.click(screen.getByRole('button', { name: /stop completely/i }));
 
     expect(onSelect).toHaveBeenCalledTimes(1);
+    expect(screen.getByText('1')).toBeInTheDocument();
   });
 
   it('has no obvious accessibility violations', async () => {

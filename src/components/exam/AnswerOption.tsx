@@ -22,7 +22,7 @@ export function AnswerOption({
   disabled,
   onSelect,
 }: AnswerOptionProps) {
-  const letter = String.fromCharCode(65 + index);
+  const shortcutNumber = String(index + 1);
   const statusLabel = correct && showFeedback ? 'Correct answer' : wrong ? 'Your answer' : '';
 
   return (
@@ -42,16 +42,12 @@ export function AnswerOption({
       type="button"
     >
       <span className="answer-option__letter" aria-hidden="true">
-        {letter}
+        {shortcutNumber}
       </span>
       <span className="answer-option__text">{option.text}</span>
       {statusLabel ? (
         <span className="answer-option__status">
-          {correct ? (
-            <Check aria-hidden="true" suppressHydrationWarning />
-          ) : (
-            <X aria-hidden="true" suppressHydrationWarning />
-          )}
+          {correct ? <Check aria-hidden="true" /> : <X aria-hidden="true" />}
           {statusLabel}
         </span>
       ) : null}

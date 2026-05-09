@@ -53,8 +53,8 @@ The main routes are:
 - `/exam?mode=full-test`
 - `/exam?mode=rules-drill`
 - `/exam?mode=signs-drill`
-- `/exam?mode=assisted`
-- `/exam?mode=all-questions`
+- `/exam?mode=assisted` for untimed full-bank practice with instant feedback after each answer.
+- `/exam?mode=all-questions` for untimed full-bank revision with scoring shown at the end.
 - `/exam?mode=retake`
 - `/results`
 - `/handbooks`
@@ -72,6 +72,7 @@ Pure scoring, question loading, session creation, and storage normalization live
 | `1`-`4`             | Select an answer                    |
 | `ArrowRight` or `N` | Next question                       |
 | `ArrowLeft` or `P`  | Previous question                   |
+| `Enter` or `Space`  | Continue or submit                  |
 | `F`                 | Flag or unflag the current question |
 | `?`                 | Open the keyboard shortcuts modal   |
 | `Escape`            | Close panels and dialogs            |
