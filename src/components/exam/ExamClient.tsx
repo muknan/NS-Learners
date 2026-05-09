@@ -33,15 +33,19 @@ import {
 import {
   clearCurrentSession,
   clearSessionForMode,
+  clearSessionFlag,
   KEYBOARD_HINT_KEY,
+  SECTION_BREAK_SEEN_KEY,
   readBooleanFlag,
   readAdvanceDuration,
+  readSessionBooleanFlag,
   readSessionForMode,
   readSettings,
   RETAKE_QUESTIONS_KEY,
   saveBooleanFlag,
   saveCompletedSession,
   saveSessionForMode,
+  saveSessionBooleanFlag,
   saveHistory,
 } from '@/lib/storage';
 import { drivingTips } from '@/lib/tips';
@@ -50,6 +54,7 @@ import type { AnswerOption, ExamSession, Question } from '@/types/exam';
 type LoadState = 'loading' | 'ready' | 'empty';
 const SWIPE_INTERACTIVE_SELECTOR =
   'button, a, input, textarea, select, details, summary, [role="button"]';
+let toastIdCounter = 0;
 
 export function ExamClient({ questions }: { questions: Question[] }) {
   const searchParams = useSearchParams();
@@ -95,6 +100,7 @@ export function ExamClient({ questions }: { questions: Question[] }) {
       questionIds: selectedQuestions.map((question) => question.id),
       autoAdvanceDurationMs: readAdvanceDuration() * 1000,
     });
+    clearSessionFlag(SECTION_BREAK_SEEN_KEY);
     saveSessionForMode(created);
     setSession(created);
     setLoadState('ready');
@@ -158,13 +164,28 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
   const [exitModalOpen, setExitModalOpen] = useState(false);
   const [shortcutsOpen, setShortcutsOpen] = useState(false);
   const [navigatorOpen, setNavigatorOpen] = useState(false);
-  const [sectionBreakSeen, setSectionBreakSeen] = useState(false);
+  const [sectionBreakSeen, setSectionBreakSeen] = useState(() =>
+    readSessionBooleanFlag(SECTION_BREAK_SEEN_KEY),
+  );
   const [keyboardHintVisible, setKeyboardHintVisible] = useState(false);
   const [autoAdvanceActive, setAutoAdvanceActive] = useState(false);
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
+  const examMainRef = useRef<HTMLDivElement>(null);
   const pointerStartX = useRef<number | null>(null);
   const pointerStartY = useRef<number | null>(null);
   const autoAdvanceTimerRef = useRef<number | null>(null);
+  const sessionRef = useRef(session);
+  const currentQuestionRef = useRef(currentQuestion);
+  const overlayOpenRef = useRef({
+    submitModalOpen,
+    exitModalOpen,
+    shortcutsOpen,
+    navigatorOpen,
+  });
+  const dispatchRef = useRef(dispatch);
+  const cancelAutoAdvanceRef = useRef<() => void>(() => undefined);
+  const handleFlagRef = useRef<() => void>(() => undefined);
+  const requestSubmitRef = useRef<() => void>(() => undefined);
   const questionNumber = session.currentIndex + 1;
   const tip = drivingTips[session.currentIndex % drivingTips.length]!;
   const flaggedCount = session.flaggedIds.length;
@@ -177,6 +198,15 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
     session.questionIds[19] !== undefined &&
     session.answers[session.questionIds[19]] !== undefined &&
     !sectionBreakSeen;
+  sessionRef.current = session;
+  currentQuestionRef.current = currentQuestion;
+  overlayOpenRef.current = {
+    submitModalOpen,
+    exitModalOpen,
+    shortcutsOpen,
+    navigatorOpen,
+  };
+  dispatchRef.current = dispatch;
   const sectionOneScore = useMemo(() => {
     if (!showSectionBreak) {
       return null;
@@ -208,7 +238,11 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
   const addToast = useCallback((message: string, type: ToastType = 'info'): void => {
     setToasts((current) => [
       ...current,
-      { id: globalThis.crypto?.randomUUID?.() ?? `${Date.now()}`, message, type },
+      {
+        id: globalThis.crypto?.randomUUID?.() ?? `toast-${++toastIdCounter}-${Date.now()}`,
+        message,
+        type,
+      },
     ]);
   }, []);
 
@@ -230,6 +264,7 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
       saveCompletedSession(completed);
       saveHistory(historyEntry);
       clearCurrentSession();
+      clearSessionFlag(SECTION_BREAK_SEEN_KEY);
       dispatch({ type: 'submit', now: completed.completedAt ?? Date.now() });
       router.push(`/results${expired ? '?expired=1' : ''}`);
     },
@@ -246,13 +281,18 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
     dispatch({ type: 'toggle-flag', questionId: currentQuestion.id });
     addToast(flagged ? 'Flag removed' : 'Answer flagged', flagged ? 'info' : 'warning');
   }, [addToast, currentQuestion.id, dispatch, session.flaggedIds]);
+  cancelAutoAdvanceRef.current = cancelAutoAdvance;
+  handleFlagRef.current = handleFlag;
+  requestSubmitRef.current = requestSubmit;
 
   useEffect(() => {
     setKeyboardHintVisible(!readBooleanFlag(KEYBOARD_HINT_KEY));
   }, []);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    if (examMainRef.current) {
+      examMainRef.current.scrollTop = 0;
+    }
   }, [session.currentIndex]);
 
   useEffect(() => {
@@ -319,54 +359,70 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent): void {
-      const target = event.target;
-
-      if (target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement) {
+      if (event.ctrlKey || event.metaKey || event.altKey) {
         return;
       }
 
+      const overlays = overlayOpenRef.current;
+      if (
+        overlays.submitModalOpen ||
+        overlays.exitModalOpen ||
+        overlays.shortcutsOpen ||
+        overlays.navigatorOpen
+      ) {
+        return;
+      }
+
+      const target = event.target;
+
+      if (
+        target instanceof HTMLInputElement ||
+        target instanceof HTMLTextAreaElement ||
+        (target instanceof HTMLElement && target.isContentEditable)
+      ) {
+        return;
+      }
+
+      const activeSession = sessionRef.current;
+      const activeQuestion = currentQuestionRef.current;
+
       if (/^[1-4]$/.test(event.key)) {
         const optionIndex = Number(event.key) - 1;
-        const optionId = session.optionOrder[currentQuestion.id]?.[optionIndex];
+        const optionId = activeSession.optionOrder[activeQuestion.id]?.[optionIndex];
 
         if (optionId) {
           event.preventDefault();
-          dispatch({ type: 'answer', questionId: currentQuestion.id, optionId });
+          dispatchRef.current({ type: 'answer', questionId: activeQuestion.id, optionId });
         }
         return;
       }
 
       if (event.key === 'f' || event.key === 'F') {
         event.preventDefault();
-        cancelAutoAdvance();
-        handleFlag();
+        cancelAutoAdvanceRef.current();
+        handleFlagRef.current();
         return;
       }
 
       if (event.key === 'ArrowRight' || event.key === 'n' || event.key === 'N') {
         event.preventDefault();
-        cancelAutoAdvance();
-        if (session.currentIndex >= session.questionIds.length - 1) {
-          requestSubmit();
+        cancelAutoAdvanceRef.current();
+        if (activeSession.currentIndex >= activeSession.questionIds.length - 1) {
+          requestSubmitRef.current();
         } else {
-          dispatch({ type: 'next' });
+          dispatchRef.current({ type: 'next' });
         }
         return;
       }
 
       if (event.key === 'ArrowLeft' || event.key === 'p' || event.key === 'P') {
         event.preventDefault();
-        cancelAutoAdvance();
-        dispatch({ type: 'previous' });
+        cancelAutoAdvanceRef.current();
+        dispatchRef.current({ type: 'previous' });
         return;
       }
 
       if (event.key === 'Escape') {
-        event.preventDefault();
-        setNavigatorOpen(false);
-        setSubmitModalOpen(false);
-        setExitModalOpen(false);
-        setShortcutsOpen(false);
         return;
       }
 
@@ -378,18 +434,18 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
 
       if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
-        cancelAutoAdvance();
-        if (session.currentIndex >= session.questionIds.length - 1) {
-          requestSubmit();
+        cancelAutoAdvanceRef.current();
+        if (activeSession.currentIndex >= activeSession.questionIds.length - 1) {
+          requestSubmitRef.current();
         } else {
-          dispatch({ type: 'next' });
+          dispatchRef.current({ type: 'next' });
         }
       }
     }
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [cancelAutoAdvance, currentQuestion.id, dispatch, handleFlag, session]);
+  }, []);
 
   function answer(optionId: AnswerOption['id']): void {
     dispatch({ type: 'answer', questionId: currentQuestion.id, optionId });
@@ -413,7 +469,13 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
 
   function exitExam(): void {
     clearSessionForMode(session.mode);
+    clearSessionFlag(SECTION_BREAK_SEEN_KEY);
     router.push('/');
+  }
+
+  function continueToSectionTwo(): void {
+    saveSessionBooleanFlag(SECTION_BREAK_SEEN_KEY, true);
+    setSectionBreakSeen(true);
   }
 
   function dismissKeyboardHint(): void {
@@ -468,11 +530,17 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
     dispatch({ type: horizontalDelta < 0 ? 'next' : 'previous' });
   }
 
+  function handlePointerCancel(): void {
+    pointerStartX.current = null;
+    pointerStartY.current = null;
+  }
+
   return (
     <section
       className="exam-layout"
       data-testid="exam-shell"
       onPointerDown={handlePointerDown}
+      onPointerCancel={handlePointerCancel}
       onPointerUp={handlePointerUp}
     >
       <ExamTopBar
@@ -485,7 +553,7 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
         totalQuestions={session.questionIds.length}
       />
 
-      <div className="exam-main">
+      <div className="exam-main" ref={examMainRef}>
         {showSectionBreak ? (
           <section className="section-break" role="status">
             <Badge tone="success">Section 1 complete</Badge>
@@ -494,7 +562,7 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
               Section 1: {sectionOneScore?.correct ?? 0} / {sectionOneScore?.total ?? 20} correct
             </p>
             <p>Take a moment before starting Section 2.</p>
-            <Button onClick={() => setSectionBreakSeen(true)}>Continue to Section 2 →</Button>
+            <Button onClick={continueToSectionTwo}>Continue to Section 2 →</Button>
           </section>
         ) : (
           <ExamCard

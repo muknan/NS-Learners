@@ -7,21 +7,24 @@ import type {
   QuestionCategory,
   SectionBreakdown,
   TopicBreakdown,
+  ModeId,
 } from '@/types/exam';
 import { getExamMode } from '@/lib/modes';
 import { getTopicLabel } from '@/lib/questions';
+import { SITE_URL } from '@/lib/site';
 
 export function scoreSession(
   session: ExamSession,
   questionsById: Map<string, Question>,
+  modeId: ModeId = session.mode,
 ): ScoreSummary {
   const results = getQuestionResults(session, questionsById);
   const correct = results.filter((result) => result.isCorrect).length;
   const total = results.length;
   const unanswered = results.filter((result) => !result.selectedId).length;
   const percentage = total ? Math.round((correct / total) * 100) : 0;
-  const bySection = getSectionBreakdown(results);
-  const mode = getExamMode(session.mode);
+  const bySection = getSectionBreakdown(results, modeId);
+  const mode = getExamMode(modeId);
   const passMark = mode.passMark;
   const passed =
     passMark === null
@@ -114,7 +117,7 @@ export function buildShareSummary(
       .map((topic) => `${getTopicLabel(topic.topic)}: ${topic.percentage}%`),
     `Completed: ${completedAt}`,
     '',
-    'Practice free at: https://nova-scotia-learners-test.vercel.app',
+    `Practice free at: ${SITE_URL}`,
   ].join('\n');
 }
 
@@ -125,9 +128,13 @@ export function calcScore(results: readonly QuestionResult[]): { correct: number
   };
 }
 
-function getSectionBreakdown(results: readonly QuestionResult[]): SectionBreakdown[] {
-  const sectionSize = results.length === 40 ? 20 : results.length;
-  const sections = results.length === 40 ? ['Section 1', 'Section 2'] : ['Practice'];
+function getSectionBreakdown(
+  results: readonly QuestionResult[],
+  modeId: ModeId,
+): SectionBreakdown[] {
+  const shouldSplitSections = modeId === 'full-test' && results.length === 40;
+  const sectionSize = shouldSplitSections ? 20 : results.length;
+  const sections = shouldSplitSections ? ['Section 1', 'Section 2'] : [getExamMode(modeId).label];
 
   return sections.map((section, index) => {
     const chunk = results.slice(index * sectionSize, (index + 1) * sectionSize);

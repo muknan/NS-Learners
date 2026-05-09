@@ -1,6 +1,6 @@
 import type { QuestionTopic } from '@/lib/questions.schema';
 
-export type ExamPhase = 'idle' | 'in-progress' | 'section-break' | 'review' | 'complete';
+export type ExamPhase = 'idle' | 'in-progress' | 'review' | 'complete';
 export type FeedbackMode = 'instant' | 'deferred';
 export type QuestionCategory = 'rules' | 'signs';
 export type QuestionFilter = 'all' | QuestionCategory;

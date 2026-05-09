@@ -5,7 +5,7 @@ import userEvent from '@testing-library/user-event';
 import { AnswerOption } from '@/components/exam/AnswerOption';
 
 describe('AnswerOption', () => {
-  it('uses a button and calls onSelect when activated', async () => {
+  it('uses radio semantics and calls onSelect when activated', async () => {
     const user = userEvent.setup();
     const onSelect = vi.fn();
 
@@ -22,7 +22,7 @@ describe('AnswerOption', () => {
       />,
     );
 
-    await user.click(screen.getByRole('button', { name: /stop completely/i }));
+    await user.click(screen.getByRole('radio', { name: /stop completely/i }));
 
     expect(onSelect).toHaveBeenCalledTimes(1);
     expect(screen.getByText('1')).toBeInTheDocument();
@@ -30,16 +30,18 @@ describe('AnswerOption', () => {
 
   it('has no obvious accessibility violations', async () => {
     const { container } = render(
-      <AnswerOption
-        correct
-        disabled={false}
-        index={1}
-        onSelect={() => undefined}
-        option={{ id: 'b', text: 'Yield the right of way' }}
-        selected
-        showFeedback
-        wrong={false}
-      />,
+      <div role="radiogroup" aria-label="Answer choices">
+        <AnswerOption
+          correct
+          disabled={false}
+          index={1}
+          onSelect={() => undefined}
+          option={{ id: 'b', text: 'Yield the right of way' }}
+          selected
+          showFeedback
+          wrong={false}
+        />
+      </div>,
     );
 
     const results = await axe(container);

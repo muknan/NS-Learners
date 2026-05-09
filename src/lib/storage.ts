@@ -8,6 +8,7 @@ export const SETTINGS_KEY = 'nsLearner.settings';
 export const HISTORY_KEY = 'ns-learner-scores';
 export const THEME_KEY = 'nsLearner.theme';
 export const KEYBOARD_HINT_KEY = 'nsLearner.keyboardHintSeen';
+export const SECTION_BREAK_SEEN_KEY = 'nsLearner.sectionBreakSeen';
 export const ADVANCE_DURATION_KEY = 'ns-learner-advance-duration';
 export const RETAKE_QUESTIONS_KEY = 'ns-retake-questions';
 
@@ -132,6 +133,30 @@ export function readBooleanFlag(key: string): boolean {
 export function saveBooleanFlag(key: string, value: boolean): void {
   try {
     getStorage('local')?.setItem(key, String(value));
+  } catch {
+    // Storage persistence is best-effort only.
+  }
+}
+
+export function readSessionBooleanFlag(key: string): boolean {
+  try {
+    return getStorage('session')?.getItem(key) === 'true';
+  } catch {
+    return false;
+  }
+}
+
+export function saveSessionBooleanFlag(key: string, value: boolean): void {
+  try {
+    getStorage('session')?.setItem(key, String(value));
+  } catch {
+    // Storage persistence is best-effort only.
+  }
+}
+
+export function clearSessionFlag(key: string): void {
+  try {
+    getStorage('session')?.removeItem(key);
   } catch {
     // Storage persistence is best-effort only.
   }

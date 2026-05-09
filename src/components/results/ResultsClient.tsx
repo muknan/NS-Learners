@@ -25,6 +25,8 @@ import {
 } from '@/lib/storage';
 import type { ExamSession, Question, QuestionResult } from '@/types/exam';
 
+let toastIdCounter = 0;
+
 export function ResultsClient({ questions }: { questions: Question[] }) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -35,7 +37,7 @@ export function ResultsClient({ questions }: { questions: Question[] }) {
     [questions],
   );
   const score = useMemo(
-    () => (session ? scoreSession(session, questionsById) : null),
+    () => (session ? scoreSession(session, questionsById, session.mode) : null),
     [questionsById, session],
   );
   const results = useMemo(
@@ -62,7 +64,11 @@ export function ResultsClient({ questions }: { questions: Question[] }) {
   const addToast = useCallback((message: string): void => {
     setToasts((current) => [
       ...current,
-      { id: globalThis.crypto?.randomUUID?.() ?? `${Date.now()}`, message, type: 'success' },
+      {
+        id: globalThis.crypto?.randomUUID?.() ?? `toast-${++toastIdCounter}-${Date.now()}`,
+        message,
+        type: 'success',
+      },
     ]);
   }, []);
 
@@ -87,7 +93,11 @@ export function ResultsClient({ questions }: { questions: Question[] }) {
     } catch {
       setToasts((current) => [
         ...current,
-        { id: `${Date.now()}`, message: 'Clipboard unavailable', type: 'error' },
+        {
+          id: globalThis.crypto?.randomUUID?.() ?? `toast-${++toastIdCounter}-${Date.now()}`,
+          message: 'Clipboard unavailable',
+          type: 'error',
+        },
       ]);
     }
   }

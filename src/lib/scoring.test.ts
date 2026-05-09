@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { getMissedQuestionIds, scoreSession } from '@/lib/scoring';
-import type { ExamSession, Question } from '@/types/exam';
+import type { ExamSession, ModeId, Question } from '@/types/exam';
 
 const sampleQuestions: Question[] = [
   {
@@ -39,17 +39,20 @@ const sampleQuestions: Question[] = [
 
 const questionMap = new Map(sampleQuestions.map((question) => [question.id, question]));
 
-function makeSession(answers: ExamSession['answers']): ExamSession {
+function makeSession(
+  answers: ExamSession['answers'],
+  questions: Question[] = sampleQuestions,
+  mode: ModeId = 'full-test',
+): ExamSession {
+  const optionIds: ExamSession['optionOrder'][string] = ['a', 'b', 'c', 'd'];
+
   return {
     id: 'session-1',
     phase: 'complete',
     source: 'full',
-    mode: 'full-test',
-    questionIds: sampleQuestions.map((question) => question.id),
-    optionOrder: {
-      'q-1': ['a', 'b', 'c', 'd'],
-      'q-2': ['a', 'b', 'c', 'd'],
-    },
+    mode,
+    questionIds: questions.map((question) => question.id),
+    optionOrder: Object.fromEntries(questions.map((question) => [question.id, optionIds])),
     currentIndex: 0,
     answers,
     flaggedIds: [],
@@ -86,5 +89,26 @@ describe('scoreSession', () => {
 
   it('returns missed question ids for wrong or unanswered answers', () => {
     expect(getMissedQuestionIds(makeSession({ 'q-1': 'a' }), questionMap)).toEqual(['q-2']);
+  });
+
+  it('does not split non-full-test 40-question sessions into exam sections', () => {
+    const questions = Array.from({ length: 40 }, (_, index) => ({
+      ...sampleQuestions[index % sampleQuestions.length]!,
+      id: `q-${index + 1}`,
+    }));
+    const questionsById = new Map(questions.map((question) => [question.id, question]));
+    const answers = Object.fromEntries(
+      questions.map((question) => [question.id, question.correctId]),
+    ) as ExamSession['answers'];
+    const score = scoreSession(makeSession(answers, questions, 'all-questions'), questionsById);
+
+    expect(score.bySection).toEqual([
+      {
+        section: 'All Questions Revision',
+        correct: 40,
+        total: 40,
+        percentage: 100,
+      },
+    ]);
   });
 });

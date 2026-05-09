@@ -5,8 +5,7 @@ import '@/styles/globals.css';
 import type { Metadata, Viewport } from 'next';
 import { AppChrome } from '@/components/layout/AppChrome';
 import { ThemeScript } from '@/components/layout/ThemeScript';
-
-const siteUrl = 'https://nova-scotia-learners-test.vercel.app';
+import { SITE_URL } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'NS Learner Test Practice — Free Nova Scotia Class 7 Practice Exam',
@@ -17,13 +16,13 @@ export const metadata: Metadata = {
     title: 'NS Learner Test Practice — Free Nova Scotia Class 7 Practice Exam',
     description:
       "Practice for your Nova Scotia Class 7 learner's licence with free mock exams based on the official driver's handbook.",
-    url: siteUrl,
+    url: SITE_URL,
     siteName: 'NS Learner Test Practice',
     locale: 'en_CA',
     type: 'website',
   },
   robots: { index: true, follow: true },
-  alternates: { canonical: siteUrl },
+  alternates: { canonical: SITE_URL },
 };
 
 export const viewport: Viewport = {
@@ -37,7 +36,7 @@ const jsonLd = {
   name: 'NS Learner Test Practice',
   applicationCategory: 'EducationalApplication',
   operatingSystem: 'Any',
-  url: siteUrl,
+  url: SITE_URL,
   offers: {
     '@type': 'Offer',
     price: '0',

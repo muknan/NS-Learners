@@ -15,7 +15,9 @@ export function Modal({
   onClose: () => void;
 }) {
   const modalRef = useRef<HTMLElement>(null);
+  const onCloseRef = useRef(onClose);
   const titleId = useId();
+  onCloseRef.current = onClose;
 
   useEffect(() => {
     const previousActiveElement =
@@ -29,7 +31,7 @@ export function Modal({
     function handleKeyDown(event: KeyboardEvent): void {
       if (event.key === 'Escape') {
         event.preventDefault();
-        onClose();
+        onCloseRef.current();
         return;
       }
 
@@ -61,7 +63,7 @@ export function Modal({
       unlockBodyScroll();
       previousActiveElement?.focus();
     };
-  }, [onClose]);
+  }, []);
 
   return (
     <div className="modal-layer" role="presentation">

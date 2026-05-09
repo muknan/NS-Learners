@@ -37,6 +37,8 @@ export function NavigatorDrawer({
   onSelect,
 }: NavigatorDrawerProps) {
   const drawerRef = useRef<HTMLElement>(null);
+  const onCloseRef = useRef(onClose);
+  onCloseRef.current = onClose;
 
   useEffect(() => {
     if (!open) {
@@ -57,7 +59,7 @@ export function NavigatorDrawer({
     function handleKeyDown(event: KeyboardEvent): void {
       if (event.key === 'Escape') {
         event.preventDefault();
-        onClose();
+        onCloseRef.current();
         return;
       }
 
@@ -90,7 +92,7 @@ export function NavigatorDrawer({
       window.removeEventListener('keydown', handleKeyDown);
       previousActiveElement?.focus();
     };
-  }, [onClose, open]);
+  }, [open]);
 
   if (!open) {
     return null;

@@ -62,7 +62,7 @@ export function ExamCard({
           {question.text}
         </h1>
 
-        <div className="answer-list" role="list" aria-label="Answer choices">
+        <div className="answer-list" role="radiogroup" aria-label="Answer choices">
           {orderedOptions.map((option, index) => (
             <AnswerOption
               correct={option.id === question.correctId}

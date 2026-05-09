@@ -9,7 +9,6 @@ export function Timer({ remaining }: { remaining: number | null }) {
     <div
       className={urgent ? 'timer is-urgent' : warning ? 'timer is-warning' : 'timer'}
       aria-label="Time remaining"
-      aria-live="polite"
     >
       <Clock aria-hidden="true" />
       <span>{remaining === null ? 'Timer off' : formatDuration(remaining)}</span>

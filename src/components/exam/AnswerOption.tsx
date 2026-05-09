@@ -27,7 +27,7 @@ export function AnswerOption({
 
   return (
     <button
-      aria-pressed={selected}
+      aria-checked={selected}
       className={[
         'answer-option',
         selected ? 'is-selected' : '',
@@ -39,6 +39,7 @@ export function AnswerOption({
       data-testid="answer-option"
       disabled={disabled}
       onClick={onSelect}
+      role="radio"
       type="button"
     >
       <span className="answer-option__letter" aria-hidden="true">
