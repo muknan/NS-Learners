@@ -1,4 +1,6 @@
 {
+  "buildCommand": "pnpm build",
+  "outputDirectory": "out",
   "headers": [
     {
       "source": "/_next/static/(.*)",
