@@ -162,6 +162,7 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
   const progress = useProgress(session);
   const [submitModalOpen, setSubmitModalOpen] = useState(false);
   const [exitModalOpen, setExitModalOpen] = useState(false);
+  const [explanationModalOpen, setExplanationModalOpen] = useState(false);
   const [shortcutsOpen, setShortcutsOpen] = useState(false);
   const [navigatorOpen, setNavigatorOpen] = useState(false);
   const [sectionBreakSeen, setSectionBreakSeen] = useState(() =>
@@ -180,6 +181,7 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
   const overlayOpenRef = useRef({
     submitModalOpen,
     exitModalOpen,
+    explanationModalOpen,
     shortcutsOpen,
     navigatorOpen,
   });
@@ -193,6 +195,10 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
   const modeLabel = getExamMode(session.mode).label;
   const isLastQuestion = session.currentIndex === session.questionIds.length - 1;
   const currentQuestionFlagged = session.flaggedIds.includes(currentQuestion.id);
+  const currentQuestionAnswered = session.answers[currentQuestion.id] !== undefined;
+  const explanationAvailable = Boolean(
+    currentQuestion.explanation && currentQuestionAnswered && session.phase === 'review',
+  );
   const showSectionBreak =
     session.mode === 'full-test' &&
     session.currentIndex === 20 &&
@@ -204,6 +210,7 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
   overlayOpenRef.current = {
     submitModalOpen,
     exitModalOpen,
+    explanationModalOpen,
     shortcutsOpen,
     navigatorOpen,
   };
@@ -307,6 +314,10 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
   }, [session.id, session.expiresAt]);
 
   useEffect(() => {
+    setExplanationModalOpen(false);
+  }, [currentQuestion.id]);
+
+  useEffect(() => {
     if (remaining === null || remaining <= 0) {
       return;
     }
@@ -389,6 +400,7 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
       if (
         overlays.submitModalOpen ||
         overlays.exitModalOpen ||
+        overlays.explanationModalOpen ||
         overlays.shortcutsOpen ||
         overlays.navigatorOpen
       ) {
@@ -602,9 +614,14 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
         autoAdvance={session.autoAdvance}
         autoAdvanceActive={autoAdvanceActive}
         autoAdvanceDurationMs={session.autoAdvanceDurationMs}
+        explanationAvailable={explanationAvailable}
         flagged={currentQuestionFlagged}
         instantFeedback={session.instantFeedback}
         isLast={isLastQuestion}
+        onOpenExplanation={() => {
+          cancelAutoAdvance();
+          setExplanationModalOpen(true);
+        }}
         onFlag={() => {
           cancelAutoAdvance();
           handleFlag();
@@ -689,6 +706,20 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
             <Button tone="danger" onClick={exitExam}>
               Exit
             </Button>
+          </footer>
+        </Modal>
+      ) : null}
+
+      {explanationModalOpen && explanationAvailable ? (
+        <Modal title="Explanation" onClose={() => setExplanationModalOpen(false)}>
+          <div className="explanation-modal__body">
+            <p>{currentQuestion.explanation}</p>
+            {currentQuestion.handbookSection ? (
+              <small>{currentQuestion.handbookSection}</small>
+            ) : null}
+          </div>
+          <footer className="modal__footer">
+            <Button onClick={() => setExplanationModalOpen(false)}>Close</Button>
           </footer>
         </Modal>
       ) : null}

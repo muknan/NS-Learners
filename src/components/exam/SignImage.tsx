@@ -29,9 +29,11 @@ export function SignImage({
       <img
         alt={question.imageAlt ?? 'Road sign for this question'}
         decoding="async"
+        height={compact ? 96 : 320}
         loading={compact ? 'lazy' : 'eager'}
         onError={() => setSrc('/signs/_unknown.svg')}
         src={src ?? '/signs/_unknown.svg'}
+        width={compact ? 96 : 320}
       />
     </figure>
   );

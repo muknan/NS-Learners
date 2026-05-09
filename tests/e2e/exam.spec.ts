@@ -133,6 +133,49 @@ test('auto-advances after an answer when instant feedback is off', async ({ page
   await expect(page.getByTestId('exam-top-bar')).toContainText('Q 2 / 40', { timeout: 4500 });
 });
 
+test('instant feedback shows explanations in a modal without shifting the card', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+  await page.evaluate(() => {
+    window.localStorage.setItem('nsLearner.keyboardHintSeen', 'true');
+    for (const storage of [window.localStorage, window.sessionStorage]) {
+      for (const key of Object.keys(storage)) {
+        if (key.startsWith('ns-exam-session-') || key === 'nsLearner.currentSession') {
+          storage.removeItem(key);
+        }
+      }
+    }
+  });
+
+  await page.goto('/exam?mode=assisted');
+  await expect(page.getByTestId('answer-option').first()).toBeVisible();
+
+  const questionBefore = await page.getByTestId('exam-question').boundingBox();
+  await page.getByTestId('answer-option').first().click();
+  const questionAfter = await page.getByTestId('exam-question').boundingBox();
+
+  expect(questionBefore).not.toBeNull();
+  expect(questionAfter).not.toBeNull();
+  expect(Math.abs(questionAfter!.x - questionBefore!.x)).toBeLessThanOrEqual(1);
+  expect(Math.abs(questionAfter!.y - questionBefore!.y)).toBeLessThanOrEqual(1);
+  await expect(page.locator('.exam-card .explanation-panel')).toHaveCount(0);
+
+  const explanationButton = page
+    .getByTestId('exam-action-bar')
+    .getByRole('button', { name: /explanation/i });
+  await expect(explanationButton).toBeVisible();
+  await explanationButton.click();
+
+  const dialog = page.getByRole('dialog', { name: 'Explanation' });
+  await expect(dialog).toBeVisible();
+  await expect(dialog).toContainText(/chapter|official/i);
+  await page.keyboard.press('Escape');
+  await expect(dialog).toBeHidden();
+  await expect(explanationButton).toBeFocused();
+});
+
 test.describe('exam viewport fit', () => {
   test.setTimeout(180_000);
 

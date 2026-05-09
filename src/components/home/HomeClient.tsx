@@ -87,16 +87,14 @@ export function HomeClient({ stats }: HomeClientProps) {
         </div>
 
         <div className="hero-sign-wall" aria-hidden="true">
-          {['stop', 'yield', 'school', 'speed50'].map((sign) => (
+          {[
+            { key: 'stop', src: '/signs/stop.svg' },
+            { key: 'yield', src: '/signs/yield.svg' },
+            { key: 'railway', src: '/signs/railway-crossing-ahead-warning.png' },
+            { key: 'speed50', src: '/signs/speed50.svg' },
+          ].map((sign) => (
             // eslint-disable-next-line @next/next/no-img-element -- Native img avoids SVG rendering issues in static export.
-            <img
-              alt=""
-              height={120}
-              key={sign}
-              loading="lazy"
-              src={`/signs/${sign}.svg`}
-              width={120}
-            />
+            <img alt="" height={112} key={sign.key} loading="lazy" src={sign.src} width={112} />
           ))}
         </div>
       </section>

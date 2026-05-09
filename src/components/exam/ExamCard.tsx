@@ -1,6 +1,5 @@
 'use client';
 
-import { Info } from 'lucide-react';
 import { AnswerOption } from '@/components/exam/AnswerOption';
 import { SignImage } from '@/components/exam/SignImage';
 import { Badge } from '@/components/ui/Badge';
@@ -29,15 +28,10 @@ export function ExamCard({
   const selectedId = session.answers[question.id] ?? null;
   const showFeedback = instantFeedback && selectedId !== null && session.phase === 'review';
   const orderedOptions = getOrderedOptions(question, session);
-  const feedbackRef = useRef<HTMLDetailsElement>(null);
   const questionRef = useRef<HTMLHeadingElement>(null);
   const answerListRef = useRef<HTMLDivElement>(null);
   const hasImage = Boolean(question.image);
-  const cardClassName = [
-    'exam-card',
-    hasImage ? 'exam-card--with-image' : '',
-    showFeedback ? 'exam-card--feedback' : '',
-  ]
+  const cardClassName = ['exam-card', hasImage ? 'exam-card--with-image' : '']
     .filter(Boolean)
     .join(' ');
 
@@ -50,12 +44,6 @@ export function ExamCard({
       answerListRef.current.scrollTop = 0;
     }
   }, [question.id]);
-
-  useEffect(() => {
-    if (showFeedback) {
-      feedbackRef.current?.focus();
-    }
-  }, [showFeedback, question.id]);
 
   return (
     <article className={cardClassName}>
@@ -101,17 +89,6 @@ export function ExamCard({
             />
           ))}
         </div>
-
-        {showFeedback ? (
-          <details className="explanation-panel" ref={feedbackRef} tabIndex={-1} open>
-            <summary>
-              <Info aria-hidden="true" />
-              Explanation
-            </summary>
-            <p>{question.explanation}</p>
-            {question.handbookSection ? <small>{question.handbookSection}</small> : null}
-          </details>
-        ) : null}
       </div>
     </article>
   );

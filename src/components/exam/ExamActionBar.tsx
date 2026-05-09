@@ -1,6 +1,6 @@
 'use client';
 
-import { ArrowRight, Flag, Send, Settings2 } from 'lucide-react';
+import { ArrowRight, Flag, Info, Send, Settings2 } from 'lucide-react';
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { Button } from '@/components/ui/Button';
 import { ToggleSwitch } from '@/components/ui/ToggleSwitch';
@@ -9,9 +9,11 @@ interface ExamActionBarProps {
   autoAdvanceActive: boolean;
   autoAdvanceDurationMs: number;
   autoAdvance: boolean;
+  explanationAvailable: boolean;
   flagged: boolean;
   instantFeedback: boolean;
   isLast: boolean;
+  onOpenExplanation: () => void;
   onFlag: () => void;
   onNext: () => void;
   onSubmit: () => void;
@@ -23,9 +25,11 @@ export function ExamActionBar({
   autoAdvanceActive,
   autoAdvanceDurationMs,
   autoAdvance,
+  explanationAvailable,
   flagged,
   instantFeedback,
   isLast,
+  onOpenExplanation,
   onFlag,
   onNext,
   onSubmit,
@@ -107,6 +111,16 @@ export function ExamActionBar({
       </div>
 
       <div className="exam-action-bar__primary">
+        {explanationAvailable ? (
+          <Button
+            className="exam-action-bar__explanation"
+            icon={<Info aria-hidden="true" />}
+            onClick={onOpenExplanation}
+            tone="secondary"
+          >
+            Explanation
+          </Button>
+        ) : null}
         <Button
           aria-pressed={flagged}
           className="exam-action-bar__flag"

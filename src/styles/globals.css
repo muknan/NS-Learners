@@ -427,6 +427,7 @@ p {
   height: 112px;
   border-radius: var(--radius-control);
   background: var(--color-surface-card);
+  object-fit: contain;
 }
 
 .stats-row,
@@ -976,12 +977,6 @@ p {
   justify-content: center;
 }
 
-.exam-card--feedback {
-  place-content: start stretch;
-  align-content: start;
-  justify-content: stretch;
-}
-
 @keyframes question-fade {
   from {
     opacity: 0;
@@ -996,6 +991,7 @@ p {
   display: grid;
   min-width: 0;
   min-height: 0;
+  overflow: hidden;
   place-items: center;
 }
 
@@ -1006,10 +1002,7 @@ p {
   min-height: 0;
   grid-template-rows: auto auto minmax(0, 1fr);
   gap: var(--exam-gap);
-}
-
-.exam-card--feedback .exam-card__content-pane {
-  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  overflow: hidden;
 }
 
 .exam-card__meta {
@@ -1040,24 +1033,34 @@ p {
 }
 
 .sign-figure {
+  --sign-display-size: min(320px, var(--exam-image-max-h));
+
   display: grid;
-  width: 100%;
-  max-width: min(100%, 360px);
+  width: var(--sign-display-size);
+  height: var(--sign-display-size);
+  min-width: 0;
+  min-height: 0;
+  max-width: 100%;
+  max-height: 320px;
   margin: 0;
   aspect-ratio: 1 / 1;
-  max-height: var(--exam-image-max-h);
+  overflow: hidden;
   place-items: center;
 }
 
 .sign-figure img {
   width: 100%;
   height: 100%;
+  min-width: 0;
+  min-height: 0;
+  max-width: 100%;
+  max-height: 100%;
   object-fit: contain;
 }
 
 .sign-figure--compact {
-  max-width: 96px;
-  max-height: 96px;
+  --sign-display-size: 96px;
+
   place-items: start;
 }
 
@@ -1229,6 +1232,10 @@ p {
 
 .exam-action-bar__primary {
   justify-content: flex-end;
+}
+
+.exam-action-bar__explanation {
+  max-width: 148px;
 }
 
 .exam-action-bar__hint {
@@ -1409,6 +1416,27 @@ p {
 
 .modal__footer {
   justify-content: flex-end;
+}
+
+.explanation-modal__body {
+  display: grid;
+  max-height: min(54vh, 420px);
+  gap: 12px;
+  overflow-y: auto;
+  padding: 14px;
+  color: var(--color-text-primary);
+  scrollbar-width: thin;
+}
+
+.explanation-modal__body p {
+  margin: 0;
+  font-size: var(--text-16);
+  line-height: 1.55;
+}
+
+.explanation-modal__body small {
+  color: var(--color-text-muted);
+  line-height: 1.4;
 }
 
 .settings-grid {
@@ -2020,12 +2048,17 @@ input[type='range'] {
 
 @media (min-width: 1024px) {
   .exam-card--with-image {
-    grid-template-columns: minmax(180px, 0.72fr) minmax(0, min(720px, 1fr));
+    grid-template-columns: minmax(0, 320px) minmax(0, min(720px, 1fr));
     gap: clamp(20px, 4vw, 56px);
   }
 
+  .exam-card--with-image > * {
+    min-width: 0;
+    min-height: 0;
+  }
+
   .exam-card--with-image .exam-card__image-pane {
-    justify-self: end;
+    justify-self: center;
   }
 
   .exam-card--with-image .exam-card__content-pane {
@@ -2089,20 +2122,23 @@ input[type='range'] {
 
   .exam-card__image-pane {
     height: auto;
-    max-height: min(140px, 22vh);
+    max-height: min(128px, 22vh);
     align-self: start;
     overflow: hidden;
   }
 
   .exam-card__image-pane .sign-figure {
-    width: min(100%, 140px);
+    --sign-display-size: min(128px, 22vh);
+
+    width: var(--sign-display-size);
+    height: var(--sign-display-size);
     max-width: 100%;
-    max-height: min(140px, 22vh);
+    max-height: min(128px, 22vh);
   }
 
   .exam-card__image-pane .sign-figure img {
     max-width: 100%;
-    max-height: min(140px, 22vh);
+    max-height: min(128px, 22vh);
     object-fit: contain;
   }
 
@@ -2184,15 +2220,21 @@ input[type='range'] {
   .exam-action-bar__primary .button {
     min-width: 0;
     flex: 1 1 0;
-    padding-inline: 10px;
+    gap: 6px;
+    padding-inline: 8px;
+    font-size: var(--text-12);
+  }
+
+  .exam-action-bar__explanation {
+    max-width: 118px;
   }
 
   .exam-action-bar__flag {
-    max-width: 112px;
+    max-width: 86px;
   }
 
   .exam-action-bar__next {
-    max-width: 128px;
+    max-width: 100px;
   }
 }
 
