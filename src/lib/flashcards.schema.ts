@@ -4,13 +4,26 @@ export const FLASHCARD_CATEGORIES = ['rules', 'signs', 'safety', 'general'] as c
 
 export const FlashcardCategorySchema = z.enum(FLASHCARD_CATEGORIES);
 
-export const FlashcardSchema = z.object({
-  id: z.string().regex(/^fc-\d{3,}$/),
-  chapter: z.string().min(3),
-  title: z.string().min(3).max(80),
-  summary: z.string().min(20).max(400),
-  category: FlashcardCategorySchema,
-});
+export const FlashcardSchema = z
+  .object({
+    id: z.string().regex(/^fc-\d{3,}$/),
+    chapter: z.string().min(3),
+    title: z.string().min(3).max(80),
+    keyPoint: z.string().min(8).max(120).optional(),
+    summary: z.string().min(20).max(400),
+    category: FlashcardCategorySchema,
+    image: z
+      .string()
+      .regex(/^\/signs\/[\w.-]+\.(?:png|jpe?g|svg|webp)$/)
+      .optional(),
+    imageAlt: z.string().min(8).max(160).optional(),
+    handbookSection: z.string().min(8).max(180).optional(),
+  })
+  .strict()
+  .refine((flashcard) => !flashcard.image || flashcard.imageAlt, {
+    message: 'imageAlt is required when image is present',
+    path: ['imageAlt'],
+  });
 
 export const FlashcardDeckSchema = z
   .array(FlashcardSchema)

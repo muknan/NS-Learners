@@ -1,289 +1,397 @@
 [
   {
     "id": "fc-001",
-    "chapter": "Driver's Handbook — Introduction",
-    "title": "Graduated Licensing Stages",
-    "summary": "Nova Scotia's GDL system moves new drivers through learner, newly licensed, and restricted individual stages. Each stage limits risk while drivers build experience.",
-    "category": "general"
+    "chapter": "Chapter 1 — Your Driver's Licence",
+    "title": "GDL Path",
+    "keyPoint": "Class 7 is the first GDL step: learner, newly licensed, then full licence.",
+    "summary": "Nova Scotia uses Graduated Driver Licensing so new drivers build skill in stages. Restrictions are removed only after you pass the required tests and gain experience.",
+    "category": "general",
+    "handbookSection": "Chapter 1 — Your Driver's Licence, The Nova Scotia Licensing System"
   },
   {
     "id": "fc-002",
-    "chapter": "Driver's Handbook — Introduction",
-    "title": "Restricted Individual Stage",
-    "summary": "The restricted individual stage lasts two full years after the newly licensed stage. Drivers must have zero alcohol or drugs in the body and cannot supervise another driver.",
-    "category": "rules"
+    "chapter": "Chapter 1 — Your Driver's Licence",
+    "title": "Zero Alcohol",
+    "keyPoint": "Learners must keep a zero blood alcohol level every time they drive.",
+    "summary": "A Class 7 learner has a stricter standard than the Criminal Code limit. Any alcohol in the body can put your learner licence at risk.",
+    "category": "rules",
+    "handbookSection": "Chapter 1 — Your Driver's Licence, Learner's Licence Restrictions"
   },
   {
     "id": "fc-003",
-    "chapter": "Driver's Handbook — Introduction",
-    "title": "Yielding to Transit Buses",
-    "summary": "When a stopped transit bus signals to re-enter traffic, drivers approaching from behind must yield where the posted limit is 60 km/h or less and it is safe to do so.",
-    "category": "rules"
+    "chapter": "Driver's Handbook — Updates",
+    "title": "Transit Bus Yield",
+    "keyPoint": "Yield to a stopped transit bus signalling back into traffic where the limit is 60 km/h or less.",
+    "summary": "When approaching from behind, slow and let the bus re-enter if it is safe. This update applies to transit buses, not school buses.",
+    "category": "rules",
+    "handbookSection": "Introduction — Driver's Handbook Updates, Yield to Transit Buses"
   },
   {
     "id": "fc-004",
-    "chapter": "Driver's Handbook — Introduction",
-    "title": "Using the Handbook",
-    "summary": "The handbook explains the basic driving laws in plain language, but drivers are still responsible for knowing current rules and staying alert for updates.",
-    "category": "general"
+    "chapter": "Official Class 7 Knowledge Test",
+    "title": "Two Test Parts",
+    "keyPoint": "You must pass rules of the road and road sign recognition as separate parts.",
+    "summary": "The Class 7 knowledge test checks traffic laws, safe driving, and road signs. A miss on one part means you only retake the part you did not pass.",
+    "category": "general",
+    "handbookSection": "Official Class 7 Knowledge Test — What You're Tested On"
   },
   {
     "id": "fc-005",
     "chapter": "Chapter 1 — Your Driver's Licence",
     "title": "Class 7 Eligibility",
-    "summary": "A Nova Scotia resident can apply for a Class 7 learner's licence at age 16. Applicants who are 16 or 17 need written consent from a parent or guardian.",
-    "category": "rules"
+    "keyPoint": "You can apply at 16; age 16 or 17 needs parent or guardian consent.",
+    "summary": "Class 7 is for Nova Scotia residents who meet the learner requirements. Bring required identification and complete the Registry steps before the licence is issued.",
+    "category": "rules",
+    "handbookSection": "Chapter 1 — Your Driver's Licence, Getting a Learner's Licence"
   },
   {
     "id": "fc-006",
     "chapter": "Chapter 1 — Your Driver's Licence",
-    "title": "Knowledge Test Pass Mark",
-    "summary": "The learner test includes a road sign test and a rules test. Each part has 20 multiple-choice questions, and 16 correct answers are required to pass each part.",
-    "category": "general"
+    "title": "Pass Mark",
+    "keyPoint": "Each test part has 20 questions; you need at least 16 correct on each.",
+    "summary": "The learner knowledge test has a rules test and a signs test. Study both because passing one part does not cover a fail on the other.",
+    "category": "general",
+    "handbookSection": "Chapter 1 — Your Driver's Licence, How to Apply for a Learner's Licence"
   },
   {
     "id": "fc-007",
     "chapter": "Chapter 1 — Your Driver's Licence",
-    "title": "Learner Restrictions",
-    "summary": "Learners must drive with an experienced driver in the front seat and no other passengers. Their blood alcohol level must remain zero.",
-    "category": "rules"
+    "title": "Learner Supervisor",
+    "keyPoint": "Drive only with an experienced licensed driver in the front seat.",
+    "summary": "A learner cannot drive alone. The supervising driver must be ready to help, and learner passenger limits still apply.",
+    "category": "rules",
+    "handbookSection": "Chapter 1 — Your Driver's Licence, Learner's Licence Restrictions"
   },
   {
     "id": "fc-008",
     "chapter": "Chapter 1 — Your Driver's Licence",
     "title": "Demerit Points",
-    "summary": "Demerit points are assigned for Motor Vehicle Act convictions and affect learner and newly licensed drivers sooner than experienced drivers. Serious offences can delay progress through GDL.",
-    "category": "safety"
+    "keyPoint": "Demerit points hit learners and newly licensed drivers sooner than experienced drivers.",
+    "summary": "Convictions under the Motor Vehicle Act can add points to your record. Serious or repeated offences can delay progress through GDL.",
+    "category": "safety",
+    "handbookSection": "Chapter 1 — Your Driver's Licence, Demerit Points"
   },
   {
     "id": "fc-009",
     "chapter": "Chapter 2 — Rules of the Road",
-    "title": "Traffic Signals",
-    "summary": "Green means proceed only when safe, yellow means stop if you can do so safely, and red means stop before entering the intersection. A flashing red works like a stop sign.",
-    "category": "rules"
+    "title": "Traffic Lights",
+    "keyPoint": "Green means go only when safe; yellow means stop if safe; red means stop.",
+    "summary": "Do not enter an intersection just because the light is green. A flashing red works like a stop sign, and a flashing yellow means slow and proceed carefully.",
+    "category": "rules",
+    "image": "/signs/traffic-signal-lights-ahead.png",
+    "imageAlt": "Yellow traffic-signal-lights-ahead warning sign",
+    "handbookSection": "Chapter 2 — Rules of the Road, Traffic Signal Lights"
   },
   {
     "id": "fc-010",
     "chapter": "Chapter 2 — Rules of the Road",
     "title": "Crosswalk Priority",
-    "summary": "Pedestrians have the right of way in marked and unmarked crosswalks at intersections. If a signal changes while someone is crossing, let them finish safely.",
-    "category": "safety"
+    "keyPoint": "Always yield to pedestrians in marked or unmarked crosswalks.",
+    "summary": "Intersections include crosswalks even when the paint is not visible. If a signal changes while someone is crossing, let them finish safely.",
+    "category": "safety",
+    "image": "/signs/pedestrian-crosswalk.png",
+    "imageAlt": "Pedestrian crosswalk sign with a walking person symbol",
+    "handbookSection": "Chapter 2 — Rules of the Road, Pedestrians and Crosswalks"
   },
   {
     "id": "fc-011",
     "chapter": "Chapter 2 — Rules of the Road",
-    "title": "Intersection Right of Way",
-    "summary": "A vehicle already in an intersection has priority over one that has not entered. When vehicles arrive together, the driver on the left yields to the driver on the right.",
-    "category": "rules"
+    "title": "Intersection Yield",
+    "keyPoint": "First in the intersection goes first; when arriving together, yield to the right.",
+    "summary": "Right-of-way rules prevent guessing at intersections. Yield signs and stop signs can change the order, so obey the posted control first.",
+    "category": "rules",
+    "image": "/signs/yield-sign.png",
+    "imageAlt": "Red and white triangular yield sign",
+    "handbookSection": "Chapter 2 — Rules of the Road, Right-of-Way at Intersections"
   },
   {
     "id": "fc-012",
     "chapter": "Chapter 2 — Rules of the Road",
     "title": "Emergency Vehicles",
-    "summary": "When an emergency vehicle approaches with lights and siren, move to the right edge or curb and stop until it passes. Never follow a responding fire vehicle within 150 metres.",
-    "category": "safety"
+    "keyPoint": "Move right and stop for lights and sirens until the emergency vehicle passes.",
+    "summary": "Leave the route clear and do not follow a responding fire vehicle within 150 metres. Also keep clear of stopped emergency vehicles assisting at collisions.",
+    "category": "safety",
+    "handbookSection": "Chapter 2 — Rules of the Road, Emergency Vehicles"
   },
   {
     "id": "fc-013",
     "chapter": "Chapter 3 — Signs, Pavement Markings and Work Zones",
-    "title": "Regulatory Signs",
-    "summary": "Regulatory signs state laws and instructions drivers must obey. Stop, yield, turn restrictions, no-entry signs, and many lane-use signs fall into this group.",
-    "category": "signs"
+    "title": "Stop Signs",
+    "keyPoint": "Stop completely, yield, then move only when the way is clear.",
+    "summary": "A stop sign requires a full stop at the stop line, crosswalk, or edge of the road. Rolling through is not a stop.",
+    "category": "signs",
+    "image": "/signs/stop-sign.png",
+    "imageAlt": "Red octagonal stop sign with white STOP lettering",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Regulatory Signs"
   },
   {
     "id": "fc-014",
     "chapter": "Chapter 3 — Signs, Pavement Markings and Work Zones",
     "title": "Warning Signs",
-    "summary": "Warning signs alert drivers to hazards or changes ahead, such as curves, merging traffic, hidden intersections, narrow structures, or slippery surfaces.",
-    "category": "signs"
+    "keyPoint": "Yellow warning signs tell you to adjust before a hazard or road change.",
+    "summary": "Warning signs can show curves, merging traffic, narrow roads, crossings, or slippery surfaces. Slow early and choose a safe lane position.",
+    "category": "signs",
+    "image": "/signs/merge.png",
+    "imageAlt": "Yellow merge warning sign",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Warning Signs"
   },
   {
     "id": "fc-015",
     "chapter": "Chapter 3 — Signs, Pavement Markings and Work Zones",
-    "title": "Pavement Markings",
-    "summary": "Yellow lines separate opposing traffic and white lines separate traffic moving the same direction. Solid and broken lines tell drivers when passing or lane changes are allowed.",
-    "category": "signs"
+    "title": "Double Solid Lines",
+    "keyPoint": "Do not cross continuous double solid yellow lines to pass.",
+    "summary": "Yellow lines separate traffic moving in opposite directions. Broken lines may permit passing when safe, but double solid yellow lines mean no passing either way.",
+    "category": "signs",
+    "image": "/signs/double-solid-lines.png",
+    "imageAlt": "Pavement marking diagram with double solid yellow lines",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Pavement Markings"
   },
   {
     "id": "fc-016",
     "chapter": "Chapter 3 — Signs, Pavement Markings and Work Zones",
     "title": "Work Zones",
-    "summary": "Orange work-zone signs warn about temporary hazards, lane changes, workers, and construction traffic. Slow down early, follow instructions, and leave extra space.",
-    "category": "safety"
+    "keyPoint": "Orange signs mean temporary conditions: slow down, watch workers, and expect lane shifts.",
+    "summary": "Work zones can change traffic flow quickly. Leave extra space, obey traffic control people, and follow temporary signs even if they differ from the usual road setup.",
+    "category": "safety",
+    "image": "/signs/workers-active.png",
+    "imageAlt": "Orange human-activity sign showing workers active",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Construction / Work Zone Signs"
   },
   {
     "id": "fc-017",
     "chapter": "Chapter 4 — Safety",
-    "title": "Vehicle Readiness",
-    "summary": "Before driving, keep safety equipment such as brakes, lights, tires, mirrors, horn, and wipers in good condition. Regular checks reduce preventable breakdowns and collisions.",
-    "category": "safety"
+    "title": "Vehicle Check",
+    "keyPoint": "Check brakes, tires, lights, mirrors, horn, and wipers before problems find you.",
+    "summary": "A road-ready vehicle gives you time to react. Regular maintenance also reduces preventable breakdowns and failed inspections.",
+    "category": "safety",
+    "handbookSection": "Chapter 4 — Safety, Vehicle Maintenance"
   },
   {
     "id": "fc-018",
     "chapter": "Chapter 4 — Safety",
     "title": "Seat Belts",
-    "summary": "Seat belts and child restraints reduce injury risk and help keep occupants inside the vehicle during a sudden stop or collision. Airbags do not replace seat belts.",
-    "category": "safety"
+    "keyPoint": "Seat belts keep occupants in place; airbags do not replace them.",
+    "summary": "Belts and child restraints reduce injury in a sudden stop or crash. Everyone should be properly restrained before the vehicle moves.",
+    "category": "safety",
+    "handbookSection": "Chapter 4 — Safety, Passenger Safety"
   },
   {
     "id": "fc-019",
     "chapter": "Chapter 4 — Safety",
-    "title": "Mirrors and Blind Spots",
-    "summary": "Adjust mirrors before moving and use them frequently, but remember mirrors do not remove blind spots. Shoulder checks are still needed before changing lanes.",
-    "category": "safety"
+    "title": "Blind Spots",
+    "keyPoint": "Mirrors help, but shoulder checks confirm the space beside you is clear.",
+    "summary": "Set your mirrors before moving and scan them often. Always shoulder check before changing lanes, turning, or pulling away from the curb.",
+    "category": "safety",
+    "handbookSection": "Chapter 4 — Safety, Defensive Driving and Blind Spots"
   },
   {
     "id": "fc-020",
     "chapter": "Chapter 4 — Safety",
-    "title": "Smooth Braking",
-    "summary": "Brake smoothly and avoid locking the wheels. If your vehicle has ABS, press the brake steadily and firmly rather than pumping it.",
-    "category": "safety"
+    "title": "ABS Braking",
+    "keyPoint": "With ABS, press the brake firmly and steadily; do not pump it.",
+    "summary": "Anti-lock brakes help you keep steering control during hard braking. If the vehicle does not have ABS, use controlled braking to avoid locking the wheels.",
+    "category": "safety",
+    "handbookSection": "Chapter 4 — Safety, Emergency Braking"
   },
   {
     "id": "fc-021",
     "chapter": "Chapter 5 — Adverse Driving Conditions",
     "title": "Night Driving",
-    "summary": "At night, use headlights properly and reduce speed because you can only see as far as your lights reach. Dim high beams for oncoming or closely followed traffic.",
-    "category": "safety"
+    "keyPoint": "Slow enough that you can stop within the distance your headlights show.",
+    "summary": "Night driving reduces visibility and reaction time. Dim high beams for oncoming vehicles and when following another vehicle closely.",
+    "category": "safety",
+    "handbookSection": "Chapter 5 — Adverse Driving Conditions, Nighttime Driving"
   },
   {
     "id": "fc-022",
     "chapter": "Chapter 5 — Adverse Driving Conditions",
-    "title": "Rain, Snow, and Fog",
-    "summary": "Poor weather reduces visibility and traction. Slow down gradually, avoid sudden stops, increase following distance, and use low-beam headlights when visibility is reduced.",
-    "category": "safety"
+    "title": "Bad Weather",
+    "keyPoint": "Poor visibility or traction means slow down and increase following distance.",
+    "summary": "Rain, snow, fog, and spray can hide hazards and lengthen stopping distance. Use low-beam headlights when visibility is reduced.",
+    "category": "safety",
+    "image": "/signs/slippery-when-wet.png",
+    "imageAlt": "Yellow slippery-when-wet warning sign",
+    "handbookSection": "Chapter 5 — Adverse Driving Conditions, Rain, Snow, and Fog"
   },
   {
     "id": "fc-023",
     "chapter": "Chapter 5 — Adverse Driving Conditions",
-    "title": "Hydroplaning and Ice",
-    "summary": "Hydroplaning happens when tires ride on water and lose contact with the road. Bridges, overpasses, and shaded areas can freeze before the rest of the road.",
-    "category": "safety"
+    "title": "Hydroplaning",
+    "keyPoint": "If tires ride on water, ease off the accelerator and steer straight.",
+    "summary": "Hydroplaning removes tire contact with the road. Bridges, overpasses, and shaded areas can also freeze first, so treat them cautiously in cold weather.",
+    "category": "safety",
+    "handbookSection": "Chapter 5 — Adverse Driving Conditions, Rain"
   },
   {
     "id": "fc-024",
     "chapter": "Chapter 5 — Adverse Driving Conditions",
     "title": "Brake Failure",
-    "summary": "If brakes fail, pump the brake pedal several times to build pressure. If that does not work, apply the parking brake gently while holding the release button.",
-    "category": "safety"
+    "keyPoint": "Pump the brake pedal; if needed, apply the parking brake gently.",
+    "summary": "Try to rebuild pressure by pumping the pedal several times. Hold the parking brake release while applying it gently so the wheels do not lock.",
+    "category": "safety",
+    "handbookSection": "Chapter 5 — Adverse Driving Conditions, Brake Failure"
   },
   {
     "id": "fc-025",
     "chapter": "Chapter 6 — Driving and Impairment",
-    "title": "Alcohol Impairment",
-    "summary": "Alcohol-induced impairment begins with the first drink. Legal impairment is defined at 0.08 BAC or more, but drivers can still be charged below that level if impaired.",
-    "category": "safety"
+    "title": "First Drink Counts",
+    "keyPoint": "Alcohol impairment starts with the first drink, not at a magic number.",
+    "summary": "Drivers can be unsafe before reaching a criminal BAC threshold. Learners and other GDL drivers have a zero-alcohol requirement.",
+    "category": "safety",
+    "handbookSection": "Chapter 6 — Driving and Impairment, Drinking and Driving"
   },
   {
     "id": "fc-026",
     "chapter": "Chapter 6 — Driving and Impairment",
-    "title": "Medication and Drugs",
-    "summary": "Prescription drugs, non-prescription medication, herbal remedies, and illegal drugs can impair driving. Read warnings and ask a pharmacist when unsure.",
-    "category": "safety"
+    "title": "Medication Warning",
+    "keyPoint": "Prescription, non-prescription, herbal, and illegal drugs can all impair driving.",
+    "summary": "Read labels and ask a pharmacist if a medicine may cause drowsiness, slow reactions, or poor judgment. Never mix impairing substances with driving.",
+    "category": "safety",
+    "handbookSection": "Chapter 6 — Driving and Impairment, Drug Impairment"
   },
   {
     "id": "fc-027",
     "chapter": "Chapter 6 — Driving and Impairment",
     "title": "Warn Range",
-    "summary": "A roadside screening result between 0.05 and 0.08 may lead to a licence suspension. Learners and GDL drivers must maintain zero alcohol.",
-    "category": "rules"
+    "keyPoint": "A roadside result from 0.05 to 0.08 can still lead to a suspension.",
+    "summary": "You do not need to be at 0.08 BAC to face consequences. For learners, the practical target is simple: zero alcohol.",
+    "category": "rules",
+    "handbookSection": "Chapter 6 — Driving and Impairment, Drinking and Driving"
   },
   {
     "id": "fc-028",
     "chapter": "Chapter 6 — Driving and Impairment",
-    "title": "Plan a Sober Ride",
-    "summary": "Judgment gets worse as impairment increases, so plan transportation before drinking or using impairing substances. Time is the only reliable way alcohol leaves the body.",
-    "category": "safety"
+    "title": "Sober Ride Plan",
+    "keyPoint": "Plan the ride home before drinking or using any impairing substance.",
+    "summary": "Judgment drops as impairment rises, so do not wait until later to decide. Use a sober driver, taxi, transit, or stay overnight.",
+    "category": "safety",
+    "handbookSection": "Chapter 6 — Driving and Impairment, Being a Responsible Host or Hostess"
   },
   {
     "id": "fc-029",
     "chapter": "Chapter 7 — Vehicle Registration and Insurance",
-    "title": "Road-Ready Vehicle",
-    "summary": "Before a vehicle is operated on a Nova Scotia highway, it must be registered, permitted, inspected, plated, and insured. Proof documents must be kept available.",
-    "category": "rules"
+    "title": "Road-Ready Documents",
+    "keyPoint": "A vehicle needs registration, plates, inspection, and insurance before highway use.",
+    "summary": "Keep required proof available when driving. The vehicle must be legal to operate, not just mechanically able to move.",
+    "category": "rules",
+    "handbookSection": "Chapter 7 — Vehicle Registration and Insurance, Registering a Vehicle"
   },
   {
     "id": "fc-030",
     "chapter": "Chapter 7 — Vehicle Registration and Insurance",
-    "title": "Registration Basics",
-    "summary": "A Certificate of Registration shows ownership details such as the owner's name, VIN, issue date, and vehicle description. The certificate remains valid while you own the vehicle.",
-    "category": "general"
+    "title": "Registration Certificate",
+    "keyPoint": "The certificate identifies the owner, vehicle, VIN, and registration details.",
+    "summary": "Registration proves the vehicle is recorded with the province. Update ownership or vehicle information when required instead of relying on outdated papers.",
+    "category": "general",
+    "handbookSection": "Chapter 7 — Vehicle Registration and Insurance, Certificate of Registration"
   },
   {
     "id": "fc-031",
     "chapter": "Chapter 7 — Vehicle Registration and Insurance",
-    "title": "Annual Safety Inspection",
-    "summary": "Registered vehicles and trailers need an annual safety inspection at an official station. If a vehicle fails, defects must be corrected and reinspected within the allowed period.",
-    "category": "safety"
+    "title": "Safety Inspection",
+    "keyPoint": "Registered vehicles and trailers need a valid safety inspection.",
+    "summary": "Official inspection stations check key safety equipment. If a vehicle fails, defects must be repaired and the vehicle reinspected within the allowed period.",
+    "category": "safety",
+    "handbookSection": "Chapter 7 — Vehicle Registration and Insurance, Safety Inspection"
   },
   {
     "id": "fc-032",
     "chapter": "Chapter 7 — Vehicle Registration and Insurance",
-    "title": "Insurance Responsibility",
-    "summary": "Drivers must have liability insurance or another accepted proof of financial responsibility. The handbook lists the legal minimum at $500,000 in third-party liability coverage.",
-    "category": "rules"
+    "title": "Liability Insurance",
+    "keyPoint": "Carry proof of financial responsibility; the handbook lists $500,000 minimum liability.",
+    "summary": "Drivers must have accepted insurance or proof of financial responsibility. Insurance is a legal requirement, not an optional add-on.",
+    "category": "rules",
+    "handbookSection": "Chapter 7 — Vehicle Registration and Insurance, Insurance"
   },
   {
     "id": "fc-033",
     "chapter": "Chapter 8 — Motorcycles",
-    "title": "Motorcycle Licensing",
-    "summary": "Motorcycle riders need either a motorcycle driver's licence or an endorsement on a regular licence. New motorcycle riders move through GDL and must pass motorcycle-specific tests.",
-    "category": "rules"
+    "title": "Motorcycle Licence",
+    "keyPoint": "Motorcycle riders need a motorcycle licence or endorsement.",
+    "summary": "A regular passenger-vehicle licence alone is not enough to ride a motorcycle. New motorcycle riders complete motorcycle-specific tests and GDL steps.",
+    "category": "rules",
+    "handbookSection": "Chapter 8 — Motorcycles, Getting a Motorcycle Licence"
   },
   {
     "id": "fc-034",
     "chapter": "Chapter 8 — Motorcycles",
-    "title": "Learner Motorcycle Limits",
-    "summary": "Learner motorcycle drivers must keep zero blood alcohol, carry no passengers, and ride only from one half-hour before sunrise to one half-hour after sunset.",
-    "category": "rules"
+    "title": "Motorcycle Learner Limits",
+    "keyPoint": "No passengers, zero alcohol, and daylight-only riding for motorcycle learners.",
+    "summary": "A motorcycle learner may ride only from one half-hour before sunrise to one half-hour after sunset. These limits reduce risk while skills are new.",
+    "category": "rules",
+    "handbookSection": "Chapter 8 — Motorcycles, Learner Motorcycle Restrictions"
   },
   {
     "id": "fc-035",
     "chapter": "Chapter 8 — Motorcycles",
-    "title": "Motorcycle Visibility",
-    "summary": "Motorcyclists should avoid other drivers' blind spots and choose a lane position that makes them visible. Each motorcycle is entitled to the full use of a traffic lane.",
-    "category": "safety"
+    "title": "Motorcycle Lane Space",
+    "keyPoint": "A motorcycle is entitled to the full use of a traffic lane.",
+    "summary": "Do not crowd motorcycles or share their lane. Riders should stay visible and avoid lingering in other drivers' blind spots.",
+    "category": "safety",
+    "handbookSection": "Chapter 8 — Motorcycles, Lane Position and Visibility"
   },
   {
     "id": "fc-036",
     "chapter": "Chapter 8 — Motorcycles",
-    "title": "Protective Gear",
-    "summary": "Motorcycle riders and passengers must wear approved, properly fastened helmets. Eye protection and protective clothing help prevent loss of control and reduce injury.",
-    "category": "safety"
+    "title": "Helmet Rule",
+    "keyPoint": "Motorcycle riders and passengers must wear approved, fastened helmets.",
+    "summary": "Eye protection and protective clothing also reduce injury and improve control. Gear matters because riders have far less crash protection than car occupants.",
+    "category": "safety",
+    "handbookSection": "Chapter 8 — Motorcycles, Protective Clothing"
   },
   {
     "id": "fc-037",
     "chapter": "Chapter 3 — Signs, Pavement Markings and Work Zones",
-    "title": "Construction / Work Zone Signs",
-    "summary": "Orange work-zone signs warn about temporary hazards, lane shifts, workers, equipment, and reduced speeds. Slow early, watch for instructions, and leave extra space.",
-    "category": "signs"
+    "title": "Do Not Enter",
+    "keyPoint": "Do not enter that road, ramp, or lane from your direction.",
+    "summary": "This regulatory sign protects against wrong-way movement. Stop and choose another legal route instead of continuing past the sign.",
+    "category": "signs",
+    "image": "/signs/do-not-enter.png",
+    "imageAlt": "Red do-not-enter sign with a white horizontal bar",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Regulatory Signs"
   },
   {
     "id": "fc-038",
     "chapter": "Chapter 3 — Signs, Pavement Markings and Work Zones",
-    "title": "School and Playground Signs",
-    "summary": "School and playground signs warn drivers to watch for children. When children are present, school-zone limits are 30 km/h in 50 km/h areas and 50 km/h where the approach limit is higher.",
-    "category": "signs"
+    "title": "School Zones",
+    "keyPoint": "When children are present: 30 km/h in 50 zones, 50 km/h where the approach limit is higher.",
+    "summary": "School and playground signs mean children may move unpredictably. Slow early, scan both sides of the road, and be ready to stop.",
+    "category": "signs",
+    "image": "/signs/school-zone-sign.png",
+    "imageAlt": "Fluorescent yellow-green school zone sign",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, School and Playground Signs"
   },
   {
     "id": "fc-039",
     "chapter": "Chapter 3 — Signs, Pavement Markings and Work Zones",
-    "title": "Flashing Light Units",
-    "summary": "Flashing arrow boards and straight bar lamps warn of lane closures, obstructions, or active hazards. Follow the arrow direction or treat a straight bar as caution.",
-    "category": "signs"
+    "title": "Flashing Arrow Boards",
+    "keyPoint": "Arrow boards warn of lane closures or obstructions; pass on the indicated side.",
+    "summary": "A two-arrow board means either side is safe to pass. A straight bar is caution mode and does not tell you that passing is safe.",
+    "category": "signs",
+    "image": "/signs/flashing-light-unit-two-arrows.png",
+    "imageAlt": "Flashing arrow board with two arrow heads",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Flashing Light Units"
   },
   {
     "id": "fc-040",
     "chapter": "Chapter 3 — Signs, Pavement Markings and Work Zones",
-    "title": "Railway Signs",
-    "summary": "Railway advance warning signs and crossbucks mark crossings where drivers must slow, look, listen, and be ready to stop. Stop when lights flash or a gate is down.",
-    "category": "signs"
+    "title": "Railway Crossings",
+    "keyPoint": "Slow, look, listen, and be ready to stop at railway crossings.",
+    "summary": "A crossbuck marks the crossing itself, and an advance sign warns one is ahead. Stop when lights flash, a gate is down, or a train is approaching.",
+    "category": "signs",
+    "image": "/signs/crossbuck-sign.png",
+    "imageAlt": "White railway crossbuck sign with red border",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Railway Signs"
   },
   {
     "id": "fc-041",
     "chapter": "Chapter 3 — Signs, Pavement Markings and Work Zones",
-    "title": "Information and Direction Signs",
-    "summary": "Green, blue, and white information signs give route numbers, destination directions, distances, and driver services so you can choose lanes and exits early.",
-    "category": "signs"
+    "title": "Information Signs",
+    "keyPoint": "Route and direction signs help you choose lanes and exits early.",
+    "summary": "Green, blue, and white signs can show highway numbers, destinations, services, and distances. Use them early so you avoid last-second lane changes.",
+    "category": "signs",
+    "image": "/signs/highway-102.png",
+    "imageAlt": "Provincial highway route marker for Highway 102",
+    "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Information and Direction Signs"
   }
 ]
