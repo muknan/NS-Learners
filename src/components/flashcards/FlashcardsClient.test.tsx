@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { FlashcardsClient } from '@/components/flashcards/FlashcardsClient';
 import type { Flashcard } from '@/lib/flashcards.schema';
@@ -33,12 +33,14 @@ describe('FlashcardsClient', () => {
 
     render(<FlashcardsClient deck={deck} />);
 
-    expect(screen.getByRole('heading', { name: 'Learner Basics' })).toBeInTheDocument();
-    expect(screen.getByText('Card 1 of 2 - 2 of 2 remaining')).toBeInTheDocument();
+    expect(await screen.findByText('Card 1 of 2 — 2 of 2 remaining')).toBeInTheDocument();
+    const firstTitle = screen.getByRole('heading', { level: 1 }).textContent;
 
     await user.click(screen.getByRole('button', { name: /next/i }));
 
-    expect(screen.getByRole('heading', { name: 'Crosswalks' })).toBeInTheDocument();
-    expect(screen.getByText('Card 2 of 2 - 2 of 2 remaining')).toBeInTheDocument();
+    expect(screen.getByText('Card 2 of 2 — 2 of 2 remaining')).toBeInTheDocument();
+    await waitFor(() =>
+      expect(screen.getByRole('heading', { level: 1 })).not.toHaveTextContent(firstTitle ?? ''),
+    );
   });
 });

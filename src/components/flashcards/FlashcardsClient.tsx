@@ -19,14 +19,12 @@ import { shuffleFlashcards } from '@/lib/flashcards';
 import type { Flashcard, FlashcardCategory } from '@/lib/flashcards.schema';
 
 const STORAGE_KEY = 'ns-learners.flashcards.v2';
+const BATCH_SIZE = 20;
 
 type CategoryFilter = FlashcardCategory | 'all';
 
 type PersistedFlashcardsState = {
-  currentIndex?: number;
-  isShuffled?: boolean;
   knownIds?: string[];
-  order?: string[];
 };
 
 const categoryFilters: Array<{ label: string; value: CategoryFilter }> = [
@@ -38,20 +36,19 @@ const categoryFilters: Array<{ label: string; value: CategoryFilter }> = [
 ];
 
 export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
-  const initialDeck = useMemo(() => deck, [deck]);
-  const [cards, setCards] = useState<Flashcard[]>(initialDeck);
+  const allCards = useMemo(() => deck, [deck]);
+  const [sessionDeck, setSessionDeck] = useState<Flashcard[]>([]);
   const [index, setIndex] = useState(0);
   const [activeCategory, setActiveCategory] = useState<CategoryFilter>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [knownIds, setKnownIds] = useState<Set<string>>(() => new Set());
   const [isExpanded, setIsExpanded] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false);
-  const [isShuffled, setIsShuffled] = useState(false);
 
   const normalizedSearch = searchQuery.trim().toLowerCase();
-  const filteredCards = useMemo(
+  const filteredPool = useMemo(
     () =>
-      cards.filter((card) => {
+      allCards.filter((card) => {
         const matchesCategory = activeCategory === 'all' || card.category === activeCategory;
         const matchesSearch =
           normalizedSearch.length === 0 ||
@@ -60,41 +57,42 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
 
         return matchesCategory && matchesSearch;
       }),
-    [activeCategory, cards, normalizedSearch],
+    [activeCategory, allCards, normalizedSearch],
   );
 
-  const safeIndex = filteredCards.length === 0 ? 0 : Math.min(index, filteredCards.length - 1);
-  const currentCard = filteredCards[safeIndex];
+  const safeIndex = sessionDeck.length === 0 ? 0 : Math.min(index, sessionDeck.length - 1);
+  const currentCard = sessionDeck[safeIndex];
   const isCurrentKnown = currentCard ? knownIds.has(currentCard.id) : false;
-  const remainingCount = filteredCards.filter((card) => !knownIds.has(card.id)).length;
+  const remainingCount = sessionDeck.filter((card) => !knownIds.has(card.id)).length;
+  const isSubset = filteredPool.length > BATCH_SIZE;
   const knownIdList = useMemo(() => [...knownIds].sort(), [knownIds]);
 
   function goPrevious(): void {
     setIndex((current) => {
-      if (filteredCards.length === 0) {
+      if (sessionDeck.length === 0) {
         return 0;
       }
 
-      const currentIndex = Math.min(current, filteredCards.length - 1);
-      return currentIndex === 0 ? filteredCards.length - 1 : currentIndex - 1;
+      const currentIndex = Math.min(current, sessionDeck.length - 1);
+      return currentIndex === 0 ? sessionDeck.length - 1 : currentIndex - 1;
     });
   }
 
   function goNext(): void {
     setIndex((current) => {
-      if (filteredCards.length === 0) {
+      if (sessionDeck.length === 0) {
         return 0;
       }
 
-      const currentIndex = Math.min(current, filteredCards.length - 1);
-      return (currentIndex + 1) % filteredCards.length;
+      const currentIndex = Math.min(current, sessionDeck.length - 1);
+      return (currentIndex + 1) % sessionDeck.length;
     });
   }
 
   function shuffleDeck(): void {
-    setCards((currentCards) => shuffleFlashcards(currentCards, Date.now()));
-    setIsShuffled(true);
+    setSessionDeck(drawSession(filteredPool, Date.now()));
     setIndex(0);
+    setIsExpanded(false);
   }
 
   const actionsRef = useRef({
@@ -111,41 +109,30 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
 
   useEffect(() => {
     const persisted = readPersistedFlashcardsState();
-    const restoredDeck = persisted?.order
-      ? restoreDeckOrder(initialDeck, persisted.order)
-      : initialDeck;
-    const validIds = new Set(initialDeck.map((card) => card.id));
+    const validIds = new Set(allCards.map((card) => card.id));
     const restoredKnownIds = (persisted?.knownIds ?? []).filter((id) => validIds.has(id));
 
-    setCards(restoredDeck);
     setKnownIds(new Set(restoredKnownIds));
-    setIndex(Math.max(0, persisted?.currentIndex ?? 0));
-    setIsShuffled(Boolean(persisted?.isShuffled && restoredDeck !== initialDeck));
     setIsHydrated(true);
-  }, [initialDeck]);
+  }, [allCards]);
 
   useEffect(() => {
     if (!isHydrated) {
       return;
     }
 
-    writePersistedFlashcardsState({
-      currentIndex: safeIndex,
-      isShuffled,
-      knownIds: knownIdList,
-      order: cards.map((card) => card.id),
-    });
-  }, [cards, isHydrated, isShuffled, knownIdList, safeIndex]);
+    setSessionDeck(drawSession(filteredPool));
+    setIndex(0);
+    setIsExpanded(false);
+  }, [filteredPool, isHydrated]);
 
   useEffect(() => {
-    setIndex((current) => {
-      if (filteredCards.length === 0) {
-        return 0;
-      }
+    if (!isHydrated) {
+      return;
+    }
 
-      return Math.min(current, filteredCards.length - 1);
-    });
-  }, [filteredCards.length]);
+    writePersistedFlashcardsState({ knownIds: knownIdList });
+  }, [isHydrated, knownIdList]);
 
   useEffect(() => {
     setIsExpanded(false);
@@ -214,10 +201,9 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
 
   function resetAll(): void {
     setActiveCategory('all');
-    setCards(initialDeck);
+    setSessionDeck(drawSession(allCards, Date.now()));
     setIndex(0);
     setIsExpanded(false);
-    setIsShuffled(false);
     setKnownIds(new Set());
     setSearchQuery('');
   }
@@ -226,7 +212,7 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
     <div className="flashcard-actions" aria-label="Flashcard controls">
       <Button
         aria-label="Previous flashcard"
-        disabled={filteredCards.length < 2}
+        disabled={sessionDeck.length < 2}
         icon={<ArrowLeft aria-hidden="true" />}
         onClick={goPrevious}
         tone="secondary"
@@ -235,7 +221,7 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
       </Button>
       <Button
         aria-label="Shuffle flashcards"
-        disabled={cards.length < 2}
+        disabled={filteredPool.length < 2}
         icon={<Shuffle aria-hidden="true" />}
         onClick={shuffleDeck}
         tone="secondary"
@@ -244,7 +230,7 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
       </Button>
       <Button
         aria-label="Next flashcard"
-        disabled={filteredCards.length < 2}
+        disabled={sessionDeck.length < 2}
         icon={<ArrowRight aria-hidden="true" />}
         onClick={goNext}
       >
@@ -259,9 +245,9 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
         <div>
           <Badge tone="brand">Flashcards</Badge>
           <p className="flashcards-progress" aria-live="polite">
-            {filteredCards.length > 0
-              ? `Card ${safeIndex + 1} of ${filteredCards.length} - ${remainingCount} of ${
-                  filteredCards.length
+            {sessionDeck.length > 0
+              ? `Card ${safeIndex + 1} of ${sessionDeck.length} — ${remainingCount} of ${
+                  sessionDeck.length
                 } remaining`
               : '0 of 0 remaining'}
           </p>
@@ -328,7 +314,7 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
                 <span>{isCurrentKnown ? 'Known' : 'Mark as Known'}</span>
               </button>
 
-              {isShuffled ? <Badge tone="brand">Shuffled</Badge> : null}
+              {isSubset ? <Badge tone="brand">Shuffled</Badge> : null}
 
               <FlashcardImage card={currentCard} />
 
@@ -377,27 +363,16 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
   );
 }
 
-function restoreDeckOrder(deck: Flashcard[], order: string[]): Flashcard[] {
-  if (order.length !== deck.length) {
-    return deck;
+function drawSession(pool: Flashcard[], seed?: number): Flashcard[] {
+  if (pool.length === 0) {
+    return [];
   }
 
-  const byId = new Map(deck.map((card) => [card.id, card]));
-  const seenIds = new Set<string>();
-  const restored: Flashcard[] = [];
-
-  for (const id of order) {
-    const card = byId.get(id);
-
-    if (!card || seenIds.has(id)) {
-      return deck;
-    }
-
-    restored.push(card);
-    seenIds.add(id);
+  if (pool.length <= BATCH_SIZE) {
+    return shuffleFlashcards(pool, seed ?? Date.now());
   }
 
-  return restored;
+  return shuffleFlashcards(pool, seed ?? Date.now()).slice(0, BATCH_SIZE);
 }
 
 function readPersistedFlashcardsState(): PersistedFlashcardsState | null {
@@ -418,20 +393,8 @@ function readPersistedFlashcardsState(): PersistedFlashcardsState | null {
 
     const state: PersistedFlashcardsState = {};
 
-    if (typeof parsed.currentIndex === 'number' && Number.isFinite(parsed.currentIndex)) {
-      state.currentIndex = Math.trunc(parsed.currentIndex);
-    }
-
-    if (typeof parsed.isShuffled === 'boolean') {
-      state.isShuffled = parsed.isShuffled;
-    }
-
     if (isStringArray(parsed.knownIds)) {
       state.knownIds = parsed.knownIds;
-    }
-
-    if (isStringArray(parsed.order)) {
-      state.order = parsed.order;
     }
 
     return state;
@@ -440,7 +403,7 @@ function readPersistedFlashcardsState(): PersistedFlashcardsState | null {
   }
 }
 
-function writePersistedFlashcardsState(state: Required<PersistedFlashcardsState>): void {
+function writePersistedFlashcardsState(state: PersistedFlashcardsState): void {
   if (typeof window === 'undefined') {
     return;
   }

@@ -11,7 +11,7 @@ test('flashcards are reachable and support button and keyboard navigation', asyn
 
   await page
     .locator('.flashcard-actions')
-    .getByRole('button', { name: /^next$/i })
+    .getByRole('button', { name: /^next flashcard$/i })
     .click();
   await expect(page.getByText(/Card 2 of \d+/)).toBeVisible();
   await expect(page.getByRole('heading', { level: 1 })).not.toHaveText(firstTitle ?? '');

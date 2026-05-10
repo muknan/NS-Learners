@@ -35,4 +35,19 @@ describe('AppChrome', () => {
 
     expect(screen.getByLabelText(/NS Learner Test Practice/i)).toBeInTheDocument();
   });
+
+  it.each([
+    ['/handbooks/', 'Handbooks'],
+    ['/flashcards/', 'Flashcards'],
+  ])('marks the %s nav link active with trailing slashes', (route, label) => {
+    pathname = route;
+
+    render(
+      <AppChrome>
+        <main>Page route</main>
+      </AppChrome>,
+    );
+
+    expect(screen.getByRole('link', { name: label })).toHaveAttribute('aria-current', 'page');
+  });
 });

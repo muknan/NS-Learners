@@ -12,7 +12,8 @@ type Theme = 'light' | 'dark';
 
 export function Header() {
   const router = useRouter();
-  const pathname = usePathname();
+  const rawPathname = usePathname();
+  const pathname = rawPathname.replace(/\/$/, '') || '/';
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [theme, setTheme] = useState<Theme>('light');
 

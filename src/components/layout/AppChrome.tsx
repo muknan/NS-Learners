@@ -9,6 +9,7 @@ export function AppChrome({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const [online, setOnline] = useState(true);
   const examActive = pathname?.startsWith('/exam') ?? false;
+  const flashcardsActive = pathname?.startsWith('/flashcards') ?? false;
 
   useEffect(() => {
     function syncOnline(): void {
@@ -24,6 +25,18 @@ export function AppChrome({ children }: { children: ReactNode }) {
       window.removeEventListener('offline', syncOnline);
     };
   }, []);
+
+  if (flashcardsActive) {
+    return (
+      <div className="flashcards-root">
+        {!online ? (
+          <div className="offline-banner">You're offline - using cached content</div>
+        ) : null}
+        <Header />
+        {children}
+      </div>
+    );
+  }
 
   return (
     <>
