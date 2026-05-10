@@ -15,7 +15,7 @@ export function FlashcardImage({ card }: { card: Flashcard }) {
   }
 
   return (
-    <figure className="flashcard-image" data-testid="flashcard-image">
+    <figure className="flashcard-image-wrapper" data-testid="flashcard-image">
       {/* eslint-disable-next-line @next/next/no-img-element -- Native img keeps static sign assets reliable. */}
       <img
         alt={card.imageAlt ?? 'Road sign for this flashcard'}

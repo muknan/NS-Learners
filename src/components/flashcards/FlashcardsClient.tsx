@@ -29,13 +29,6 @@ type PersistedFlashcardsState = {
   order?: string[];
 };
 
-const categoryTone: Record<FlashcardCategory, 'brand' | 'neutral' | 'warning' | 'success'> = {
-  general: 'brand',
-  rules: 'neutral',
-  signs: 'warning',
-  safety: 'success',
-};
-
 const categoryFilters: Array<{ label: string; value: CategoryFilter }> = [
   { label: 'All', value: 'all' },
   { label: 'Rules', value: 'rules' },
@@ -319,12 +312,7 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
       >
         {currentCard ? (
           <>
-            <div className="flashcard-card-header">
-              <div className="flashcard-meta">
-                <Badge tone={categoryTone[currentCard.category]}>{currentCard.category}</Badge>
-                <Badge tone="neutral">{currentCard.chapter}</Badge>
-                {isShuffled ? <Badge tone="brand">Shuffled</Badge> : null}
-              </div>
+            <div className="flashcard-inner">
               <button
                 aria-label={
                   isCurrentKnown
@@ -339,9 +327,9 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
                 <CheckCircle2 aria-hidden="true" />
                 <span>{isCurrentKnown ? 'Known' : 'Mark as Known'}</span>
               </button>
-            </div>
 
-            <div className="flashcard-card-body">
+              {isShuffled ? <Badge tone="brand">Shuffled</Badge> : null}
+
               <FlashcardImage card={currentCard} />
 
               <div className="flashcard-copy">
@@ -368,28 +356,23 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
                   <p>{currentCard.summary}</p>
                 </div>
               </div>
-
-              <div className="flashcard-card-footer">
-                {currentCard.handbookSection ? (
-                  <p>
-                    <span>Handbook:</span> {currentCard.handbookSection}
-                  </p>
-                ) : null}
-              </div>
             </div>
 
-            {controls}
+            {currentCard.handbookSection ? (
+              <p className="flashcard-meta-bottom">
+                <span>Handbook:</span> {currentCard.handbookSection}
+              </p>
+            ) : null}
           </>
         ) : (
-          <>
-            <div className="flashcard-card-body flashcard-card-body--empty">
-              <h1 id="flashcards-title">No flashcards found</h1>
-              <p>Try another category or search term.</p>
-            </div>
-            {controls}
-          </>
+          <div className="flashcard-inner flashcard-inner--empty">
+            <h1 id="flashcards-title">No flashcards found</h1>
+            <p>Try another category or search term.</p>
+          </div>
         )}
       </Card>
+
+      {controls}
     </section>
   );
 }
