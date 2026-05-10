@@ -6,6 +6,7 @@ import { Moon, Play, Settings, Sun } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { SettingsPanel } from '@/components/layout/SettingsPanel';
+import { useMounted } from '@/hooks/useMounted';
 import { THEME_KEY } from '@/lib/storage';
 
 type Theme = 'light' | 'dark';
@@ -14,6 +15,7 @@ export function Header() {
   const router = useRouter();
   const rawPathname = usePathname();
   const pathname = rawPathname.replace(/\/$/, '') || '/';
+  const mounted = useMounted();
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [theme, setTheme] = useState<Theme>('light');
 
@@ -86,16 +88,37 @@ export function Header() {
           Flashcards
         </Link>
         <button type="button" onClick={() => setSettingsOpen(true)} aria-label="Settings">
-          <Settings aria-hidden="true" />
+          {mounted ? (
+            <Settings aria-hidden="true" />
+          ) : (
+            <span className="icon-placeholder" aria-hidden="true" />
+          )}
         </button>
         <button
           type="button"
           onClick={toggleTheme}
           aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
         >
-          {theme === 'dark' ? <Sun aria-hidden="true" /> : <Moon aria-hidden="true" />}
+          {mounted ? (
+            theme === 'dark' ? (
+              <Sun aria-hidden="true" />
+            ) : (
+              <Moon aria-hidden="true" />
+            )
+          ) : (
+            <span className="icon-placeholder" aria-hidden="true" />
+          )}
         </button>
-        <Button icon={<Play aria-hidden="true" />} onClick={startExam}>
+        <Button
+          icon={
+            mounted ? (
+              <Play aria-hidden="true" />
+            ) : (
+              <span className="icon-placeholder" aria-hidden="true" />
+            )
+          }
+          onClick={startExam}
+        >
           Start
         </Button>
       </nav>

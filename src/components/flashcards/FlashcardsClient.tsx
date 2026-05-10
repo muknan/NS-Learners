@@ -1,20 +1,13 @@
 'use client';
 
-import {
-  ArrowLeft,
-  ArrowRight,
-  CheckCircle2,
-  ChevronDown,
-  RotateCcw,
-  Search,
-  Shuffle,
-} from 'lucide-react';
+import { ArrowLeft, ArrowRight, CheckCircle2, RotateCcw, Shuffle } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import type { ChangeEvent } from 'react';
 import { FlashcardImage } from '@/components/flashcards/FlashcardImage';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
+import { Modal } from '@/components/ui/Modal';
+import { useMounted } from '@/hooks/useMounted';
 import { shuffleFlashcards } from '@/lib/flashcards';
 import type { Flashcard, FlashcardCategory } from '@/lib/flashcards.schema';
 
@@ -37,27 +30,17 @@ const categoryFilters: Array<{ label: string; value: CategoryFilter }> = [
 
 export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
   const allCards = useMemo(() => deck, [deck]);
+  const mounted = useMounted();
   const [sessionDeck, setSessionDeck] = useState<Flashcard[]>([]);
   const [index, setIndex] = useState(0);
   const [activeCategory, setActiveCategory] = useState<CategoryFilter>('all');
-  const [searchQuery, setSearchQuery] = useState('');
   const [knownIds, setKnownIds] = useState<Set<string>>(() => new Set());
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [detailsOpen, setDetailsOpen] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false);
 
-  const normalizedSearch = searchQuery.trim().toLowerCase();
   const filteredPool = useMemo(
-    () =>
-      allCards.filter((card) => {
-        const matchesCategory = activeCategory === 'all' || card.category === activeCategory;
-        const matchesSearch =
-          normalizedSearch.length === 0 ||
-          card.title.toLowerCase().includes(normalizedSearch) ||
-          (card.keyPoint?.toLowerCase().includes(normalizedSearch) ?? false);
-
-        return matchesCategory && matchesSearch;
-      }),
-    [activeCategory, allCards, normalizedSearch],
+    () => allCards.filter((card) => activeCategory === 'all' || card.category === activeCategory),
+    [activeCategory, allCards],
   );
 
   const safeIndex = sessionDeck.length === 0 ? 0 : Math.min(index, sessionDeck.length - 1);
@@ -92,7 +75,7 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
   function shuffleDeck(): void {
     setSessionDeck(drawSession(filteredPool, Date.now()));
     setIndex(0);
-    setIsExpanded(false);
+    setDetailsOpen(false);
   }
 
   const actionsRef = useRef({
@@ -123,7 +106,7 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
 
     setSessionDeck(drawSession(filteredPool));
     setIndex(0);
-    setIsExpanded(false);
+    setDetailsOpen(false);
   }, [filteredPool, isHydrated]);
 
   useEffect(() => {
@@ -133,10 +116,6 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
 
     writePersistedFlashcardsState({ knownIds: knownIdList });
   }, [isHydrated, knownIdList]);
-
-  useEffect(() => {
-    setIsExpanded(false);
-  }, [currentCard?.id]);
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent): void {
@@ -180,11 +159,6 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
     setIndex(0);
   }
 
-  function handleSearchChange(event: ChangeEvent<HTMLInputElement>): void {
-    setSearchQuery(event.target.value);
-    setIndex(0);
-  }
-
   function toggleKnown(cardId: string): void {
     setKnownIds((current) => {
       const next = new Set(current);
@@ -203,9 +177,8 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
     setActiveCategory('all');
     setSessionDeck(drawSession(allCards, Date.now()));
     setIndex(0);
-    setIsExpanded(false);
+    setDetailsOpen(false);
     setKnownIds(new Set());
-    setSearchQuery('');
   }
 
   const controls = (
@@ -213,7 +186,13 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
       <Button
         aria-label="Previous flashcard"
         disabled={sessionDeck.length < 2}
-        icon={<ArrowLeft aria-hidden="true" />}
+        icon={
+          mounted ? (
+            <ArrowLeft aria-hidden="true" />
+          ) : (
+            <span className="icon-placeholder" aria-hidden="true" />
+          )
+        }
         onClick={goPrevious}
         tone="secondary"
       >
@@ -222,7 +201,13 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
       <Button
         aria-label="Shuffle flashcards"
         disabled={filteredPool.length < 2}
-        icon={<Shuffle aria-hidden="true" />}
+        icon={
+          mounted ? (
+            <Shuffle aria-hidden="true" />
+          ) : (
+            <span className="icon-placeholder" aria-hidden="true" />
+          )
+        }
         onClick={shuffleDeck}
         tone="secondary"
       >
@@ -231,7 +216,13 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
       <Button
         aria-label="Next flashcard"
         disabled={sessionDeck.length < 2}
-        icon={<ArrowRight aria-hidden="true" />}
+        icon={
+          mounted ? (
+            <ArrowRight aria-hidden="true" />
+          ) : (
+            <span className="icon-placeholder" aria-hidden="true" />
+          )
+        }
         onClick={goNext}
       >
         Next
@@ -254,7 +245,13 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
         </div>
         <Button
           aria-label="Reset flashcards"
-          icon={<RotateCcw aria-hidden="true" />}
+          icon={
+            mounted ? (
+              <RotateCcw aria-hidden="true" />
+            ) : (
+              <span className="icon-placeholder" aria-hidden="true" />
+            )
+          }
           onClick={resetAll}
           size="sm"
           tone="ghost"
@@ -264,18 +261,6 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
       </div>
 
       <div className="flashcard-toolbar" aria-label="Flashcard filters">
-        <label className="flashcard-search">
-          <Search aria-hidden="true" />
-          <span className="sr-only">Search flashcards</span>
-          <input
-            aria-label="Search flashcards by title or key point"
-            onChange={handleSearchChange}
-            placeholder="Search title or key point"
-            type="search"
-            value={searchQuery}
-          />
-        </label>
-
         <div className="flashcard-filter-list" aria-label="Category filters">
           {categoryFilters.map((filter) => (
             <button
@@ -310,38 +295,34 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
                 onClick={() => toggleKnown(currentCard.id)}
                 type="button"
               >
-                <CheckCircle2 aria-hidden="true" />
+                {mounted ? (
+                  <CheckCircle2 aria-hidden="true" />
+                ) : (
+                  <span className="icon-placeholder" aria-hidden="true" />
+                )}
                 <span>{isCurrentKnown ? 'Known' : 'Mark as Known'}</span>
               </button>
 
               {isSubset ? <Badge tone="brand">Shuffled</Badge> : null}
 
-              <FlashcardImage card={currentCard} />
+              <div className="flashcard-study-area">
+                <FlashcardImage card={currentCard} />
 
-              <div className="flashcard-copy">
-                <h1 id="flashcards-title">{currentCard.title}</h1>
-                <p className="flashcard-key-point">{currentCard.keyPoint ?? currentCard.summary}</p>
-              </div>
-
-              <div className="flashcard-detail">
-                <button
-                  aria-controls={`flashcard-summary-${currentCard.id}`}
-                  aria-expanded={isExpanded}
-                  className="flashcard-detail__toggle"
-                  onClick={() => setIsExpanded((current) => !current)}
-                  type="button"
-                >
-                  <span>Details</span>
-                  <ChevronDown aria-hidden="true" />
-                </button>
-                <div
-                  className="flashcard-summary"
-                  hidden={!isExpanded}
-                  id={`flashcard-summary-${currentCard.id}`}
-                >
-                  <p>{currentCard.summary}</p>
+                <div className="flashcard-copy">
+                  <h1 id="flashcards-title">{currentCard.title}</h1>
+                  <p className="flashcard-key-point">
+                    {currentCard.keyPoint ?? currentCard.summary}
+                  </p>
                 </div>
               </div>
+
+              <button
+                className="flashcard-detail__toggle"
+                onClick={() => setDetailsOpen(true)}
+                type="button"
+              >
+                <span>Details</span>
+              </button>
             </div>
 
             {currentCard.handbookSection ? (
@@ -353,12 +334,25 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
         ) : (
           <div className="flashcard-inner flashcard-inner--empty">
             <h1 id="flashcards-title">No flashcards found</h1>
-            <p>Try another category or search term.</p>
+            <p>Try another category.</p>
           </div>
         )}
       </Card>
 
       {controls}
+
+      {detailsOpen && currentCard ? (
+        <Modal title={`Details — ${currentCard.title}`} onClose={() => setDetailsOpen(false)}>
+          <div className="flashcard-modal-body">
+            <p>{currentCard.summary}</p>
+            {currentCard.handbookSection ? (
+              <p className="flashcard-modal-meta">
+                <strong>Handbook:</strong> {currentCard.handbookSection}
+              </p>
+            ) : null}
+          </div>
+        </Modal>
+      ) : null}
     </section>
   );
 }
