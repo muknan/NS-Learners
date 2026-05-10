@@ -84,9 +84,8 @@ export function Header() {
         >
           Flashcards
         </Link>
-        <button type="button" onClick={() => setSettingsOpen(true)}>
+        <button type="button" onClick={() => setSettingsOpen(true)} aria-label="Settings">
           <Settings aria-hidden="true" />
-          Settings
         </button>
         <button
           type="button"

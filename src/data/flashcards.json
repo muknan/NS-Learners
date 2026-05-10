@@ -250,5 +250,40 @@
     "title": "Protective Gear",
     "summary": "Motorcycle riders and passengers must wear approved, properly fastened helmets. Eye protection and protective clothing help prevent loss of control and reduce injury.",
     "category": "safety"
+  },
+  {
+    "id": "fc-037",
+    "chapter": "Chapter 3 — Signs, Pavement Markings and Work Zones",
+    "title": "Construction / Work Zone Signs",
+    "summary": "Orange work-zone signs warn about temporary hazards, lane shifts, workers, equipment, and reduced speeds. Slow early, watch for instructions, and leave extra space.",
+    "category": "signs"
+  },
+  {
+    "id": "fc-038",
+    "chapter": "Chapter 3 — Signs, Pavement Markings and Work Zones",
+    "title": "School and Playground Signs",
+    "summary": "School and playground signs warn drivers to watch for children. When children are present, school-zone limits are 30 km/h in 50 km/h areas and 50 km/h where the approach limit is higher.",
+    "category": "signs"
+  },
+  {
+    "id": "fc-039",
+    "chapter": "Chapter 3 — Signs, Pavement Markings and Work Zones",
+    "title": "Flashing Light Units",
+    "summary": "Flashing arrow boards and straight bar lamps warn of lane closures, obstructions, or active hazards. Follow the arrow direction or treat a straight bar as caution.",
+    "category": "signs"
+  },
+  {
+    "id": "fc-040",
+    "chapter": "Chapter 3 — Signs, Pavement Markings and Work Zones",
+    "title": "Railway Signs",
+    "summary": "Railway advance warning signs and crossbucks mark crossings where drivers must slow, look, listen, and be ready to stop. Stop when lights flash or a gate is down.",
+    "category": "signs"
+  },
+  {
+    "id": "fc-041",
+    "chapter": "Chapter 3 — Signs, Pavement Markings and Work Zones",
+    "title": "Information and Direction Signs",
+    "summary": "Green, blue, and white information signs give route numbers, destination directions, distances, and driver services so you can choose lanes and exits early.",
+    "category": "signs"
   }
 ]
