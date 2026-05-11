@@ -23,12 +23,22 @@ test('flashcards are reachable and support button and keyboard navigation', asyn
   await expect(page.getByText(/Card 1 of \d+/)).toBeVisible();
 });
 
-test('blocks browser back navigation until confirmed', async ({ page }) => {
+test('blocks browser back navigation on first visit (phase 1)', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
+  // Clear all history / storage to simulate a completely fresh session.
   await page.goto('/');
+  await page.evaluate(() => {
+    window.localStorage.clear();
+    window.sessionStorage.clear();
+    // Remove any previously-pushed guard entries by replacing history.
+    window.history.replaceState({}, '', '/');
+  });
+
   await page.getByRole('link', { name: 'Flashcards' }).click();
   await expect(page).toHaveURL(/\/flashcards/);
 
+  // Give the guard a moment to arm (effect runs after React commit).
+  await page.waitForTimeout(300);
   await page.evaluate(() => window.history.back());
 
   const dialog = page.getByRole('dialog', { name: 'Leave flashcards?' });
@@ -38,5 +48,39 @@ test('blocks browser back navigation until confirmed', async ({ page }) => {
 
   await dialog.getByRole('button', { name: 'Stay' }).click();
   await expect(dialog).toBeHidden();
+  await expect(page).toHaveURL(/\/flashcards/);
+});
+
+test('blocks browser back navigation on repeat visit (phase 2)', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+
+  await page.getByRole('link', { name: 'Flashcards' }).click();
+  await expect(page).toHaveURL(/\/flashcards/);
+
+  await page.waitForTimeout(300);
+  await page.evaluate(() => window.history.back());
+
+  const dialog = page.getByRole('dialog', { name: 'Leave flashcards?' });
+  await page.waitForTimeout(150);
+  await expect(dialog).toBeVisible();
+
+  // Confirm leave, go back to home, then re-enter flashcards.
+  await dialog.getByRole('button', { name: 'Leave' }).click();
+  await page.waitForURL(/\//, { timeout: 5000 });
+
+  await page.getByRole('link', { name: 'Flashcards' }).click();
+  await expect(page).toHaveURL(/\/flashcards/);
+
+  await page.waitForTimeout(300);
+  await page.evaluate(() => window.history.back());
+
+  const dialog2 = page.getByRole('dialog', { name: 'Leave flashcards?' });
+  await page.waitForTimeout(150);
+  await expect(dialog2).toBeVisible();
+  await expect(page).toHaveURL(/\/flashcards/);
+
+  await dialog2.getByRole('button', { name: 'Stay' }).click();
+  await expect(dialog2).toBeHidden();
   await expect(page).toHaveURL(/\/flashcards/);
 });

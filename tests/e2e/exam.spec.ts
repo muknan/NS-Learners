@@ -96,6 +96,32 @@ test('retake with no missed questions shows an empty state', async ({ page }) =>
   await expect(page).toHaveURL(/\/exam.*mode=full-test/);
 });
 
+test('blocks browser back navigation on first exam visit (phase 1)', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+  await page.evaluate(() => {
+    window.localStorage.setItem('nsLearner.keyboardHintSeen', 'true');
+    window.localStorage.clear();
+    window.sessionStorage.clear();
+    window.history.replaceState({}, '', '/');
+    window.localStorage.setItem('nsLearner.keyboardHintSeen', 'true');
+  });
+
+  await page.getByRole('button', { name: /start practice exam/i }).click();
+  await expect(page.getByTestId('exam-shell')).toBeVisible();
+
+  await page.waitForTimeout(300);
+  await page.evaluate(() => window.history.back());
+
+  const dialog = page.getByRole('dialog', { name: 'Leave exam?' });
+  await expect(dialog).toBeVisible();
+  await expect(page).toHaveURL(/\/exam/);
+
+  await dialog.getByRole('button', { name: 'Stay' }).click();
+  await expect(dialog).toBeHidden();
+  await expect(page).toHaveURL(/\/exam/);
+});
+
 test('blocks browser back navigation during an active exam', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');
