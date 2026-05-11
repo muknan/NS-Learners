@@ -6,8 +6,10 @@ import { FlashcardImage } from '@/components/flashcards/FlashcardImage';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
+import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
 import { Modal } from '@/components/ui/Modal';
 import { useMounted } from '@/hooks/useMounted';
+import { useNavigationBlocker } from '@/hooks/useNavigationBlocker';
 import { shuffleFlashcards } from '@/lib/flashcards';
 import type { Flashcard, FlashcardCategory } from '@/lib/flashcards.schema';
 
@@ -40,6 +42,7 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
   const [isHydrated, setIsHydrated] = useState(false);
   const [lastSessionIds, setLastSessionIds] = useState<string[]>([]);
   const [seenSessionIds, setSeenSessionIds] = useState<Set<string>>(new Set());
+  const [leaveConfirmOpen, setLeaveConfirmOpen] = useState(false);
 
   useEffect(() => {
     function handleBeforeUnload(event: BeforeUnloadEvent): void {
@@ -50,15 +53,11 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
     return () => window.removeEventListener('beforeunload', handleBeforeUnload);
   }, []);
 
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    window.history.pushState({ flashcards: true }, '');
-    function handlePopState(): void {
-      window.history.pushState({ flashcards: true }, '');
-    }
-    window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
-  }, []);
+  const continueBlockedNavigation = useNavigationBlocker({
+    enabled: true,
+    stateKey: 'flashcardsNavigationGuard',
+    onBlocked: () => setLeaveConfirmOpen(true),
+  });
 
   const filteredPool = useMemo(() => {
     if (activeCategory === 'known') {
@@ -437,6 +436,16 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
           </div>
         </Modal>
       ) : null}
+
+      <ConfirmDialog
+        open={leaveConfirmOpen}
+        title="Leave flashcards?"
+        description="Your known cards are saved in this browser. Leave this page?"
+        confirmLabel="Leave"
+        cancelLabel="Stay"
+        onCancel={() => setLeaveConfirmOpen(false)}
+        onConfirm={continueBlockedNavigation}
+      />
     </section>
   );
 }

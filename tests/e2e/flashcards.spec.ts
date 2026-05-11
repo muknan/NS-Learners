@@ -22,3 +22,20 @@ test('flashcards are reachable and support button and keyboard navigation', asyn
   await page.keyboard.press('s');
   await expect(page.getByText(/Card 1 of \d+/)).toBeVisible();
 });
+
+test('blocks browser back navigation until confirmed', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+  await page.getByRole('link', { name: 'Flashcards' }).click();
+  await expect(page).toHaveURL(/\/flashcards/);
+
+  await page.evaluate(() => window.history.back());
+
+  const dialog = page.getByRole('dialog', { name: 'Leave flashcards?' });
+  await expect(dialog).toBeVisible();
+  await expect(page).toHaveURL(/\/flashcards/);
+
+  await dialog.getByRole('button', { name: 'Stay' }).click();
+  await expect(dialog).toBeHidden();
+  await expect(page).toHaveURL(/\/flashcards/);
+});

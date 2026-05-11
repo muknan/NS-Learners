@@ -16,9 +16,11 @@ import { ExamTopBar } from '@/components/exam/ExamTopBar';
 import { NavigatorDrawer } from '@/components/exam/NavigatorDrawer';
 import { Badge } from '@/components/ui/Badge';
 import { Button, ButtonLink } from '@/components/ui/Button';
+import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
 import { Modal } from '@/components/ui/Modal';
 import { ToastViewport, type ToastMessage, type ToastType } from '@/components/ui/Toast';
 import { useExam, ExamProvider } from '@/hooks/useExam';
+import { useNavigationBlocker } from '@/hooks/useNavigationBlocker';
 import { useProgress } from '@/hooks/useProgress';
 import { useTimer } from '@/hooks/useTimer';
 import { getExamMode } from '@/lib/modes';
@@ -175,6 +177,7 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
   const [explanationModalOpen, setExplanationModalOpen] = useState(false);
   const [shortcutsOpen, setShortcutsOpen] = useState(false);
   const [navigatorOpen, setNavigatorOpen] = useState(false);
+  const [leaveConfirmOpen, setLeaveConfirmOpen] = useState(false);
   const [sectionBreakSeen, setSectionBreakSeen] = useState(() =>
     readSessionBooleanFlag(SECTION_BREAK_SEEN_KEY),
   );
@@ -253,6 +256,12 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
   const dismissToast = useCallback((id: string): void => {
     setToasts((current) => current.filter((toast) => toast.id !== id));
   }, []);
+
+  const continueBlockedNavigation = useNavigationBlocker({
+    enabled: session.phase === 'in-progress' || session.phase === 'review',
+    stateKey: 'examNavigationGuard',
+    onBlocked: () => setLeaveConfirmOpen(true),
+  });
 
   const addToast = useCallback((message: string, type: ToastType = 'info'): void => {
     setToasts((current) => [
@@ -401,16 +410,6 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
     window.addEventListener('beforeunload', handleBeforeUnload);
     return () => window.removeEventListener('beforeunload', handleBeforeUnload);
   }, [session.phase, session.id]);
-
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    window.history.pushState({ exam: true }, '');
-    function handlePopState(): void {
-      window.history.pushState({ exam: true }, '');
-    }
-    window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
-  }, []);
 
   useEffect(() => {
     announcedTimerMilestonesRef.current.clear();
@@ -827,6 +826,16 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
           </dl>
         </Modal>
       ) : null}
+
+      <ConfirmDialog
+        open={leaveConfirmOpen}
+        title="Leave exam?"
+        description="Your current session is saved in this browser. Leave this page?"
+        confirmLabel="Leave"
+        cancelLabel="Stay"
+        onCancel={() => setLeaveConfirmOpen(false)}
+        onConfirm={continueBlockedNavigation}
+      />
 
       <ToastViewport toasts={toasts} onDismiss={dismissToast} />
     </section>
