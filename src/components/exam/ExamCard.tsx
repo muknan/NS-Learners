@@ -28,7 +28,6 @@ export function ExamCard({
   const selectedId = session.answers[question.id] ?? null;
   const showFeedback = instantFeedback && selectedId !== null && session.phase === 'review';
   const orderedOptions = getOrderedOptions(question, session);
-  const questionRef = useRef<HTMLHeadingElement>(null);
   const answerListRef = useRef<HTMLDivElement>(null);
   const hasImage = Boolean(question.image);
   const cardClassName = ['exam-card', hasImage ? 'exam-card--with-image' : '']
@@ -36,10 +35,6 @@ export function ExamCard({
     .join(' ');
 
   useEffect(() => {
-    if (questionRef.current) {
-      questionRef.current.scrollTop = 0;
-    }
-
     if (answerListRef.current) {
       answerListRef.current.scrollTop = 0;
     }
@@ -65,7 +60,7 @@ export function ExamCard({
           </span>
         </div>
 
-        <h1 className="exam-question" data-testid="exam-question" ref={questionRef} tabIndex={-1}>
+        <h1 className="exam-question" data-testid="exam-question" tabIndex={-1}>
           {question.text}
         </h1>
 

@@ -22,10 +22,10 @@ import {
   readCompletedSession,
   readSettings,
   saveSessionForMode,
+  sessionSet,
 } from '@/lib/storage';
+import { nextToastId } from '@/lib/toast';
 import type { ExamSession, Question, QuestionResult } from '@/types/exam';
-
-let toastIdCounter = 0;
 
 export function ResultsClient({ questions }: { questions: Question[] }) {
   const router = useRouter();
@@ -65,7 +65,7 @@ export function ResultsClient({ questions }: { questions: Question[] }) {
     setToasts((current) => [
       ...current,
       {
-        id: globalThis.crypto?.randomUUID?.() ?? `toast-${++toastIdCounter}-${Date.now()}`,
+        id: nextToastId(),
         message,
         type: 'success',
       },
@@ -94,7 +94,7 @@ export function ResultsClient({ questions }: { questions: Question[] }) {
       setToasts((current) => [
         ...current,
         {
-          id: globalThis.crypto?.randomUUID?.() ?? `toast-${++toastIdCounter}-${Date.now()}`,
+          id: nextToastId(),
           message: 'Clipboard unavailable',
           type: 'error',
         },
@@ -109,7 +109,7 @@ export function ResultsClient({ questions }: { questions: Question[] }) {
       return;
     }
 
-    sessionStorage.setItem(RETAKE_QUESTIONS_KEY, missedIds.join(','));
+    sessionSet(RETAKE_QUESTIONS_KEY, missedIds.join(','));
     const nextSession = createExamSession({
       questions,
       settings: {

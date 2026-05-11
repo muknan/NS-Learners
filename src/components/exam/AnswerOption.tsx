@@ -25,20 +25,27 @@ export function AnswerOption({
   const shortcutNumber = String(index + 1);
   const statusLabel = correct && showFeedback ? 'Correct answer' : wrong ? 'Your answer' : '';
 
+  function handleSelect(): void {
+    if (!disabled) {
+      onSelect();
+    }
+  }
+
   return (
     <button
       aria-checked={selected}
+      aria-disabled={disabled}
       className={[
         'answer-option',
         selected ? 'is-selected' : '',
         correct && showFeedback ? 'is-correct' : '',
         wrong ? 'is-wrong' : '',
+        disabled ? 'is-locked' : '',
       ]
         .filter(Boolean)
         .join(' ')}
       data-testid="answer-option"
-      disabled={disabled}
-      onClick={onSelect}
+      onClick={handleSelect}
       role="radio"
       type="button"
     >

@@ -158,7 +158,7 @@ export function HomeClient({ stats }: HomeClientProps) {
           <Button
             tone="secondary"
             icon={<RotateCcw aria-hidden="true" />}
-            onClick={() => router.push('/exam')}
+            onClick={() => router.push(`/exam?mode=${session.mode}`)}
           >
             Resume
           </Button>

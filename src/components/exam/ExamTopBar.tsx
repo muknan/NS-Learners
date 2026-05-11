@@ -1,13 +1,10 @@
 'use client';
 
 import { Flag, LogOut, Menu, Moon, Sun } from 'lucide-react';
-import { useEffect, useState } from 'react';
 import { Timer } from '@/components/exam/Timer';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
-import { THEME_KEY } from '@/lib/storage';
-
-type Theme = 'light' | 'dark';
+import { useTheme } from '@/hooks/useTheme';
 
 interface ExamTopBarProps {
   modeLabel: string;
@@ -28,35 +25,7 @@ export function ExamTopBar({
   onExit,
   onOpenNavigator,
 }: ExamTopBarProps) {
-  const [theme, setTheme] = useState<Theme>('light');
-
-  useEffect(() => {
-    function syncTheme(): void {
-      setTheme(document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light');
-    }
-
-    syncTheme();
-    window.addEventListener('storage', syncTheme);
-    window.addEventListener('ns-learner-theme-change', syncTheme);
-
-    return () => {
-      window.removeEventListener('storage', syncTheme);
-      window.removeEventListener('ns-learner-theme-change', syncTheme);
-    };
-  }, []);
-
-  function toggleTheme(): void {
-    const nextTheme = theme === 'dark' ? 'light' : 'dark';
-    setTheme(nextTheme);
-    document.documentElement.dataset.theme = nextTheme;
-    document.documentElement.style.colorScheme = nextTheme;
-    try {
-      window.localStorage.setItem(THEME_KEY, nextTheme);
-      window.dispatchEvent(new Event('ns-learner-theme-change'));
-    } catch {
-      // Theme persistence is best-effort only.
-    }
-  }
+  const { theme, setTheme } = useTheme();
 
   return (
     <header className="exam-top-bar" data-testid="exam-top-bar">
@@ -97,7 +66,7 @@ export function ExamTopBar({
         tone="ghost"
         size="icon"
         icon={theme === 'dark' ? <Sun aria-hidden="true" /> : <Moon aria-hidden="true" />}
-        onClick={toggleTheme}
+        onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
       />
     </header>
   );

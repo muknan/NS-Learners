@@ -47,14 +47,15 @@ import {
   saveSessionForMode,
   saveSessionBooleanFlag,
   saveHistory,
+  sessionGet,
 } from '@/lib/storage';
 import { drivingTips } from '@/lib/tips';
+import { nextToastId } from '@/lib/toast';
 import type { AnswerOption, ExamSession, Question } from '@/types/exam';
 
 type LoadState = 'loading' | 'ready' | 'empty';
 const SWIPE_INTERACTIVE_SELECTOR =
   'button, a, input, textarea, select, details, summary, [role="button"]';
-let toastIdCounter = 0;
 
 export function ExamClient({ questions }: { questions: Question[] }) {
   const searchParams = useSearchParams();
@@ -65,7 +66,7 @@ export function ExamClient({ questions }: { questions: Question[] }) {
   useEffect(() => {
     const retakeIds =
       mode.id === 'retake'
-        ? (sessionStorage.getItem(RETAKE_QUESTIONS_KEY) ?? '')
+        ? sessionGet<string>(RETAKE_QUESTIONS_KEY, '')
             .split(',')
             .map((id) => id.trim())
             .filter(Boolean)
@@ -237,7 +238,8 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
     const correct = sectionResults.filter((result) => result.isCorrect).length;
 
     return { correct, total: sectionResults.length };
-  }, [questionsById, session, showSectionBreak]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- memo reads session via spread; key deps are questionIds and answers
+  }, [questionsById, showSectionBreak, session.questionIds, session.answers]);
 
   const dismissToast = useCallback((id: string): void => {
     setToasts((current) => current.filter((toast) => toast.id !== id));
@@ -247,7 +249,7 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
     setToasts((current) => [
       ...current,
       {
-        id: globalThis.crypto?.randomUUID?.() ?? `toast-${++toastIdCounter}-${Date.now()}`,
+        id: nextToastId(),
         message,
         type,
       },
@@ -266,6 +268,8 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
 
   const submitExam = useCallback(
     (expired = false): void => {
+      if (sessionRef.current.phase === 'complete') return;
+
       const completed = completeSession(session);
       const historyEntry = toHistoryEntry(completed, questionsById);
 
@@ -569,6 +573,11 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
     pointerStartY.current = null;
   }
 
+  const unansweredNumbers = useMemo(
+    () => (submitModalOpen ? getUnansweredQuestionNumbers(session) : []),
+    [submitModalOpen, session],
+  );
+
   return (
     <section
       className="exam-layout"
@@ -674,13 +683,10 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
         <Modal title="Submit practice exam?" onClose={() => setSubmitModalOpen(false)}>
           <div className="submit-warning">
             <AlertTriangle aria-hidden="true" />
-            <p>
-              You have {getUnansweredQuestionNumbers(session).length} unanswered questions. Submit
-              anyway?
-            </p>
+            <p>You have {unansweredNumbers.length} unanswered questions. Submit anyway?</p>
           </div>
           <div className="unanswered-list" aria-label="Unanswered questions">
-            {getUnansweredQuestionNumbers(session).map((number) => (
+            {unansweredNumbers.map((number) => (
               <span key={number}>Question {number}</span>
             ))}
           </div>

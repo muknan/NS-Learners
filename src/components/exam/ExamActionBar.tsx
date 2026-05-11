@@ -105,6 +105,14 @@ export function ExamActionBar({
             <div className="exam-action-popover" role="dialog" aria-label="Exam settings">
               {toggles}
               {toggleHint ? <p className="exam-action-bar__hint">{toggleHint}</p> : null}
+              <Button
+                aria-label="Close exam settings"
+                size="sm"
+                tone="ghost"
+                onClick={() => setSettingsOpen(false)}
+              >
+                Close
+              </Button>
             </div>
           ) : null}
         </div>

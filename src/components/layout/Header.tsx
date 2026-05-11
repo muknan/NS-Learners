@@ -3,13 +3,11 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { Moon, Play, Settings, Sun } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { SettingsPanel } from '@/components/layout/SettingsPanel';
 import { useMounted } from '@/hooks/useMounted';
-import { THEME_KEY } from '@/lib/storage';
-
-type Theme = 'light' | 'dark';
+import { useTheme } from '@/hooks/useTheme';
 
 export function Header() {
   const router = useRouter();
@@ -17,36 +15,7 @@ export function Header() {
   const pathname = rawPathname.replace(/\/$/, '') || '/';
   const mounted = useMounted();
   const [settingsOpen, setSettingsOpen] = useState(false);
-  const [theme, setTheme] = useState<Theme>('light');
-
-  useEffect(() => {
-    function syncTheme(): void {
-      const currentTheme = document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
-      setTheme(currentTheme);
-    }
-
-    syncTheme();
-    window.addEventListener('storage', syncTheme);
-    window.addEventListener('ns-learner-theme-change', syncTheme);
-
-    return () => {
-      window.removeEventListener('storage', syncTheme);
-      window.removeEventListener('ns-learner-theme-change', syncTheme);
-    };
-  }, []);
-
-  function toggleTheme(): void {
-    const nextTheme = theme === 'dark' ? 'light' : 'dark';
-    setTheme(nextTheme);
-    document.documentElement.dataset.theme = nextTheme;
-    document.documentElement.style.colorScheme = nextTheme;
-    try {
-      window.localStorage.setItem(THEME_KEY, nextTheme);
-    } catch {
-      // Theme persistence is best-effort only.
-    }
-    window.dispatchEvent(new Event('ns-learner-theme-change'));
-  }
+  const { theme, setTheme } = useTheme();
 
   function startExam(): void {
     router.push('/exam?mode=full-test');
@@ -96,7 +65,7 @@ export function Header() {
         </button>
         <button
           type="button"
-          onClick={toggleTheme}
+          onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
           aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
         >
           {mounted ? (

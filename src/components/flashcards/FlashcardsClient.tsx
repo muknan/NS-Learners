@@ -78,17 +78,13 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
     setDetailsOpen(false);
   }
 
-  const actionsRef = useRef({
-    goNext,
-    goPrevious,
-    shuffleDeck,
-  });
+  const goNextRef = useRef(goNext);
+  const goPreviousRef = useRef(goPrevious);
+  const shuffleDeckRef = useRef(shuffleDeck);
 
-  actionsRef.current = {
-    goNext,
-    goPrevious,
-    shuffleDeck,
-  };
+  goNextRef.current = goNext;
+  goPreviousRef.current = goPrevious;
+  shuffleDeckRef.current = shuffleDeck;
 
   useEffect(() => {
     const persisted = readPersistedFlashcardsState();
@@ -134,19 +130,19 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
 
       if (event.key === 'ArrowLeft') {
         event.preventDefault();
-        actionsRef.current.goPrevious();
+        goPreviousRef.current();
         return;
       }
 
       if (event.key === 'ArrowRight') {
         event.preventDefault();
-        actionsRef.current.goNext();
+        goNextRef.current();
         return;
       }
 
       if (event.key === 's' || event.key === 'S') {
         event.preventDefault();
-        actionsRef.current.shuffleDeck();
+        shuffleDeckRef.current();
       }
     }
 

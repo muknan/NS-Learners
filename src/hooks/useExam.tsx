@@ -145,12 +145,18 @@ function examReducer(state: ExamState, action: ExamAction): ExamState {
       };
     }
     case 'set-auto-advance': {
+      // Only update previousAutoAdvance when turning OFF (save state for future restore).
+      // When turning ON, preserve the existing previousAutoAdvance unchanged.
+      const previousAutoAdvance = action.value
+        ? state.session.previousAutoAdvance
+        : state.session.autoAdvance;
+
       return {
         ...state,
         session: {
           ...state.session,
           autoAdvance: action.value,
-          previousAutoAdvance: action.value,
+          previousAutoAdvance,
           shouldAutoAdvance: false,
           settings: {
             ...state.session.settings,

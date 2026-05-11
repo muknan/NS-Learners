@@ -21,7 +21,16 @@ export function QuestionNav({ session, questionsById, onSelect }: QuestionNavPro
 
         return (
           <button
-            aria-current={session.currentIndex === index ? 'true' : undefined}
+            aria-current={session.currentIndex === index ? 'step' : undefined}
+            aria-label={[
+              `Question ${index + 1}`,
+              selected ? 'answered' : 'unanswered',
+              flagged ? 'flagged' : '',
+              correct ? 'correct' : '',
+              wrong ? 'incorrect' : '',
+            ]
+              .filter(Boolean)
+              .join(', ')}
             className={[
               'question-nav__item',
               session.currentIndex === index ? 'is-current' : '',
@@ -36,14 +45,10 @@ export function QuestionNav({ session, questionsById, onSelect }: QuestionNavPro
             onClick={() => onSelect(index)}
             type="button"
           >
-            <span>{index + 1}</span>
+            <span aria-hidden="true">{index + 1}</span>
             {flagged ? <Flag aria-hidden="true" /> : null}
             {correct ? <Check aria-hidden="true" /> : null}
             {wrong ? <X aria-hidden="true" /> : null}
-            <span className="sr-only">
-              {selected ? ', answered' : ', unanswered'}
-              {flagged ? ', flagged' : ''}
-            </span>
           </button>
         );
       })}

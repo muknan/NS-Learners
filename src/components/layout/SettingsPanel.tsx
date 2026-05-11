@@ -4,39 +4,25 @@ import { useEffect, useState } from 'react';
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
 import { Modal } from '@/components/ui/Modal';
 import { ToggleSwitch } from '@/components/ui/ToggleSwitch';
-import { HISTORY_KEY, readAdvanceDuration, saveAdvanceDuration, THEME_KEY } from '@/lib/storage';
+import { useTheme } from '@/hooks/useTheme';
+import { HISTORY_KEY, readAdvanceDuration, saveAdvanceDuration } from '@/lib/storage';
 
-type Theme = 'light' | 'dark';
 type PendingConfirm = 'score-history' | 'all-data' | null;
 const ADVANCE_DURATION_OPTIONS = [2, 3, 5, 8] as const;
 
 export function SettingsPanel({ open, onClose }: { open: boolean; onClose: () => void }) {
-  const [theme, setTheme] = useState<Theme>('light');
+  const { theme, setTheme } = useTheme();
   const [advanceDuration, setAdvanceDuration] = useState(3);
   const [pendingConfirm, setPendingConfirm] = useState<PendingConfirm>(null);
 
   useEffect(() => {
     if (open) {
-      setTheme(document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light');
       setAdvanceDuration(readAdvanceDuration());
     }
   }, [open]);
 
   if (!open) {
     return null;
-  }
-
-  function updateTheme(dark: boolean): void {
-    const nextTheme = dark ? 'dark' : 'light';
-    setTheme(nextTheme);
-    document.documentElement.dataset.theme = nextTheme;
-    document.documentElement.style.colorScheme = nextTheme;
-    try {
-      window.localStorage.setItem(THEME_KEY, nextTheme);
-    } catch {
-      // Theme persistence is best-effort only.
-    }
-    window.dispatchEvent(new Event('ns-learner-theme-change'));
   }
 
   function updateAdvanceDuration(value: number): void {
@@ -57,6 +43,8 @@ export function SettingsPanel({ open, onClose }: { open: boolean; onClose: () =>
       for (const key of Object.keys(storage)) {
         if (
           key.startsWith('ns-learner-') ||
+          key.startsWith('ns-learners.') ||
+          key.startsWith('ns-retake-') ||
           key.startsWith('nsLearner.') ||
           key.startsWith('ns-exam-session-')
         ) {
@@ -71,7 +59,7 @@ export function SettingsPanel({ open, onClose }: { open: boolean; onClose: () =>
 
   return (
     <>
-      <Modal title="Practice settings" onClose={pendingConfirm ? () => undefined : onClose}>
+      <Modal title="Practice settings" onClose={onClose}>
         <div className="settings-grid">
           <section className="settings-section" aria-labelledby="appearance-settings-title">
             <h3 id="appearance-settings-title">Appearance</h3>
@@ -79,7 +67,7 @@ export function SettingsPanel({ open, onClose }: { open: boolean; onClose: () =>
               id="theme-toggle-setting"
               label="Dark mode"
               checked={theme === 'dark'}
-              onChange={updateTheme}
+              onChange={(dark) => setTheme(dark ? 'dark' : 'light')}
             />
           </section>
 
