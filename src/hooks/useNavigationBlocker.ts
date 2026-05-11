@@ -2,6 +2,8 @@
 
 import { useEffect, useRef } from 'react';
 
+const GUARD_DEPTH = 3;
+
 interface NavigationBlockerOptions {
   enabled: boolean;
   fallbackUrl?: string;
@@ -37,7 +39,9 @@ export function useNavigationBlocker({
 
       const currentState = isHistoryState(window.history.state) ? window.history.state : {};
       window.history.replaceState({ ...currentState, [`${stateKey}Base`]: true }, '');
-      window.history.pushState({ [stateKey]: true }, '');
+      for (let i = 0; i < GUARD_DEPTH; i++) {
+        window.history.pushState({ [stateKey]: true, guardIndex: i }, '');
+      }
       armedRef.current = true;
     }
 
