@@ -37,6 +37,7 @@ export function HomeClient({ flashcardTotal, stats }: HomeClientProps) {
   const [clearHistoryOpen, setClearHistoryOpen] = useState(false);
   const [resetConfirmMode, setResetConfirmMode] = useState<string | null>(null);
   const [fullTestResetOpen, setFullTestResetOpen] = useState(false);
+  const [resetAllConfirmOpen, setResetAllConfirmOpen] = useState(false);
 
   useEffect(() => {
     setSessions(readAllActiveSessions());
@@ -69,6 +70,14 @@ export function HomeClient({ flashcardTotal, stats }: HomeClientProps) {
     }
     setHistory([]);
     setClearHistoryOpen(false);
+  }
+
+  function resetAllSessions(): void {
+    for (const sess of activeResumeSessions) {
+      clearSessionForMode(sess.mode);
+    }
+    setSessions(readAllActiveSessions());
+    setResetAllConfirmOpen(false);
   }
 
   const activeResumeSessions = sessions.filter(
@@ -159,35 +168,51 @@ export function HomeClient({ flashcardTotal, stats }: HomeClientProps) {
       </section>
 
       {activeResumeSessions.length > 0 && (
-        <div className="resume-cards">
-          {activeResumeSessions.map((sess) => (
-            <Card
-              className="resume-card"
-              key={sess.id}
-              aria-label={`Resume ${getExamMode(sess.mode).label}`}
+        <section className="section-block" aria-labelledby="resume-title">
+          <div className="section-heading resume-heading">
+            <div>
+              <Badge tone="warning">In progress</Badge>
+              <h2 id="resume-title">Resume your practice</h2>
+            </div>
+            <Button
+              tone="ghost"
+              size="sm"
+              icon={<Trash2 aria-hidden="true" />}
+              onClick={() => setResetAllConfirmOpen(true)}
             >
-              <div>
-                <Badge tone="warning">In progress</Badge>
-                <h2>Resume your {getExamMode(sess.mode).label}</h2>
-                <p>
-                  Question {sess.currentIndex + 1} of {sess.questionIds.length} is waiting.
-                </p>
-              </div>
-              <div className="resume-card__actions">
-                <Button
-                  tone="secondary"
-                  icon={<RotateCcw aria-hidden="true" />}
-                  onClick={() => router.push(`/exam?mode=${sess.mode}`)}
-                >
-                  Resume
-                </Button>
-                <Button tone="ghost" onClick={() => setResetConfirmMode(sess.mode)}>
-                  Reset Progress
-                </Button>
-              </div>
-            </Card>
-          ))}
-        </div>
+              Reset All
+            </Button>
+          </div>
+          <div className="resume-cards">
+            {activeResumeSessions.map((sess) => (
+              <Card
+                className="resume-card"
+                key={sess.id}
+                aria-label={`Resume ${getExamMode(sess.mode).label}`}
+              >
+                <div>
+                  <Badge tone="warning">In progress</Badge>
+                  <h2>Resume your {getExamMode(sess.mode).label}</h2>
+                  <p>
+                    Question {sess.currentIndex + 1} of {sess.questionIds.length} is waiting.
+                  </p>
+                </div>
+                <div className="resume-card__actions">
+                  <Button
+                    tone="secondary"
+                    icon={<RotateCcw aria-hidden="true" />}
+                    onClick={() => router.push(`/exam?mode=${sess.mode}`)}
+                  >
+                    Resume
+                  </Button>
+                  <Button tone="ghost" onClick={() => setResetConfirmMode(sess.mode)}>
+                    Reset Progress
+                  </Button>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </section>
       )}
 
       <section className="section-block" aria-labelledby="recent-title">
@@ -289,6 +314,15 @@ export function HomeClient({ flashcardTotal, stats }: HomeClientProps) {
           startFreshFullTest();
           setFullTestResetOpen(false);
         }}
+      />
+      <ConfirmDialog
+        open={resetAllConfirmOpen}
+        title="Reset all practice sessions?"
+        description="This will clear every in-progress session and start them over. Your answers so far will be lost."
+        confirmLabel="Reset All"
+        cancelLabel="Cancel"
+        onCancel={() => setResetAllConfirmOpen(false)}
+        onConfirm={resetAllSessions}
       />
     </div>
   );

@@ -26,6 +26,10 @@ export function useNavigationBlocker({
       return undefined;
     }
 
+    // Reset for a fresh guard setup on every mount/re-arm
+    bypassRef.current = false;
+    armedRef.current = false;
+
     function armHistoryGuard(): void {
       if (armedRef.current) {
         return;
@@ -47,22 +51,27 @@ export function useNavigationBlocker({
       onBlockedRef.current();
     }
 
+    function handlePageShow(event: PageTransitionEvent): void {
+      if (event.persisted) {
+        armedRef.current = false;
+        armHistoryGuard();
+      }
+    }
+
     armHistoryGuard();
     window.addEventListener('popstate', handlePopState);
+    window.addEventListener('pageshow', handlePageShow);
 
     return () => {
+      armedRef.current = false;
       window.removeEventListener('popstate', handlePopState);
+      window.removeEventListener('pageshow', handlePageShow);
     };
   }, [enabled, stateKey]);
 
   return () => {
     bypassRef.current = true;
-    if (window.history.length <= 2) {
-      window.location.assign(fallbackUrl);
-      return;
-    }
-
-    window.history.go(-2);
+    window.location.assign(fallbackUrl);
   };
 }
 

@@ -32,6 +32,7 @@ test('blocks browser back navigation until confirmed', async ({ page }) => {
   await page.evaluate(() => window.history.back());
 
   const dialog = page.getByRole('dialog', { name: 'Leave flashcards?' });
+  await page.waitForTimeout(150);
   await expect(dialog).toBeVisible();
   await expect(page).toHaveURL(/\/flashcards/);
 
