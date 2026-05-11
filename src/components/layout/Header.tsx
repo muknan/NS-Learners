@@ -56,7 +56,13 @@ export function Header() {
         >
           Flashcards
         </Link>
-        <button type="button" onClick={() => setSettingsOpen(true)} aria-label="Settings">
+        <button
+          type="button"
+          onClick={() => setSettingsOpen(true)}
+          aria-label="Settings"
+          aria-haspopup="dialog"
+          aria-expanded={settingsOpen}
+        >
           {mounted ? (
             <Settings aria-hidden="true" />
           ) : (

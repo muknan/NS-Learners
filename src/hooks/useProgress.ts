@@ -1,3 +1,6 @@
+'use client';
+
+import { useMemo } from 'react';
 import type { ExamSession } from '@/types/exam';
 
 export function useProgress(session: ExamSession): {
@@ -5,12 +8,13 @@ export function useProgress(session: ExamSession): {
   total: number;
   percentage: number;
 } {
-  const answered = session.questionIds.filter((questionId) => session.answers[questionId]).length;
-  const total = session.questionIds.length;
-
-  return {
-    answered,
-    total,
-    percentage: total ? Math.round((answered / total) * 100) : 0,
-  };
+  return useMemo(() => {
+    const answered = session.questionIds.filter((questionId) => session.answers[questionId]).length;
+    const total = session.questionIds.length;
+    return {
+      answered,
+      total,
+      percentage: total ? Math.round((answered / total) * 100) : 0,
+    };
+  }, [session.questionIds, session.answers]);
 }

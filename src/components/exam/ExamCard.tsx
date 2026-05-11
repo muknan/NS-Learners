@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/Badge';
 import type { AnswerOption as AnswerOptionValue, ExamSession, Question } from '@/types/exam';
 import { getOrderedOptions } from '@/lib/session';
 import { getTopicLabel } from '@/lib/questions';
-import { useEffect, useRef } from 'react';
+import { memo, useEffect, useRef } from 'react';
 
 interface ExamCardProps {
   session: ExamSession;
@@ -17,7 +17,7 @@ interface ExamCardProps {
   onAnswer: (optionId: AnswerOptionValue['id']) => void;
 }
 
-export function ExamCard({
+export const ExamCard = memo(function ExamCard({
   session,
   question,
   questionIndex,
@@ -87,7 +87,7 @@ export function ExamCard({
       </div>
     </article>
   );
-}
+});
 
 function getDifficultyTone(difficulty: Question['difficulty']): 'neutral' | 'warning' | 'error' {
   switch (difficulty) {

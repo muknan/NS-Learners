@@ -1,7 +1,7 @@
 'use client';
 
 import { ArrowRight, Flag, Info, Send, Settings2 } from 'lucide-react';
-import { useEffect, useRef, useState, type CSSProperties } from 'react';
+import { memo, useEffect, useRef, useState, type CSSProperties } from 'react';
 import { Button } from '@/components/ui/Button';
 import { ToggleSwitch } from '@/components/ui/ToggleSwitch';
 
@@ -21,7 +21,7 @@ interface ExamActionBarProps {
   onToggleInstantFeedback: (value: boolean) => void;
 }
 
-export function ExamActionBar({
+export const ExamActionBar = memo(function ExamActionBar({
   autoAdvanceActive,
   autoAdvanceDurationMs,
   autoAdvance,
@@ -165,7 +165,7 @@ export function ExamActionBar({
       </div>
     </footer>
   );
-}
+});
 
 function getToggleHint(
   instantFeedback: boolean,

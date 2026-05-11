@@ -64,47 +64,57 @@ export function ExamClient({ questions }: { questions: Question[] }) {
   const [session, setSession] = useState<ExamSession | null>(null);
 
   useEffect(() => {
-    const retakeIds =
-      mode.id === 'retake'
-        ? sessionGet<string>(RETAKE_QUESTIONS_KEY, '')
-            .split(',')
-            .map((id) => id.trim())
-            .filter(Boolean)
-        : [];
-    const retakeQuestions = retakeIds.flatMap((id) => {
-      const question = getQuestionById(id);
-      return question ? [question] : [];
-    });
+    try {
+      const retakeIds =
+        mode.id === 'retake'
+          ? sessionGet<string>(RETAKE_QUESTIONS_KEY, '')
+              .split(',')
+              .map((id) => id.trim())
+              .filter(Boolean)
+          : [];
+      const retakeQuestions = retakeIds.flatMap((id) => {
+        const question = getQuestionById(id);
+        return question ? [question] : [];
+      });
 
-    if (mode.id === 'retake' && retakeQuestions.length === 0) {
+      if (mode.id === 'retake' && retakeQuestions.length === 0) {
+        setSession(null);
+        setLoadState('empty');
+        return;
+      }
+
+      const restored = readSessionForMode(mode.id);
+      if (
+        restored &&
+        (mode.id !== 'retake' || sameQuestionIds(restored.questionIds, retakeQuestions))
+      ) {
+        setSession(restored);
+        setLoadState('ready');
+        return;
+      }
+
+      const selectedQuestions =
+        mode.id === 'retake'
+          ? retakeQuestions
+          : getSessionQuestions(mode.filter, mode.questionCount);
+      const created = createExamSession({
+        questions: selectedQuestions,
+        settings: readSettings(),
+        mode: mode.id,
+        questionIds: selectedQuestions.map((question) => question.id),
+        autoAdvanceDurationMs: readAdvanceDuration() * 1000,
+      });
+      clearSessionFlag(SECTION_BREAK_SEEN_KEY);
+      saveSessionForMode(created);
+      setSession(created);
+      setLoadState('ready');
+    } catch (err) {
+      if (process.env.NODE_ENV === 'development') {
+        console.error('[ExamClient] Session initialization error:', err);
+      }
       setSession(null);
       setLoadState('empty');
-      return;
     }
-
-    const restored = readSessionForMode(mode.id);
-    if (
-      restored &&
-      (mode.id !== 'retake' || sameQuestionIds(restored.questionIds, retakeQuestions))
-    ) {
-      setSession(restored);
-      setLoadState('ready');
-      return;
-    }
-
-    const selectedQuestions =
-      mode.id === 'retake' ? retakeQuestions : getSessionQuestions(mode.filter, mode.questionCount);
-    const created = createExamSession({
-      questions: selectedQuestions,
-      settings: readSettings(),
-      mode: mode.id,
-      questionIds: selectedQuestions.map((question) => question.id),
-      autoAdvanceDurationMs: readAdvanceDuration() * 1000,
-    });
-    clearSessionFlag(SECTION_BREAK_SEEN_KEY);
-    saveSessionForMode(created);
-    setSession(created);
-    setLoadState('ready');
   }, [mode.id, mode.filter, mode.questionCount]);
 
   if (loadState === 'loading') {
@@ -294,6 +304,75 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
     dispatch({ type: 'toggle-flag', questionId: currentQuestion.id });
     addToast(flagged ? 'Flag removed' : 'Answer flagged', flagged ? 'info' : 'warning');
   }, [addToast, currentQuestion.id, dispatch, session.flaggedIds]);
+
+  const requestSubmit = useCallback((): void => {
+    const unanswered = getUnansweredQuestionNumbers(session);
+
+    if (unanswered.length) {
+      setSubmitModalOpen(true);
+      return;
+    }
+
+    submitExam();
+  }, [session, submitExam]);
+
+  const answer = useCallback(
+    (optionId: AnswerOption['id']): void => {
+      dispatch({ type: 'answer', questionId: currentQuestion.id, optionId });
+    },
+    [currentQuestion.id, dispatch],
+  );
+
+  const handleNext = useCallback((): void => {
+    cancelAutoAdvance();
+    dispatch({ type: 'next' });
+  }, [cancelAutoAdvance, dispatch]);
+
+  const handleOpenExplanation = useCallback((): void => {
+    cancelAutoAdvance();
+    setExplanationModalOpen(true);
+  }, [cancelAutoAdvance]);
+
+  const handleToggleAutoAdvance = useCallback(
+    (value: boolean): void => {
+      cancelAutoAdvance();
+      dispatch({ type: 'set-auto-advance', value });
+    },
+    [cancelAutoAdvance, dispatch],
+  );
+
+  const handleToggleInstantFeedback = useCallback(
+    (value: boolean): void => {
+      cancelAutoAdvance();
+      dispatch({ type: 'set-instant-feedback', value });
+    },
+    [cancelAutoAdvance, dispatch],
+  );
+
+  const handleActionFlag = useCallback((): void => {
+    cancelAutoAdvance();
+    handleFlag();
+  }, [cancelAutoAdvance, handleFlag]);
+
+  const handleOpenExitModal = useCallback((): void => {
+    setExitModalOpen(true);
+  }, []);
+
+  const handleOpenNavigator = useCallback((): void => {
+    setNavigatorOpen(true);
+  }, []);
+
+  const handleCloseNavigator = useCallback((): void => {
+    setNavigatorOpen(false);
+  }, []);
+
+  const handleNavigatorSelect = useCallback(
+    (index: number): void => {
+      cancelAutoAdvance();
+      dispatch({ type: 'go-to', index });
+    },
+    [cancelAutoAdvance, dispatch],
+  );
   cancelAutoAdvanceRef.current = cancelAutoAdvance;
   handleFlagRef.current = handleFlag;
   requestSubmitRef.current = requestSubmit;
@@ -485,21 +564,6 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  function answer(optionId: AnswerOption['id']): void {
-    dispatch({ type: 'answer', questionId: currentQuestion.id, optionId });
-  }
-
-  function requestSubmit(): void {
-    const unanswered = getUnansweredQuestionNumbers(session);
-
-    if (unanswered.length) {
-      setSubmitModalOpen(true);
-      return;
-    }
-
-    submitExam();
-  }
-
   function confirmSubmit(): void {
     setSubmitModalOpen(false);
     submitExam();
@@ -589,8 +653,8 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
       <ExamTopBar
         flaggedCount={flaggedCount}
         modeLabel={modeLabel}
-        onExit={() => setExitModalOpen(true)}
-        onOpenNavigator={() => setNavigatorOpen(true)}
+        onExit={handleOpenExitModal}
+        onOpenNavigator={handleOpenNavigator}
         questionNumber={questionNumber}
         remaining={remaining}
         totalQuestions={session.questionIds.length}
@@ -627,37 +691,19 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
         flagged={currentQuestionFlagged}
         instantFeedback={session.instantFeedback}
         isLast={isLastQuestion}
-        onOpenExplanation={() => {
-          cancelAutoAdvance();
-          setExplanationModalOpen(true);
-        }}
-        onFlag={() => {
-          cancelAutoAdvance();
-          handleFlag();
-        }}
-        onNext={() => {
-          cancelAutoAdvance();
-          dispatch({ type: 'next' });
-        }}
+        onOpenExplanation={handleOpenExplanation}
+        onFlag={handleActionFlag}
+        onNext={handleNext}
         onSubmit={requestSubmit}
-        onToggleAutoAdvance={(value) => {
-          cancelAutoAdvance();
-          dispatch({ type: 'set-auto-advance', value });
-        }}
-        onToggleInstantFeedback={(value) => {
-          cancelAutoAdvance();
-          dispatch({ type: 'set-instant-feedback', value });
-        }}
+        onToggleAutoAdvance={handleToggleAutoAdvance}
+        onToggleInstantFeedback={handleToggleInstantFeedback}
       />
 
       <NavigatorDrawer
         modeLabel={modeLabel}
-        onClose={() => setNavigatorOpen(false)}
-        onRequestExit={() => setExitModalOpen(true)}
-        onSelect={(index) => {
-          cancelAutoAdvance();
-          dispatch({ type: 'go-to', index });
-        }}
+        onClose={handleCloseNavigator}
+        onRequestExit={handleOpenExitModal}
+        onSelect={handleNavigatorSelect}
         open={navigatorOpen}
         progress={progress}
         questionsById={questionsById}

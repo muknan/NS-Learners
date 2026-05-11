@@ -1,4 +1,12 @@
-export function ProgressBar({ value, label }: { value: number; label: string }) {
+import { memo } from 'react';
+
+export const ProgressBar = memo(function ProgressBar({
+  value,
+  label,
+}: {
+  value: number;
+  label: string;
+}) {
   const clamped = Math.max(0, Math.min(100, value));
 
   return (
@@ -13,4 +21,4 @@ export function ProgressBar({ value, label }: { value: number; label: string }) 
       <span style={{ inlineSize: `${clamped}%` }} />
     </div>
   );
-}
+});
