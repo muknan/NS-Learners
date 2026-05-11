@@ -11,13 +11,14 @@ import { EXAM_MODES, getExamMode } from '@/lib/modes';
 import {
   clearSessionForMode,
   HISTORY_KEY,
-  readCurrentSession,
+  readAllActiveSessions,
   readHistory,
   readSessionForMode,
 } from '@/lib/storage';
 import type { ExamMode, ExamSession, HistoryEntry } from '@/types/exam';
 
 interface HomeClientProps {
+  flashcardTotal: number;
   stats: {
     total: number;
     topics: number;
@@ -27,16 +28,18 @@ interface HomeClientProps {
 
 const modes = Object.values(EXAM_MODES);
 
-export function HomeClient({ stats }: HomeClientProps) {
+export function HomeClient({ flashcardTotal, stats }: HomeClientProps) {
   const router = useRouter();
-  const [session, setSession] = useState<ExamSession | null>(null);
+  const [sessions, setSessions] = useState<ExamSession[]>([]);
   const [fullTestSession, setFullTestSession] = useState<ExamSession | null>(null);
   const [history, setHistory] = useState<HistoryEntry[]>([]);
   const [historyLoaded, setHistoryLoaded] = useState(false);
   const [clearHistoryOpen, setClearHistoryOpen] = useState(false);
+  const [resetConfirmMode, setResetConfirmMode] = useState<string | null>(null);
+  const [fullTestResetOpen, setFullTestResetOpen] = useState(false);
 
   useEffect(() => {
-    setSession(readCurrentSession());
+    setSessions(readAllActiveSessions());
     setFullTestSession(readSessionForMode('full-test'));
     setHistory(readHistory());
     setHistoryLoaded(true);
@@ -49,13 +52,13 @@ export function HomeClient({ stats }: HomeClientProps) {
   function startFreshFullTest(): void {
     clearSessionForMode('full-test');
     setFullTestSession(null);
-    setSession((current) => (current?.mode === 'full-test' ? null : current));
+    setSessions((prev) => prev.filter((s) => s.mode !== 'full-test'));
     router.push('/exam?mode=full-test');
   }
 
   function startFreshForMode(modeId: string): void {
     clearSessionForMode(modeId);
-    setSession(readCurrentSession());
+    setSessions((prev) => prev.filter((s) => s.mode !== modeId));
   }
 
   function clearHistory(): void {
@@ -67,6 +70,10 @@ export function HomeClient({ stats }: HomeClientProps) {
     setHistory([]);
     setClearHistoryOpen(false);
   }
+
+  const activeResumeSessions = sessions.filter(
+    (sess) => sess.mode !== 'full-test' && sess.phase !== 'complete',
+  );
 
   return (
     <div className="home-layout">
@@ -84,7 +91,7 @@ export function HomeClient({ stats }: HomeClientProps) {
               {fullTestSession ? 'Resume Practice Exam' : 'Start Practice Exam'}
             </Button>
             {fullTestSession ? (
-              <Button tone="secondary" size="lg" onClick={startFreshFullTest}>
+              <Button tone="secondary" size="lg" onClick={() => setFullTestResetOpen(true)}>
                 Start Fresh
               </Button>
             ) : null}
@@ -138,7 +145,7 @@ export function HomeClient({ stats }: HomeClientProps) {
               <p>Quick-summary cards from every chapter — perfect for revision on the go.</p>
             </span>
             <span className="mode-card__bottom">
-              <span className="mode-card__meta">36 cards · Keyboard friendly</span>
+              <span className="mode-card__meta">{flashcardTotal} cards · Keyboard friendly</span>
               <Button
                 tone="secondary"
                 icon={<BookOpen aria-hidden="true" />}
@@ -151,29 +158,37 @@ export function HomeClient({ stats }: HomeClientProps) {
         </div>
       </section>
 
-      {session && session.phase !== 'complete' && session.mode !== 'full-test' ? (
-        <Card className="resume-card" aria-label="Resume your session">
-          <div>
-            <Badge tone="warning">In progress</Badge>
-            <h2>Resume your session</h2>
-            <p>
-              Question {session.currentIndex + 1} of {session.questionIds.length} is waiting.
-            </p>
-          </div>
-          <div className="resume-card__actions">
-            <Button
-              tone="secondary"
-              icon={<RotateCcw aria-hidden="true" />}
-              onClick={() => router.push(`/exam?mode=${session.mode}`)}
+      {activeResumeSessions.length > 0 && (
+        <div className="resume-cards">
+          {activeResumeSessions.map((sess) => (
+            <Card
+              className="resume-card"
+              key={sess.id}
+              aria-label={`Resume ${getExamMode(sess.mode).label}`}
             >
-              Resume
-            </Button>
-            <Button tone="ghost" onClick={() => startFreshForMode(session.mode)}>
-              Start Fresh
-            </Button>
-          </div>
-        </Card>
-      ) : null}
+              <div>
+                <Badge tone="warning">In progress</Badge>
+                <h2>Resume your {getExamMode(sess.mode).label}</h2>
+                <p>
+                  Question {sess.currentIndex + 1} of {sess.questionIds.length} is waiting.
+                </p>
+              </div>
+              <div className="resume-card__actions">
+                <Button
+                  tone="secondary"
+                  icon={<RotateCcw aria-hidden="true" />}
+                  onClick={() => router.push(`/exam?mode=${sess.mode}`)}
+                >
+                  Resume
+                </Button>
+                <Button tone="ghost" onClick={() => setResetConfirmMode(sess.mode)}>
+                  Reset Progress
+                </Button>
+              </div>
+            </Card>
+          ))}
+        </div>
+      )}
 
       <section className="section-block" aria-labelledby="recent-title">
         <div className="section-heading">
@@ -248,6 +263,32 @@ export function HomeClient({ stats }: HomeClientProps) {
         description="This removes the saved scores shown on the home page from this browser."
         onCancel={() => setClearHistoryOpen(false)}
         onConfirm={clearHistory}
+      />
+      <ConfirmDialog
+        open={resetConfirmMode !== null}
+        title="Reset progress?"
+        description="This will clear your current session and start over. Your answers so far will be lost."
+        confirmLabel="Reset"
+        cancelLabel="Cancel"
+        onCancel={() => setResetConfirmMode(null)}
+        onConfirm={() => {
+          if (resetConfirmMode) {
+            startFreshForMode(resetConfirmMode);
+            setResetConfirmMode(null);
+          }
+        }}
+      />
+      <ConfirmDialog
+        open={fullTestResetOpen}
+        title="Start fresh full test?"
+        description="This will discard your current full-test session and start a new one."
+        confirmLabel="Start Fresh"
+        cancelLabel="Cancel"
+        onCancel={() => setFullTestResetOpen(false)}
+        onConfirm={() => {
+          startFreshFullTest();
+          setFullTestResetOpen(false);
+        }}
       />
     </div>
   );

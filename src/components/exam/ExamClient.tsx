@@ -391,6 +391,28 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
   }, []);
 
   useEffect(() => {
+    if (session.phase !== 'in-progress' && session.phase !== 'review') return;
+
+    function handleBeforeUnload(event: BeforeUnloadEvent): void {
+      event.preventDefault();
+      event.returnValue = '';
+    }
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [session.phase, session.id]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    window.history.pushState({ exam: true }, '');
+    function handlePopState(): void {
+      window.history.pushState({ exam: true }, '');
+    }
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  useEffect(() => {
     announcedTimerMilestonesRef.current.clear();
     setTimerAnnouncement('');
   }, [session.id, session.expiresAt]);

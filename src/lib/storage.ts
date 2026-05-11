@@ -1,6 +1,6 @@
 import type { AnswerOption, ExamSession, ExamSettings, HistoryEntry } from '@/types/exam';
 import { normalizeSettings } from '@/lib/session';
-import { normalizeModeId } from '@/lib/modes';
+import { EXAM_MODES, normalizeModeId } from '@/lib/modes';
 
 export const CURRENT_SESSION_KEY = 'nsLearner.currentSession';
 export const COMPLETED_SESSION_KEY = 'nsLearner.completedSession';
@@ -82,6 +82,12 @@ export function readSessionForMode(modeId: string): ExamSession | null {
     return null;
   }
   return session;
+}
+
+export function readAllActiveSessions(): ExamSession[] {
+  return Object.values(EXAM_MODES)
+    .map((mode) => readSessionForMode(mode.id))
+    .filter((session): session is ExamSession => session !== null);
 }
 
 export function saveSessionForMode(session: ExamSession): void {

@@ -477,6 +477,11 @@ p {
   font-weight: 500;
 }
 
+.resume-cards {
+  display: grid;
+  gap: 14px;
+}
+
 .resume-card {
   display: flex;
   align-items: center;
