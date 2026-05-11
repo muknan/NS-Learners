@@ -44,15 +44,6 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
   const [seenSessionIds, setSeenSessionIds] = useState<Set<string>>(new Set());
   const [leaveConfirmOpen, setLeaveConfirmOpen] = useState(false);
 
-  useEffect(() => {
-    function handleBeforeUnload(event: BeforeUnloadEvent): void {
-      event.preventDefault();
-      event.returnValue = '';
-    }
-    window.addEventListener('beforeunload', handleBeforeUnload);
-    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
-  }, []);
-
   const continueBlockedNavigation = useNavigationBlocker({
     enabled: true,
     stateKey: 'flashcardsNavigationGuard',

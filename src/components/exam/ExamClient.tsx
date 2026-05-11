@@ -400,18 +400,6 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
   }, []);
 
   useEffect(() => {
-    if (session.phase !== 'in-progress' && session.phase !== 'review') return;
-
-    function handleBeforeUnload(event: BeforeUnloadEvent): void {
-      event.preventDefault();
-      event.returnValue = '';
-    }
-
-    window.addEventListener('beforeunload', handleBeforeUnload);
-    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
-  }, [session.phase, session.id]);
-
-  useEffect(() => {
     announcedTimerMilestonesRef.current.clear();
     setTimerAnnouncement('');
   }, [session.id, session.expiresAt]);
