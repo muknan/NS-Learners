@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/Button';
 import { SettingsPanel } from '@/components/layout/SettingsPanel';
 import { useMounted } from '@/hooks/useMounted';
 import { useTheme } from '@/hooks/useTheme';
-import { readCurrentSession } from '@/lib/storage';
+import { readCurrentSession, SESSION_CHANGE_EVENT } from '@/lib/storage';
 
 export function Header() {
   const router = useRouter();
@@ -20,12 +20,24 @@ export function Header() {
   const [activeMode, setActiveMode] = useState<string | null>(null);
 
   useEffect(() => {
-    const session = readCurrentSession();
-    if (session && session.phase !== 'complete') {
-      setActiveMode(session.mode);
-    } else {
-      setActiveMode(null);
+    function syncActiveMode(): void {
+      const session = readCurrentSession();
+      if (session && session.phase !== 'complete') {
+        setActiveMode(session.mode);
+      } else {
+        setActiveMode(null);
+      }
     }
+
+    syncActiveMode();
+
+    window.addEventListener(SESSION_CHANGE_EVENT, syncActiveMode);
+    window.addEventListener('storage', syncActiveMode);
+
+    return () => {
+      window.removeEventListener(SESSION_CHANGE_EVENT, syncActiveMode);
+      window.removeEventListener('storage', syncActiveMode);
+    };
   }, []);
 
   const hasSession = mounted && activeMode !== null;

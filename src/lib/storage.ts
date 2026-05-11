@@ -11,6 +11,7 @@ export const KEYBOARD_HINT_KEY = 'nsLearner.keyboardHintSeen';
 export const SECTION_BREAK_SEEN_KEY = 'nsLearner.sectionBreakSeen';
 export const ADVANCE_DURATION_KEY = 'ns-learner-advance-duration';
 export const RETAKE_QUESTIONS_KEY = 'ns-retake-questions';
+export const SESSION_CHANGE_EVENT = 'nsLearner.sessionChange';
 
 const HISTORY_LIMIT = 10;
 const DEFAULT_ADVANCE_DURATION = 3;
@@ -70,10 +71,12 @@ export function readCurrentSession(): ExamSession | null {
 export function saveCurrentSession(session: ExamSession): void {
   writeJson(CURRENT_SESSION_KEY, session, 'local');
   writeJson(getModeSessionKey(session.mode), session, 'local');
+  notifySessionChange();
 }
 
 export function clearCurrentSession(): void {
   getStorage('local')?.removeItem(CURRENT_SESSION_KEY);
+  notifySessionChange();
 }
 
 export function readSessionForMode(modeId: string): ExamSession | null {
@@ -92,6 +95,7 @@ export function readAllActiveSessions(): ExamSession[] {
 
 export function saveSessionForMode(session: ExamSession): void {
   writeJson(getModeSessionKey(session.mode), session, 'local');
+  notifySessionChange();
 }
 
 export function clearSessionForMode(modeId: string): void {
@@ -103,6 +107,8 @@ export function clearSessionForMode(modeId: string): void {
   if (modeSession && currentSession?.id === modeSession.id) {
     getStorage('local')?.removeItem(CURRENT_SESSION_KEY);
   }
+
+  notifySessionChange();
 }
 
 export function readCompletedSession(): ExamSession | null {
@@ -194,6 +200,14 @@ function writeJson(key: string, value: unknown, storageType: 'local' | 'session'
   } catch {
     // Storage persistence is best-effort only.
   }
+}
+
+function notifySessionChange(): void {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  window.dispatchEvent(new Event(SESSION_CHANGE_EVENT));
 }
 
 function getStorage(type: 'local' | 'session'): Storage | null {
