@@ -19,10 +19,10 @@ import {
 import { createExamSession } from '@/lib/session';
 import {
   RETAKE_QUESTIONS_KEY,
+  localSet,
   readCompletedSession,
   readSettings,
   saveSessionForMode,
-  sessionSet,
 } from '@/lib/storage';
 import { nextToastId } from '@/lib/toast';
 import type { ExamSession, Question, QuestionResult } from '@/types/exam';
@@ -109,7 +109,7 @@ export function ResultsClient({ questions }: { questions: Question[] }) {
       return;
     }
 
-    sessionSet(RETAKE_QUESTIONS_KEY, missedIds.join(','));
+    localSet(RETAKE_QUESTIONS_KEY, missedIds.join(','));
     const nextSession = createExamSession({
       questions,
       settings: {

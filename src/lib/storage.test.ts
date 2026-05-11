@@ -20,12 +20,12 @@ beforeEach(() => {
 
 describe('readCurrentSession', () => {
   it('returns null for invalid JSON', () => {
-    window.sessionStorage.setItem(CURRENT_SESSION_KEY, '{broken');
+    window.localStorage.setItem(CURRENT_SESSION_KEY, '{broken');
     expect(readCurrentSession()).toBeNull();
   });
 
   it('returns null when required fields are missing', () => {
-    window.sessionStorage.setItem(CURRENT_SESSION_KEY, JSON.stringify({ id: 'test' }));
+    window.localStorage.setItem(CURRENT_SESSION_KEY, JSON.stringify({ id: 'test' }));
     expect(readCurrentSession()).toBeNull();
   });
 

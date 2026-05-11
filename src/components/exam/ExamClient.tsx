@@ -31,11 +31,11 @@ import {
   getUnansweredQuestionNumbers,
 } from '@/lib/session';
 import {
-  clearCurrentSession,
   clearSessionForMode,
   clearSessionFlag,
   KEYBOARD_HINT_KEY,
   SECTION_BREAK_SEEN_KEY,
+  localGet,
   readBooleanFlag,
   readAdvanceDuration,
   readSessionBooleanFlag,
@@ -47,7 +47,6 @@ import {
   saveSessionForMode,
   saveSessionBooleanFlag,
   saveHistory,
-  sessionGet,
 } from '@/lib/storage';
 import { drivingTips } from '@/lib/tips';
 import { nextToastId } from '@/lib/toast';
@@ -67,7 +66,7 @@ export function ExamClient({ questions }: { questions: Question[] }) {
     try {
       const retakeIds =
         mode.id === 'retake'
-          ? sessionGet<string>(RETAKE_QUESTIONS_KEY, '')
+          ? localGet<string>(RETAKE_QUESTIONS_KEY, '')
               .split(',')
               .map((id) => id.trim())
               .filter(Boolean)
@@ -285,7 +284,7 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
 
       saveCompletedSession(completed);
       saveHistory(historyEntry);
-      clearCurrentSession();
+      clearSessionForMode(session.mode);
       clearSessionFlag(SECTION_BREAK_SEEN_KEY);
       dispatch({ type: 'submit', now: completed.completedAt ?? Date.now() });
       router.push(`/results${expired ? '?expired=1' : ''}`);

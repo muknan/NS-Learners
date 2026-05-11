@@ -64,20 +64,20 @@ export function saveAdvanceDuration(value: number): void {
 }
 
 export function readCurrentSession(): ExamSession | null {
-  return normalizeSession(readJson(CURRENT_SESSION_KEY, 'session'));
+  return normalizeSession(readJson(CURRENT_SESSION_KEY, 'local'));
 }
 
 export function saveCurrentSession(session: ExamSession): void {
-  writeJson(CURRENT_SESSION_KEY, session, 'session');
-  writeJson(getModeSessionKey(session.mode), session, 'session');
+  writeJson(CURRENT_SESSION_KEY, session, 'local');
+  writeJson(getModeSessionKey(session.mode), session, 'local');
 }
 
 export function clearCurrentSession(): void {
-  getStorage('session')?.removeItem(CURRENT_SESSION_KEY);
+  getStorage('local')?.removeItem(CURRENT_SESSION_KEY);
 }
 
 export function readSessionForMode(modeId: string): ExamSession | null {
-  const session = normalizeSession(readJson(getModeSessionKey(modeId), 'session'));
+  const session = normalizeSession(readJson(getModeSessionKey(modeId), 'local'));
   if (!session || session.phase === 'complete') {
     return null;
   }
@@ -85,26 +85,26 @@ export function readSessionForMode(modeId: string): ExamSession | null {
 }
 
 export function saveSessionForMode(session: ExamSession): void {
-  writeJson(getModeSessionKey(session.mode), session, 'session');
+  writeJson(getModeSessionKey(session.mode), session, 'local');
 }
 
 export function clearSessionForMode(modeId: string): void {
   const modeSession = readSessionForMode(modeId);
   const currentSession = readCurrentSession();
 
-  getStorage('session')?.removeItem(getModeSessionKey(modeId));
+  getStorage('local')?.removeItem(getModeSessionKey(modeId));
 
   if (modeSession && currentSession?.id === modeSession.id) {
-    getStorage('session')?.removeItem(CURRENT_SESSION_KEY);
+    getStorage('local')?.removeItem(CURRENT_SESSION_KEY);
   }
 }
 
 export function readCompletedSession(): ExamSession | null {
-  return normalizeSession(readJson(COMPLETED_SESSION_KEY, 'session'));
+  return normalizeSession(readJson(COMPLETED_SESSION_KEY, 'local'));
 }
 
 export function saveCompletedSession(session: ExamSession): void {
-  writeJson(COMPLETED_SESSION_KEY, session, 'session');
+  writeJson(COMPLETED_SESSION_KEY, session, 'local');
 }
 
 export function readHistory(): HistoryEntry[] {
@@ -140,7 +140,7 @@ export function saveBooleanFlag(key: string, value: boolean): void {
 
 export function readSessionBooleanFlag(key: string): boolean {
   try {
-    return getStorage('session')?.getItem(key) === 'true';
+    return getStorage('local')?.getItem(key) === 'true';
   } catch {
     return false;
   }
@@ -148,7 +148,7 @@ export function readSessionBooleanFlag(key: string): boolean {
 
 export function saveSessionBooleanFlag(key: string, value: boolean): void {
   try {
-    getStorage('session')?.setItem(key, String(value));
+    getStorage('local')?.setItem(key, String(value));
   } catch {
     // Storage persistence is best-effort only.
   }
@@ -156,7 +156,7 @@ export function saveSessionBooleanFlag(key: string, value: boolean): void {
 
 export function clearSessionFlag(key: string): void {
   try {
-    getStorage('session')?.removeItem(key);
+    getStorage('local')?.removeItem(key);
   } catch {
     // Storage persistence is best-effort only.
   }

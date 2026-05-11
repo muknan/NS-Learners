@@ -2,12 +2,13 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Moon, Play, Settings, Sun } from 'lucide-react';
-import { useState } from 'react';
+import { Moon, Play, RotateCcw, Settings, Sun } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { SettingsPanel } from '@/components/layout/SettingsPanel';
 import { useMounted } from '@/hooks/useMounted';
 import { useTheme } from '@/hooks/useTheme';
+import { readCurrentSession } from '@/lib/storage';
 
 export function Header() {
   const router = useRouter();
@@ -16,9 +17,21 @@ export function Header() {
   const mounted = useMounted();
   const [settingsOpen, setSettingsOpen] = useState(false);
   const { theme, setTheme } = useTheme();
+  const [activeMode, setActiveMode] = useState<string | null>(null);
 
-  function startExam(): void {
-    router.push('/exam?mode=full-test');
+  useEffect(() => {
+    const session = readCurrentSession();
+    if (session && session.phase !== 'complete') {
+      setActiveMode(session.mode);
+    } else {
+      setActiveMode(null);
+    }
+  }, []);
+
+  const hasSession = mounted && activeMode !== null;
+
+  function handleExamButton(): void {
+    router.push(hasSession ? `/exam?mode=${activeMode}` : '/exam?mode=full-test');
   }
 
   return (
@@ -87,14 +100,18 @@ export function Header() {
         <Button
           icon={
             mounted ? (
-              <Play aria-hidden="true" />
+              hasSession ? (
+                <RotateCcw aria-hidden="true" />
+              ) : (
+                <Play aria-hidden="true" />
+              )
             ) : (
               <span className="icon-placeholder" aria-hidden="true" />
             )
           }
-          onClick={startExam}
+          onClick={handleExamButton}
         >
-          Start
+          {hasSession ? 'Resume' : 'Start'}
         </Button>
       </nav>
 

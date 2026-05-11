@@ -53,6 +53,11 @@ export function HomeClient({ stats }: HomeClientProps) {
     router.push('/exam?mode=full-test');
   }
 
+  function startFreshForMode(modeId: string): void {
+    clearSessionForMode(modeId);
+    setSession(readCurrentSession());
+  }
+
   function clearHistory(): void {
     try {
       window.localStorage.removeItem(HISTORY_KEY);
@@ -155,13 +160,18 @@ export function HomeClient({ stats }: HomeClientProps) {
               Question {session.currentIndex + 1} of {session.questionIds.length} is waiting.
             </p>
           </div>
-          <Button
-            tone="secondary"
-            icon={<RotateCcw aria-hidden="true" />}
-            onClick={() => router.push(`/exam?mode=${session.mode}`)}
-          >
-            Resume
-          </Button>
+          <div className="resume-card__actions">
+            <Button
+              tone="secondary"
+              icon={<RotateCcw aria-hidden="true" />}
+              onClick={() => router.push(`/exam?mode=${session.mode}`)}
+            >
+              Resume
+            </Button>
+            <Button tone="ghost" onClick={() => startFreshForMode(session.mode)}>
+              Start Fresh
+            </Button>
+          </div>
         </Card>
       ) : null}
 

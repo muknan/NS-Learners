@@ -77,6 +77,7 @@ test('retake with no missed questions shows an empty state', async ({ page }) =>
         if (
           key.startsWith('ns-exam-session-') ||
           key === 'nsLearner.currentSession' ||
+          key === 'nsLearner.completedSession' ||
           key === 'ns-retake-questions'
         ) {
           storage.removeItem(key);
@@ -103,7 +104,11 @@ test('auto-advances after an answer when instant feedback is off', async ({ page
     window.localStorage.setItem('ns-learner-advance-duration', '3');
     for (const storage of [window.localStorage, window.sessionStorage]) {
       for (const key of Object.keys(storage)) {
-        if (key.startsWith('ns-exam-session-') || key === 'nsLearner.currentSession') {
+        if (
+          key.startsWith('ns-exam-session-') ||
+          key === 'nsLearner.currentSession' ||
+          key === 'nsLearner.completedSession'
+        ) {
           storage.removeItem(key);
         }
       }
@@ -142,7 +147,11 @@ test('instant feedback shows explanations in a modal without shifting the card',
     window.localStorage.setItem('nsLearner.keyboardHintSeen', 'true');
     for (const storage of [window.localStorage, window.sessionStorage]) {
       for (const key of Object.keys(storage)) {
-        if (key.startsWith('ns-exam-session-') || key === 'nsLearner.currentSession') {
+        if (
+          key.startsWith('ns-exam-session-') ||
+          key === 'nsLearner.currentSession' ||
+          key === 'nsLearner.completedSession'
+        ) {
           storage.removeItem(key);
         }
       }
@@ -215,7 +224,11 @@ async function startFreshFullTest(page: Page, colorScheme: 'light' | 'dark') {
     window.localStorage.setItem('nsLearner.keyboardHintSeen', 'true');
     for (const storage of [window.localStorage, window.sessionStorage]) {
       for (const key of Object.keys(storage)) {
-        if (key.startsWith('ns-exam-session-') || key === 'nsLearner.currentSession') {
+        if (
+          key.startsWith('ns-exam-session-') ||
+          key === 'nsLearner.currentSession' ||
+          key === 'nsLearner.completedSession'
+        ) {
           storage.removeItem(key);
         }
       }
