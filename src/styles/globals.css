@@ -2013,9 +2013,7 @@ input[type='range'] {
 }
 
 .score-ring__track,
-.score-ring__fill,
-.score-ring__incorrect,
-.score-ring__missed {
+.score-ring__fill {
   fill: none;
   stroke-width: 14;
 }
@@ -2025,18 +2023,8 @@ input[type='range'] {
 }
 
 .score-ring__fill {
-  stroke: var(--color-success);
+  stroke: var(--color-brand-primary);
   stroke-linecap: round;
-}
-
-.score-ring__incorrect {
-  stroke: var(--color-error);
-  stroke-linecap: butt;
-}
-
-.score-ring__missed {
-  stroke: var(--color-warning);
-  stroke-linecap: butt;
 }
 
 .score-ring strong,
@@ -2092,10 +2080,26 @@ input[type='range'] {
 
 .wrong-item {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-columns: 96px minmax(0, 1fr);
   gap: 16px;
   padding: 16px;
   border-inline-start: 3px solid var(--color-error);
+  align-items: center;
+}
+
+.wrong-item > figure {
+  align-self: center;
+  justify-self: center;
+}
+
+.wrong-item__placeholder {
+  width: 96px;
+  height: 96px;
+  border-radius: var(--radius-card);
+  background: var(--color-surface-muted);
+  border: 1px dashed var(--color-border-default);
+  align-self: center;
+  justify-self: center;
 }
 
 .wrong-item__topic {

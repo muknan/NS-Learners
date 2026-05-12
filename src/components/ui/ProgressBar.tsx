@@ -39,9 +39,11 @@ export const ProgressBar = memo(function ProgressBar({
     );
   }
 
-  const correctPct = Math.round((correct / total) * 100);
-  const incorrectPct = Math.round((incorrect / total) * 100);
-  const missedPct = 100 - correctPct - incorrectPct;
+  // Use exact fractional percentages so segments meet edge-to-edge.
+  // A 0.01 % overlap on the last segment prevents sub-pixel rendering gaps.
+  const correctPct = (correct / total) * 100;
+  const incorrectPct = (incorrect / total) * 100;
+  const missedPct = (missed / total) * 100 + 0.01;
 
   return (
     <div

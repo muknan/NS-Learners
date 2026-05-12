@@ -147,14 +147,7 @@ export function ResultsClient({ questions }: { questions: Question[] }) {
             {expired ? ' after the timer expired.' : '.'}
           </p>
         </div>
-        <ScoreRing
-          percentage={score.percentage}
-          label={`${score.percentage}% score`}
-          correct={score.correct}
-          incorrect={score.incorrect}
-          missed={score.missed}
-          total={score.total}
-        />
+        <ScoreRing percentage={score.percentage} label={`${score.percentage}% score`} />
       </section>
 
       <section className="section-block" aria-labelledby="breakdown-title">
@@ -263,65 +256,15 @@ export function ResultsClient({ questions }: { questions: Question[] }) {
   );
 }
 
-function ScoreRing({
-  percentage,
-  label,
-  correct,
-  incorrect,
-  missed,
-  total,
-}: {
-  percentage: number;
-  label: string;
-  correct: number;
-  incorrect: number;
-  missed: number;
-  total: number;
-}) {
+function ScoreRing({ percentage, label }: { percentage: number; label: string }) {
   const radius = 48;
   const circumference = 2 * Math.PI * radius;
   const offset = circumference - (percentage / 100) * circumference;
-
-  if (total === 0) {
-    return (
-      <div className="score-ring" role="img" aria-label={label}>
-        <svg viewBox="0 0 120 120" aria-hidden="true">
-          <circle className="score-ring__track" cx="60" cy="60" r={radius} />
-        </svg>
-        <strong>{percentage}%</strong>
-        <span>Score</span>
-      </div>
-    );
-  }
-
-  const correctLength = (correct / total) * circumference;
-  const incorrectLength = (incorrect / total) * circumference;
-  const missedLength = (missed / total) * circumference;
 
   return (
     <div className="score-ring" role="img" aria-label={label}>
       <svg viewBox="0 0 120 120" aria-hidden="true">
         <circle className="score-ring__track" cx="60" cy="60" r={radius} />
-        {incorrectLength > 0 && (
-          <circle
-            className="score-ring__incorrect"
-            cx="60"
-            cy="60"
-            r={radius}
-            strokeDasharray={`0 ${correctLength} ${incorrectLength} ${missedLength}`}
-            strokeDashoffset={0}
-          />
-        )}
-        {missedLength > 0 && (
-          <circle
-            className="score-ring__missed"
-            cx="60"
-            cy="60"
-            r={radius}
-            strokeDasharray={`0 ${correctLength + incorrectLength} ${missedLength} 0`}
-            strokeDashoffset={0}
-          />
-        )}
         <circle
           className="score-ring__fill"
           cx="60"
@@ -342,7 +285,11 @@ function WrongAnswerList({ results }: { results: QuestionResult[] }) {
     <div className="wrong-list">
       {results.map((result) => (
         <article className="wrong-item" key={result.question.id}>
-          <SignImage compact question={result.question} />
+          {result.question.image ? (
+            <SignImage compact question={result.question} />
+          ) : (
+            <div className="wrong-item__placeholder" aria-hidden="true" />
+          )}
           <div>
             <p className="wrong-item__topic">
               {result.question.category === 'rules' ? 'Rules' : 'Signs'} ·{' '}
