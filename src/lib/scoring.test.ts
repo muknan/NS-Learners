@@ -80,10 +80,20 @@ describe('scoreSession', () => {
     const score = scoreSession(session, questionMap, session.mode);
 
     expect(score.correct).toBe(1);
+    expect(score.incorrect).toBe(1);
+    expect(score.missed).toBe(0);
     expect(score.total).toBe(2);
     expect(score.percentage).toBe(50);
     expect(score.passed).toBe(false);
     expect(score.bySection).toHaveLength(1);
+    expect(score.bySection[0]).toMatchObject({
+      section: 'Practice',
+      correct: 1,
+      incorrect: 1,
+      missed: 0,
+      total: 2,
+      percentage: 50,
+    });
   });
 
   it('returns missed question ids for wrong or unanswered answers', () => {
@@ -106,6 +116,8 @@ describe('scoreSession', () => {
       {
         section: 'Practice',
         correct: 40,
+        incorrect: 0,
+        missed: 0,
         total: 40,
         percentage: 100,
       },

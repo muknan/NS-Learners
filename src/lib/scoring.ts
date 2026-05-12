@@ -20,8 +20,12 @@ export function scoreSession(
 ): ScoreSummary {
   const results = getQuestionResults(session, questionsById);
   const correct = results.filter((result) => result.isCorrect).length;
+  const incorrect = results.filter(
+    (result) => !result.isCorrect && result.selectedId !== null,
+  ).length;
+  const missed = results.filter((result) => !result.isCorrect && result.selectedId === null).length;
   const total = results.length;
-  const unanswered = results.filter((result) => !result.selectedId).length;
+  const unanswered = missed;
   const percentage = total ? Math.round((correct / total) * 100) : 0;
   const bySection = getSectionBreakdown(results, modeId);
   const mode = getExamMode(modeId);
@@ -35,6 +39,8 @@ export function scoreSession(
 
   return {
     correct,
+    incorrect,
+    missed,
     total,
     percentage,
     passed,
@@ -139,9 +145,15 @@ function getSectionBreakdown(
   return sections.map((section, index) => {
     const chunk = results.slice(index * sectionSize, (index + 1) * sectionSize);
     const correct = chunk.filter((result) => result.isCorrect).length;
+    const incorrect = chunk.filter(
+      (result) => !result.isCorrect && result.selectedId !== null,
+    ).length;
+    const missed = chunk.filter((result) => !result.isCorrect && result.selectedId === null).length;
     return {
       section,
       correct,
+      incorrect,
+      missed,
       total: chunk.length,
       percentage: chunk.length ? Math.round((correct / chunk.length) * 100) : 0,
     };
@@ -149,18 +161,34 @@ function getSectionBreakdown(
 }
 
 function getCategoryBreakdown(results: readonly QuestionResult[]) {
-  const categories = new Map<QuestionCategory, { correct: number; total: number }>();
+  const categories = new Map<
+    QuestionCategory,
+    { correct: number; incorrect: number; missed: number; total: number }
+  >();
 
   for (const result of results) {
-    const current = categories.get(result.question.category) ?? { correct: 0, total: 0 };
+    const current = categories.get(result.question.category) ?? {
+      correct: 0,
+      incorrect: 0,
+      missed: 0,
+      total: 0,
+    };
     current.total += 1;
-    current.correct += result.isCorrect ? 1 : 0;
+    if (result.isCorrect) {
+      current.correct += 1;
+    } else if (result.selectedId !== null) {
+      current.incorrect += 1;
+    } else {
+      current.missed += 1;
+    }
     categories.set(result.question.category, current);
   }
 
   return [...categories.entries()].map(([category, item]) => ({
     category,
     correct: item.correct,
+    incorrect: item.incorrect,
+    missed: item.missed,
     total: item.total,
     percentage: item.total ? Math.round((item.correct / item.total) * 100) : 0,
   }));
@@ -168,13 +196,27 @@ function getCategoryBreakdown(results: readonly QuestionResult[]) {
 
 export function calcTopicBreakdown(
   results: readonly QuestionResult[],
-): Record<string, { correct: number; total: number }> {
-  const breakdown: Record<string, { correct: number; total: number }> = {};
+): Record<string, { correct: number; incorrect: number; missed: number; total: number }> {
+  const breakdown: Record<
+    string,
+    { correct: number; incorrect: number; missed: number; total: number }
+  > = {};
 
   for (const result of results) {
-    const current = breakdown[result.question.topic] ?? { correct: 0, total: 0 };
+    const current = breakdown[result.question.topic] ?? {
+      correct: 0,
+      incorrect: 0,
+      missed: 0,
+      total: 0,
+    };
     current.total += 1;
-    current.correct += result.isCorrect ? 1 : 0;
+    if (result.isCorrect) {
+      current.correct += 1;
+    } else if (result.selectedId !== null) {
+      current.incorrect += 1;
+    } else {
+      current.missed += 1;
+    }
     breakdown[result.question.topic] = current;
   }
 
@@ -194,6 +236,8 @@ function getTopicBreakdown(results: readonly QuestionResult[]): TopicBreakdown[]
   return Object.entries(breakdown).map(([topic, item]) => ({
     topic: topic as TopicBreakdown['topic'],
     correct: item.correct,
+    incorrect: item.incorrect,
+    missed: item.missed,
     total: item.total,
     percentage: item.total ? Math.round((item.correct / item.total) * 100) : 0,
   }));

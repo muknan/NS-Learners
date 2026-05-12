@@ -48,7 +48,10 @@ export function ResultsClient({ questions }: { questions: Question[] }) {
   const lowestTopics = useMemo(
     () =>
       score
-        ? [...score.byTopic].sort((left, right) => left.percentage - right.percentage).slice(0, 8)
+        ? [...score.byTopic]
+            .filter((topic) => topic.correct > 0 || topic.percentage > 0)
+            .sort((left, right) => left.percentage - right.percentage)
+            .slice(0, 8)
         : [],
     [score],
   );
@@ -144,7 +147,14 @@ export function ResultsClient({ questions }: { questions: Question[] }) {
             {expired ? ' after the timer expired.' : '.'}
           </p>
         </div>
-        <ScoreRing percentage={score.percentage} label={`${score.percentage}% score`} />
+        <ScoreRing
+          percentage={score.percentage}
+          label={`${score.percentage}% score`}
+          correct={score.correct}
+          incorrect={score.incorrect}
+          missed={score.missed}
+          total={score.total}
+        />
       </section>
 
       <section className="section-block" aria-labelledby="breakdown-title">
@@ -161,7 +171,14 @@ export function ResultsClient({ questions }: { questions: Question[] }) {
                   {section.correct}/{section.total}
                 </span>
               </div>
-              <ProgressBar value={section.percentage} label={`${section.section} score`} />
+              <ProgressBar
+                value={section.percentage}
+                label={`${section.section} score`}
+                correct={section.correct}
+                incorrect={section.incorrect}
+                missed={section.missed}
+                total={section.total}
+              />
             </article>
           ))}
           {score.byCategory.map((category) => (
@@ -175,6 +192,10 @@ export function ResultsClient({ questions }: { questions: Question[] }) {
               <ProgressBar
                 value={category.percentage}
                 label={`${category.category} category score`}
+                correct={category.correct}
+                incorrect={category.incorrect}
+                missed={category.missed}
+                total={category.total}
               />
             </article>
           ))}
@@ -191,7 +212,14 @@ export function ResultsClient({ questions }: { questions: Question[] }) {
                       {topic.correct}/{topic.total}
                     </span>
                   </div>
-                  <ProgressBar value={topic.percentage} label={`${topic.topic} topic score`} />
+                  <ProgressBar
+                    value={topic.percentage}
+                    label={`${topic.topic} topic score`}
+                    correct={topic.correct}
+                    incorrect={topic.incorrect}
+                    missed={topic.missed}
+                    total={topic.total}
+                  />
                 </article>
               ))}
             </div>
@@ -235,15 +263,65 @@ export function ResultsClient({ questions }: { questions: Question[] }) {
   );
 }
 
-function ScoreRing({ percentage, label }: { percentage: number; label: string }) {
+function ScoreRing({
+  percentage,
+  label,
+  correct,
+  incorrect,
+  missed,
+  total,
+}: {
+  percentage: number;
+  label: string;
+  correct: number;
+  incorrect: number;
+  missed: number;
+  total: number;
+}) {
   const radius = 48;
   const circumference = 2 * Math.PI * radius;
   const offset = circumference - (percentage / 100) * circumference;
+
+  if (total === 0) {
+    return (
+      <div className="score-ring" role="img" aria-label={label}>
+        <svg viewBox="0 0 120 120" aria-hidden="true">
+          <circle className="score-ring__track" cx="60" cy="60" r={radius} />
+        </svg>
+        <strong>{percentage}%</strong>
+        <span>Score</span>
+      </div>
+    );
+  }
+
+  const correctLength = (correct / total) * circumference;
+  const incorrectLength = (incorrect / total) * circumference;
+  const missedLength = (missed / total) * circumference;
 
   return (
     <div className="score-ring" role="img" aria-label={label}>
       <svg viewBox="0 0 120 120" aria-hidden="true">
         <circle className="score-ring__track" cx="60" cy="60" r={radius} />
+        {incorrectLength > 0 && (
+          <circle
+            className="score-ring__incorrect"
+            cx="60"
+            cy="60"
+            r={radius}
+            strokeDasharray={`0 ${correctLength} ${incorrectLength} ${missedLength}`}
+            strokeDashoffset={0}
+          />
+        )}
+        {missedLength > 0 && (
+          <circle
+            className="score-ring__missed"
+            cx="60"
+            cy="60"
+            r={radius}
+            strokeDasharray={`0 ${correctLength + incorrectLength} ${missedLength} 0`}
+            strokeDashoffset={0}
+          />
+        )}
         <circle
           className="score-ring__fill"
           cx="60"

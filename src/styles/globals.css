@@ -1148,6 +1148,40 @@ p {
   transition: inline-size 220ms ease;
 }
 
+.progress--stacked {
+  display: flex;
+}
+
+.progress--stacked span {
+  flex-shrink: 0;
+  border-radius: 0;
+  transition: inline-size 220ms ease;
+}
+
+.progress--stacked span:first-child {
+  border-radius: var(--radius-pill) 0 0 var(--radius-pill);
+}
+
+.progress--stacked span:last-child {
+  border-radius: 0 var(--radius-pill) var(--radius-pill) 0;
+}
+
+.progress--stacked span:only-child {
+  border-radius: var(--radius-pill);
+}
+
+.progress__segment--correct {
+  background: var(--color-success);
+}
+
+.progress__segment--incorrect {
+  background: var(--color-error);
+}
+
+.progress__segment--missed {
+  background: var(--color-warning);
+}
+
 .question-nav {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(44px, 1fr));
@@ -1979,7 +2013,9 @@ input[type='range'] {
 }
 
 .score-ring__track,
-.score-ring__fill {
+.score-ring__fill,
+.score-ring__incorrect,
+.score-ring__missed {
   fill: none;
   stroke-width: 14;
 }
@@ -1989,8 +2025,18 @@ input[type='range'] {
 }
 
 .score-ring__fill {
-  stroke: var(--color-brand-primary);
+  stroke: var(--color-success);
   stroke-linecap: round;
+}
+
+.score-ring__incorrect {
+  stroke: var(--color-error);
+  stroke-linecap: butt;
+}
+
+.score-ring__missed {
+  stroke: var(--color-warning);
+  stroke-linecap: butt;
 }
 
 .score-ring strong,
@@ -2046,7 +2092,7 @@ input[type='range'] {
 
 .wrong-item {
   display: grid;
-  grid-template-columns: 112px minmax(0, 1fr);
+  grid-template-columns: auto minmax(0, 1fr);
   gap: 16px;
   padding: 16px;
   border-inline-start: 3px solid var(--color-error);

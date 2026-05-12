@@ -93,6 +93,8 @@ describe('saveHistory and readHistory round-trip', () => {
       source: 'full',
       mode: 'full-test',
       correct: 18,
+      incorrect: 2,
+      missed: 0,
       total: 20,
       percentage: 90,
       passed: true,

@@ -85,6 +85,8 @@ export interface QuestionResult {
 export interface SectionBreakdown {
   section: string;
   correct: number;
+  incorrect: number;
+  missed: number;
   total: number;
   percentage: number;
 }
@@ -92,6 +94,8 @@ export interface SectionBreakdown {
 export interface CategoryBreakdown {
   category: QuestionCategory;
   correct: number;
+  incorrect: number;
+  missed: number;
   total: number;
   percentage: number;
 }
@@ -99,12 +103,16 @@ export interface CategoryBreakdown {
 export interface TopicBreakdown {
   topic: QuestionTopic;
   correct: number;
+  incorrect: number;
+  missed: number;
   total: number;
   percentage: number;
 }
 
 export interface ScoreSummary {
   correct: number;
+  incorrect: number;
+  missed: number;
   total: number;
   percentage: number;
   passed: boolean | null;
