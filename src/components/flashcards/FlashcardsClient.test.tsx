@@ -103,6 +103,7 @@ describe('FlashcardsClient', () => {
     await waitFor(() => expect(readKnownIds()).toHaveLength(1));
 
     await user.click(screen.getByRole('button', { name: /reset flashcards/i }));
+    await user.click(screen.getByRole('button', { name: /^reset$/i }));
 
     await waitFor(() => expect(readKnownIds()).toHaveLength(0));
   });

@@ -43,6 +43,7 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
   const [lastSessionIds, setLastSessionIds] = useState<string[]>([]);
   const [seenSessionIds, setSeenSessionIds] = useState<Set<string>>(new Set());
   const [leaveConfirmOpen, setLeaveConfirmOpen] = useState(false);
+  const [resetConfirmOpen, setResetConfirmOpen] = useState(false);
 
   const continueBlockedNavigation = useNavigationBlocker({
     enabled: true,
@@ -326,7 +327,7 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
               <span className="icon-placeholder" aria-hidden="true" />
             )
           }
-          onClick={resetAll}
+          onClick={() => setResetConfirmOpen(true)}
           size="sm"
           tone="ghost"
         >
@@ -436,6 +437,19 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
         cancelLabel="Stay"
         onCancel={() => setLeaveConfirmOpen(false)}
         onConfirm={continueBlockedNavigation}
+      />
+
+      <ConfirmDialog
+        open={resetConfirmOpen}
+        title="Reset all flashcards?"
+        description="This will clear every known card and shuffle a new deck. This cannot be undone."
+        confirmLabel="Reset"
+        cancelLabel="Cancel"
+        onCancel={() => setResetConfirmOpen(false)}
+        onConfirm={() => {
+          setResetConfirmOpen(false);
+          resetAll();
+        }}
       />
     </section>
   );
