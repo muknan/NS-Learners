@@ -642,23 +642,16 @@ p {
 }
 
 .mode-card__cta {
-  min-height: 38px;
-  border: 1.5px solid var(--color-brand-primary);
-  border-radius: var(--radius-control);
-  padding-inline: 12px;
-  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   color: var(--color-brand-primary);
   font-size: var(--text-14);
   font-weight: 600;
 }
 
-.mode-card__cta:hover {
-  background: var(--color-brand-tertiary);
-}
-
-.mode-card__cta.is-primary {
-  background: var(--color-brand-primary);
-  color: var(--color-surface-card);
+.mode-card__cta::after {
+  content: '→';
 }
 
 .mode-card--wide {
@@ -859,8 +852,15 @@ p {
 
 .flashcard-filter-list {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 2px; /* prevent focus-ring clipping */
+}
+
+.flashcard-filter-list::-webkit-scrollbar {
+  display: none;
 }
 
 .flashcard-filter-chip {
@@ -2653,32 +2653,35 @@ input[type='range'] {
     min-height: 34px;
     padding-inline: 10px;
     font-size: var(--text-12);
+    flex-shrink: 0;
   }
 
   .flashcard-view {
     padding: 12px;
-    gap: var(--space-2);
+    gap: var(--space-3);
     overflow: hidden; /* Keep card itself from scrolling */
   }
 
   .flashcard-inner {
     justify-content: flex-start; /* Stack from top instead of center-squeeze */
-    gap: var(--space-2);
+    gap: var(--space-3);
     overflow: visible; /* Allow children to measure their natural height */
   }
 
   .flashcard-study-area {
-    gap: var(--space-2);
+    gap: var(--space-3);
+    align-content: start; /* Don't vertically center-squeeze tall content */
   }
 
   /* Let image grow into available flex space but never become microscopic */
   .flashcard-image-wrapper {
-    min-height: 60px;
-    max-height: min(140px, 22vh);
+    min-height: 80px;
+    max-height: min(160px, 24vh);
+    margin-block: 4px;
   }
 
   .flashcard-image-wrapper img {
-    min-height: 40px;
+    min-height: 60px;
   }
 
   /* Allow text to take natural height without clipping */
@@ -2687,7 +2690,7 @@ input[type='range'] {
     overflow: visible;
     justify-items: center;
     text-align: center;
-    gap: 6px;
+    gap: 10px;
   }
 
   .flashcard-known-toggle {
