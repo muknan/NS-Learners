@@ -400,11 +400,6 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
               </button>
             </div>
 
-            {currentCard.handbookSection ? (
-              <p className="flashcard-meta-bottom">
-                <span>Handbook:</span> {currentCard.handbookSection}
-              </p>
-            ) : null}
           </>
         ) : (
           <div className="flashcard-inner flashcard-inner--empty">
