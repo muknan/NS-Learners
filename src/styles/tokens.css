@@ -97,10 +97,13 @@
   --color-border-strong: rgba(255, 200, 160, 0.18);
   --color-success: #34d27a;
   --color-success-bg: rgba(52, 210, 122, 0.12);
+  --color-success-border: rgba(52, 210, 122, 0.25);
   --color-error: #f87171;
   --color-error-bg: rgba(248, 113, 113, 0.12);
+  --color-error-border: rgba(248, 113, 113, 0.25);
   --color-warning: #fbb24a;
   --color-warning-bg: rgba(251, 178, 74, 0.12);
+  --color-warning-border: rgba(251, 178, 74, 0.25);
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
   --shadow-card-hover: 0 4px 16px rgba(232, 96, 28, 0.2);

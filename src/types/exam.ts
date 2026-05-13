@@ -1,6 +1,6 @@
 import type { QuestionTopic } from '@/lib/questions.schema';
 
-export type ExamPhase = 'idle' | 'in-progress' | 'review' | 'complete';
+export type ExamPhase = 'in-progress' | 'review' | 'complete';
 export type FeedbackMode = 'instant' | 'deferred';
 export type QuestionCategory = 'rules' | 'signs';
 export type QuestionFilter = 'all' | QuestionCategory;
@@ -44,7 +44,6 @@ export interface OfficialMaterial {
 }
 
 export interface ExamSettings {
-  feedbackMode?: FeedbackMode;
   instantFeedback: boolean;
   questionCount: QuestionCount;
   timerMinutes: TimerMinutes;

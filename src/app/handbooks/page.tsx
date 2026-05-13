@@ -44,7 +44,7 @@ export default function HandbooksPage() {
                 <span className="pdf-card__icon" aria-hidden="true">
                   <FileText />
                 </span>
-                <span>
+                <span className="pdf-card__body">
                   <strong>{material.label}</strong>
                   <small>
                     {material.section === "Driver's Handbook PDFs"
@@ -52,10 +52,12 @@ export default function HandbooksPage() {
                       : 'Official Nova Scotia reference material.'}
                   </small>
                 </span>
-                <Badge tone={material.fileSize === 'Primary source' ? 'brand' : 'neutral'}>
-                  {material.fileSize}
-                </Badge>
-                <Download aria-hidden="true" />
+                <span className="pdf-card__meta">
+                  <Badge tone={material.fileSize === 'Primary source' ? 'brand' : 'neutral'}>
+                    {material.fileSize}
+                  </Badge>
+                  <Download aria-hidden="true" />
+                </span>
               </a>
             ))}
           </div>

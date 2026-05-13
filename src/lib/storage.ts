@@ -150,7 +150,14 @@ export function saveBooleanFlag(key: string, value: boolean): void {
   }
 }
 
+/** @deprecated Use {@link readBooleanLocalFlag} instead. */
 export function readSessionBooleanFlag(key: string): boolean {
+  return readBooleanLocalFlag(key);
+}
+
+/** Reads a boolean flag from localStorage. Despite the "Session" naming legacy,
+ *  these flags persist across refreshes within a browser session (e.g. SECTION_BREAK_SEEN_KEY). */
+export function readBooleanLocalFlag(key: string): boolean {
   try {
     return getStorage('local')?.getItem(key) === 'true';
   } catch {
@@ -158,7 +165,13 @@ export function readSessionBooleanFlag(key: string): boolean {
   }
 }
 
+/** @deprecated Use {@link saveBooleanLocalFlag} instead. */
 export function saveSessionBooleanFlag(key: string, value: boolean): void {
+  saveBooleanLocalFlag(key, value);
+}
+
+/** Saves a boolean flag to localStorage. */
+export function saveBooleanLocalFlag(key: string, value: boolean): void {
   try {
     getStorage('local')?.setItem(key, String(value));
   } catch {
@@ -166,7 +179,13 @@ export function saveSessionBooleanFlag(key: string, value: boolean): void {
   }
 }
 
+/** @deprecated Use {@link clearLocalFlag} instead. */
 export function clearSessionFlag(key: string): void {
+  clearLocalFlag(key);
+}
+
+/** Removes a flag from localStorage. */
+export function clearLocalFlag(key: string): void {
   try {
     getStorage('local')?.removeItem(key);
   } catch {
@@ -247,7 +266,12 @@ function normalizeSession(value: unknown): ExamSession | null {
 
   return {
     id: candidate.id,
-    phase: candidate.phase ?? 'idle',
+    phase:
+      candidate.phase === 'in-progress' ||
+      candidate.phase === 'review' ||
+      candidate.phase === 'complete'
+        ? candidate.phase
+        : 'in-progress',
     source: candidate.source === 'missed' ? 'missed' : 'full',
     mode: normalizeModeId(candidate.mode),
     questionIds: candidate.questionIds.filter((id): id is string => typeof id === 'string'),
@@ -260,7 +284,7 @@ function normalizeSession(value: unknown): ExamSession | null {
     instantFeedback:
       typeof candidate.instantFeedback === 'boolean'
         ? candidate.instantFeedback
-        : normalizeSettings(candidate.settings).instantFeedback,
+        : (normalizeSettings(candidate.settings).instantFeedback ?? false),
     autoAdvance:
       typeof candidate.autoAdvance === 'boolean'
         ? candidate.autoAdvance

@@ -12,10 +12,9 @@ import { getExamMode } from '@/lib/modes';
 import { shuffle } from '@/lib/shuffle';
 
 export const DEFAULT_SETTINGS: ExamSettings = {
-  feedbackMode: 'deferred',
   instantFeedback: false,
   questionCount: 40,
-  timerMinutes: 30,
+  timerMinutes: 60,
   autoAdvance: true,
   autoAdvanceDurationMs: 3000,
 };
@@ -31,11 +30,8 @@ export function normalizeSettings(value: unknown): ExamSettings {
   const candidate = value as Partial<ExamSettings>;
 
   return {
-    feedbackMode: candidate.feedbackMode === 'instant' ? 'instant' : 'deferred',
     instantFeedback:
-      typeof candidate.instantFeedback === 'boolean'
-        ? candidate.instantFeedback
-        : candidate.feedbackMode === 'instant',
+      typeof candidate.instantFeedback === 'boolean' ? candidate.instantFeedback : false,
     questionCount: questionCountOptions.has(candidate.questionCount as QuestionCount)
       ? (candidate.questionCount as QuestionCount)
       : DEFAULT_SETTINGS.questionCount,
@@ -77,7 +73,6 @@ export function createExamSession({
   const instantFeedback = modeConfig.defaultInstantFeedback;
   const sessionSettings: ExamSettings = {
     ...normalizeSettings(settings),
-    feedbackMode: modeConfig.defaultInstantFeedback ? 'instant' : 'deferred',
     instantFeedback: modeConfig.defaultInstantFeedback,
     questionCount,
     timerMinutes: modeConfig.timerMinutes,

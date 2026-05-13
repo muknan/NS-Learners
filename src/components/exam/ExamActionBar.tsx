@@ -156,6 +156,7 @@ export const ExamActionBar = memo(function ExamActionBar({
               .filter(Boolean)
               .join(' ')}
             icon={<ArrowRight aria-hidden="true" />}
+            key={autoAdvanceActive ? autoAdvanceDurationMs : 'manual'}
             onClick={onNext}
             style={{ '--advance-duration': `${autoAdvanceDurationMs}ms` } as CSSProperties}
           >

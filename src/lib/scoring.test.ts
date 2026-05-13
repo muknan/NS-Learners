@@ -61,7 +61,6 @@ function makeSession(
     autoAdvancedIds: [],
     shouldAutoAdvance: false,
     settings: {
-      feedbackMode: 'deferred',
       instantFeedback: false,
       questionCount: 20,
       timerMinutes: 0,

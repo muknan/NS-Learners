@@ -87,9 +87,17 @@ export function useNavigationBlocker({
       armHistoryGuard();
     }
 
-    function handlePopState(): void {
+    function handlePopState(event: PopStateEvent): void {
       if (bypassRef.current) {
         return;
+      }
+
+      // If the popped state is not one of our sentinels (e.g. iOS swipe-back),
+      // re-push the guard immediately so the user can't bypass the blocker.
+      const state = isHistoryState(event.state) ? event.state : {};
+      if (!state[stateKey]) {
+        armedRef.current = false;
+        armHistoryGuard();
       }
 
       // A popstate proves the previously-armed entries were honored, so the

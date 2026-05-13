@@ -43,7 +43,9 @@ export function ExamProvider({
 
   useEffect(() => {
     if (state.session.phase === 'in-progress' || state.session.phase === 'review') {
-      saveCurrentSession(state.session);
+      // Never persist the transient shouldAutoAdvance flag;
+      // it must always start false on restore to avoid accidental auto-advance.
+      saveCurrentSession({ ...state.session, shouldAutoAdvance: false });
     }
   }, [state.session]);
 
@@ -137,7 +139,6 @@ function examReducer(state: ExamState, action: ExamAction): ExamState {
           shouldAutoAdvance: false,
           settings: {
             ...state.session.settings,
-            feedbackMode: action.value ? 'instant' : 'deferred',
             instantFeedback: action.value,
             autoAdvance: nextAutoAdvance,
           },

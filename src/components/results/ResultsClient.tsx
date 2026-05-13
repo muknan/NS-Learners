@@ -80,8 +80,16 @@ export function ResultsClient({ questions }: { questions: Question[] }) {
       <section className="empty-exam">
         <Badge tone="warning">No result</Badge>
         <h1>No completed exam found.</h1>
-        <p>Results are stored in this tab after submitting a session.</p>
-        <ButtonLink href="/exam?mode=full-test">Start a new exam</ButtonLink>
+        <p>
+          Results are only stored after submitting an exam in this browser tab. If you completed an
+          exam in another tab, results won&apos;t be available here.
+        </p>
+        <div className="stats-row">
+          <ButtonLink href="/exam?mode=full-test">Start a new exam</ButtonLink>
+          <ButtonLink href="/" tone="ghost">
+            Go to Home
+          </ButtonLink>
+        </div>
       </section>
     );
   }
@@ -217,6 +225,10 @@ export function ResultsClient({ questions }: { questions: Question[] }) {
               ))}
             </div>
           </div>
+        ) : score?.percentage === 100 ? (
+          <div className="breakdown-subsection">
+            <p className="empty-state">Perfect score by topic!</p>
+          </div>
         ) : null}
       </section>
 
@@ -260,10 +272,12 @@ function ScoreRing({ percentage, label }: { percentage: number; label: string })
   const radius = 48;
   const circumference = 2 * Math.PI * radius;
   const offset = circumference - (percentage / 100) * circumference;
+  const titleId = `score-ring-title-${percentage}`;
 
   return (
-    <div className="score-ring" role="img" aria-label={label}>
+    <div className="score-ring" role="img" aria-labelledby={titleId}>
       <svg viewBox="0 0 120 120" aria-hidden="true">
+        <title id={titleId}>{label}</title>
         <circle className="score-ring__track" cx="60" cy="60" r={radius} />
         <circle
           className="score-ring__fill"

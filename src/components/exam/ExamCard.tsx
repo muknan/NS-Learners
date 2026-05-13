@@ -60,9 +60,9 @@ export const ExamCard = memo(function ExamCard({
           </span>
         </div>
 
-        <h1 className="exam-question" data-testid="exam-question" tabIndex={-1}>
+        <h2 className="exam-question" data-testid="exam-question" tabIndex={-1}>
           {question.text}
-        </h1>
+        </h2>
 
         <div
           className="answer-list"

@@ -34,20 +34,20 @@ import {
 } from '@/lib/session';
 import {
   clearSessionForMode,
-  clearSessionFlag,
+  clearLocalFlag,
   KEYBOARD_HINT_KEY,
   SECTION_BREAK_SEEN_KEY,
   localGet,
   readBooleanFlag,
   readAdvanceDuration,
-  readSessionBooleanFlag,
+  readBooleanLocalFlag,
   readSessionForMode,
   readSettings,
   RETAKE_QUESTIONS_KEY,
   saveBooleanFlag,
   saveCompletedSession,
   saveSessionForMode,
-  saveSessionBooleanFlag,
+  saveBooleanLocalFlag,
   saveHistory,
 } from '@/lib/storage';
 import { drivingTips } from '@/lib/tips';
@@ -105,8 +105,11 @@ export function ExamClient({ questions }: { questions: Question[] }) {
         questionIds: selectedQuestions.map((question) => question.id),
         autoAdvanceDurationMs: readAdvanceDuration() * 1000,
       });
-      clearSessionFlag(SECTION_BREAK_SEEN_KEY);
+      clearLocalFlag(SECTION_BREAK_SEEN_KEY);
       saveSessionForMode(created);
+      if (mode.id === 'retake') {
+        clearLocalFlag(RETAKE_QUESTIONS_KEY);
+      }
       setSession(created);
       setLoadState('ready');
     } catch (err) {
@@ -119,7 +122,7 @@ export function ExamClient({ questions }: { questions: Question[] }) {
   }, [mode.id, mode.filter, mode.questionCount]);
 
   if (loadState === 'loading') {
-    return <LoadingTip />;
+    return <LoadingTip modeLabel={mode.label} />;
   }
 
   if (!session || loadState === 'empty') {
@@ -136,12 +139,20 @@ export function ExamClient({ questions }: { questions: Question[] }) {
             ? 'There are no missed questions saved for a retake. Start a fresh full test when you are ready.'
             : 'Settings are saved locally, and the exam will be stored in this tab until submitted.'}
         </p>
-        <ButtonLink
-          href={mode.id === 'retake' ? '/exam?mode=full-test' : `/exam?mode=${mode.id}`}
-          icon={<RotateCcw aria-hidden="true" />}
-        >
-          {mode.id === 'retake' ? 'Start fresh full test' : 'Start exam'}
-        </ButtonLink>
+        {mode.id === 'retake' ? (
+          <>
+            <ButtonLink href="/exam?mode=full-test" icon={<RotateCcw aria-hidden="true" />}>
+              Start fresh full test
+            </ButtonLink>
+            <ButtonLink href="/results" tone="ghost">
+              View results
+            </ButtonLink>
+          </>
+        ) : (
+          <ButtonLink href={`/exam?mode=${mode.id}`} icon={<RotateCcw aria-hidden="true" />}>
+            Start exam
+          </ButtonLink>
+        )}
       </section>
     );
   }
@@ -179,7 +190,7 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
   const [navigatorOpen, setNavigatorOpen] = useState(false);
   const [leaveConfirmOpen, setLeaveConfirmOpen] = useState(false);
   const [sectionBreakSeen, setSectionBreakSeen] = useState(() =>
-    readSessionBooleanFlag(SECTION_BREAK_SEEN_KEY),
+    readBooleanLocalFlag(SECTION_BREAK_SEEN_KEY),
   );
   const [keyboardHintVisible, setKeyboardHintVisible] = useState(false);
   const [autoAdvanceActive, setAutoAdvanceActive] = useState(false);
@@ -202,9 +213,9 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
   const cancelAutoAdvanceRef = useRef<() => void>(() => undefined);
   const handleFlagRef = useRef<() => void>(() => undefined);
   const requestSubmitRef = useRef<() => void>(() => undefined);
+  const continueToSectionTwoRef = useRef(continueToSectionTwo);
+  const showSectionBreakRef = useRef(false);
   const questionNumber = session.currentIndex + 1;
-  const tip = drivingTips[session.currentIndex % drivingTips.length]!;
-  const flaggedCount = session.flaggedIds.length;
   const modeLabel = getExamMode(session.mode).label;
   const isLastQuestion = session.currentIndex === session.questionIds.length - 1;
   const currentQuestionFlagged = session.flaggedIds.includes(currentQuestion.id);
@@ -218,6 +229,8 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
     session.questionIds[19] !== undefined &&
     session.answers[session.questionIds[19]] !== undefined &&
     !sectionBreakSeen;
+  const tip = drivingTips[Math.floor(Math.random() * drivingTips.length)]!;
+  const flaggedCount = session.flaggedIds.length;
   sessionRef.current = session;
   currentQuestionRef.current = currentQuestion;
   overlayOpenRef.current = {
@@ -228,6 +241,8 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
     navigatorOpen,
   };
   dispatchRef.current = dispatch;
+  continueToSectionTwoRef.current = continueToSectionTwo;
+  showSectionBreakRef.current = showSectionBreak;
   const sectionOneScore = useMemo(() => {
     if (!showSectionBreak) {
       return null;
@@ -294,7 +309,7 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
       saveCompletedSession(completed);
       saveHistory(historyEntry);
       clearSessionForMode(session.mode);
-      clearSessionFlag(SECTION_BREAK_SEEN_KEY);
+      clearLocalFlag(SECTION_BREAK_SEEN_KEY);
       dispatch({ type: 'submit', now: completed.completedAt ?? Date.now() });
       router.push(`/results${expired ? '?expired=1' : ''}`);
     },
@@ -487,6 +502,15 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
         return;
       }
 
+      // When the section break screen is visible, only allow Continue and Escape.
+      if (showSectionBreakRef.current) {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          continueToSectionTwoRef.current();
+        }
+        return;
+      }
+
       const overlays = overlayOpenRef.current;
       if (
         overlays.submitModalOpen ||
@@ -578,13 +602,19 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
   }
 
   function exitExam(): void {
+    if (Object.keys(session.answers).length > 0) {
+      const exited = completeSession(session);
+      const historyEntry = toHistoryEntry(exited, questionsById);
+      saveHistory(historyEntry);
+      addToast('Progress saved to history', 'info');
+    }
     clearSessionForMode(session.mode);
-    clearSessionFlag(SECTION_BREAK_SEEN_KEY);
+    clearLocalFlag(SECTION_BREAK_SEEN_KEY);
     router.push('/');
   }
 
   function continueToSectionTwo(): void {
-    saveSessionBooleanFlag(SECTION_BREAK_SEEN_KEY, true);
+    saveBooleanLocalFlag(SECTION_BREAK_SEEN_KEY, true);
     setSectionBreakSeen(true);
   }
 
@@ -830,12 +860,18 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
   );
 }
 
-function LoadingTip() {
+function LoadingTip({ modeLabel }: { modeLabel?: string }) {
+  // Use a deterministic tip index derived from the mode label so SSR and
+  // client hydration render the same text and avoid a mismatch.
+  const tipIndex =
+    (modeLabel?.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) ?? 0) %
+    drivingTips.length;
+  const tip = drivingTips[tipIndex]!;
   return (
     <section className="loading-state" role="status">
       <Badge tone="brand">Loading</Badge>
-      <h1>Preparing your practice exam.</h1>
-      <p>Did you know? Learners in Nova Scotia must maintain zero blood alcohol level.</p>
+      <h1>{modeLabel ? `Preparing your ${modeLabel}…` : 'Preparing your practice exam.'}</h1>
+      <p>Did you know? {tip}</p>
     </section>
   );
 }

@@ -33,7 +33,8 @@ export function scoreSession(
   const passed =
     passMark === null
       ? null
-      : bySection
+      : bySection.length === passMark.sections &&
+        bySection
           .slice(0, passMark.sections)
           .every((section) => section.correct >= passMark.perSection);
 

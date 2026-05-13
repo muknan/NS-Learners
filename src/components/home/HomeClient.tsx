@@ -1,6 +1,6 @@
 'use client';
 
-import { BookOpen, Play, RotateCcw, ShieldCheck, Trash2 } from 'lucide-react';
+import { Play, RotateCcw, ShieldCheck, Trash2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
@@ -127,7 +127,12 @@ export function HomeClient({ flashcardTotal, stats }: HomeClientProps) {
         </div>
         <div className="mode-grid">
           {modes.map((mode) => (
-            <article className="mode-card" key={mode.id}>
+            <button
+              className="mode-card"
+              key={mode.id}
+              onClick={() => startExam(mode.id)}
+              type="button"
+            >
               <span className="mode-card__top">
                 <span className="mode-card__category">{mode.categoryLabel}</span>
                 <strong>{mode.label}</strong>
@@ -135,19 +140,18 @@ export function HomeClient({ flashcardTotal, stats }: HomeClientProps) {
               </span>
               <span className="mode-card__bottom">
                 <span className="mode-card__meta">{mode.stats.join(' · ')}</span>
-                <button
+                <span
                   className={
                     mode.ctaVariant === 'primary' ? 'mode-card__cta is-primary' : 'mode-card__cta'
                   }
-                  onClick={() => startExam(mode.id)}
-                  type="button"
+                  aria-hidden="true"
                 >
                   {mode.ctaLabel}
-                </button>
+                </span>
               </span>
-            </article>
+            </button>
           ))}
-          <article className="mode-card">
+          <button className="mode-card" onClick={() => router.push('/flashcards')} type="button">
             <span className="mode-card__top">
               <Badge tone="success">Flashcards</Badge>
               <strong>Chapter Flashcards</strong>
@@ -155,15 +159,11 @@ export function HomeClient({ flashcardTotal, stats }: HomeClientProps) {
             </span>
             <span className="mode-card__bottom">
               <span className="mode-card__meta">{flashcardTotal} cards · Keyboard friendly</span>
-              <Button
-                tone="secondary"
-                icon={<BookOpen aria-hidden="true" />}
-                onClick={() => router.push('/flashcards')}
-              >
+              <span className="mode-card__cta" aria-hidden="true">
                 Open Flashcards
-              </Button>
+              </span>
             </span>
-          </article>
+          </button>
         </div>
       </section>
 
@@ -230,18 +230,30 @@ export function HomeClient({ flashcardTotal, stats }: HomeClientProps) {
           <>
             <div className="history-list">
               {history.slice(0, 5).map((entry) => (
-                <article className="history-item" key={entry.id}>
+                <article
+                  className="history-item"
+                  key={entry.id}
+                  aria-label={`${getExamMode(entry.mode).label} session`}
+                >
                   <ShieldCheck aria-hidden="true" />
                   <strong>{getExamMode(entry.mode).label}</strong>
-                  <span>
+                  <span
+                    aria-label={`Score: ${entry.correct} out of ${entry.total}, ${entry.percentage}%`}
+                  >
                     {entry.correct}/{entry.total} ({entry.percentage}%)
                   </span>
                   <Badge
                     tone={entry.passed === null ? 'brand' : entry.passed ? 'success' : 'error'}
+                    aria-label={`Result: ${entry.passed === null ? 'Score' : entry.passed ? 'Pass' : 'Fail'}`}
                   >
                     {entry.passed === null ? 'Score' : entry.passed ? 'Pass' : 'Fail'}
                   </Badge>
-                  <small>{new Date(entry.completedAt).toLocaleDateString('en-CA')}</small>
+                  <small>
+                    {new Date(entry.completedAt).toLocaleString('en-CA', {
+                      dateStyle: 'medium',
+                      timeStyle: 'short',
+                    })}
+                  </small>
                 </article>
               ))}
             </div>

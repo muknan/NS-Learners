@@ -30,7 +30,9 @@ export function AppChrome({ children }: { children: ReactNode }) {
     return (
       <div className="flashcards-root">
         {!online ? (
-          <div className="offline-banner">You're offline - using cached content</div>
+          <div role="alert" aria-live="assertive" className="offline-banner">
+            You&apos;re offline - using cached content
+          </div>
         ) : null}
         <Header />
         {children}
@@ -40,7 +42,11 @@ export function AppChrome({ children }: { children: ReactNode }) {
 
   return (
     <>
-      {!online ? <div className="offline-banner">You're offline - using cached content</div> : null}
+      {!online ? (
+        <div role="alert" aria-live="assertive" className="offline-banner">
+          You&apos;re offline - using cached content
+        </div>
+      ) : null}
       {examActive ? null : <Header />}
       {children}
       {examActive ? null : <Footer />}

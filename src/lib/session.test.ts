@@ -23,7 +23,6 @@ describe('createExamSession', () => {
     const session = createExamSession({
       questions,
       settings: {
-        feedbackMode: 'deferred',
         instantFeedback: false,
         questionCount: 20,
         timerMinutes: 0,
@@ -40,7 +39,6 @@ describe('createExamSession', () => {
     const session = createExamSession({
       questions,
       settings: {
-        feedbackMode: 'instant',
         instantFeedback: true,
         questionCount: 'all',
         timerMinutes: 30,
