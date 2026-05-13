@@ -814,7 +814,7 @@ p {
   grid-template-columns: minmax(0, 1fr);
   gap: var(--space-3);
   margin-inline: auto;
-  padding-block: var(--space-3);
+  padding: var(--space-3);
   overflow: hidden;
   touch-action: pan-y;
 }
@@ -1007,7 +1007,7 @@ p {
 }
 
 .flashcard-detail__toggle {
-  display: inline-flex;
+  display: flex;
   min-height: 38px;
   flex: 0 0 auto;
   align-items: center;
@@ -1020,6 +1020,7 @@ p {
   color: var(--color-text-primary);
   font-size: var(--text-14);
   font-weight: 600;
+  margin-block-start: var(--space-2);
 }
 
 .flashcard-inner--empty p {
@@ -2406,6 +2407,16 @@ input[type='range'] {
   .question-nav {
     grid-template-columns: repeat(5, minmax(0, 1fr));
   }
+
+  .flashcard-filter-chip {
+    padding-inline: 6px;
+    font-size: 11px;
+    min-height: 30px;
+  }
+
+  .flashcard-filter-list {
+    gap: 4px;
+  }
 }
 
 @media (max-width: 380px) {
@@ -2631,52 +2642,56 @@ input[type='range'] {
 @media (max-width: 640px) {
   .flashcards-layout {
     gap: var(--space-2);
-    padding-block: var(--space-2);
+    padding: var(--space-2) var(--space-3);
   }
 
   .flashcards-heading {
-    align-items: start;
+    align-items: center;
     gap: var(--space-2);
   }
 
-  .flashcards-heading .button {
-    min-height: 40px;
-    padding-inline: 10px;
+  /* Hide Reset All text on small screens; show icon only */
+  .flashcards-heading .button span:not(.button__icon) {
+    display: none;
   }
 
-  /* Remove the search-bar row space if any residual margin exists */
+  .flashcards-heading .button {
+    min-height: 36px;
+    padding-inline: 8px;
+  }
+
   .flashcard-toolbar {
     gap: var(--space-2);
   }
 
   .flashcard-filter-chip {
-    min-height: 34px;
-    padding-inline: 10px;
+    min-height: 32px;
+    padding-inline: 8px;
     font-size: var(--text-12);
     flex-shrink: 0;
   }
 
   .flashcard-view {
-    padding: 12px;
+    padding: var(--space-3);
     gap: var(--space-3);
     overflow: hidden; /* Keep card itself from scrolling */
   }
 
   .flashcard-inner {
     justify-content: flex-start; /* Stack from top instead of center-squeeze */
-    gap: var(--space-3);
+    gap: 16px;
     overflow: visible; /* Allow children to measure their natural height */
   }
 
   .flashcard-study-area {
-    gap: var(--space-3);
+    gap: 16px;
     align-content: start; /* Don't vertically center-squeeze tall content */
   }
 
   /* Let image grow into available flex space but never become microscopic */
   .flashcard-image-wrapper {
     min-height: 80px;
-    max-height: min(160px, 24vh);
+    max-height: min(140px, 20vh);
     margin-block: 4px;
   }
 
@@ -2690,7 +2705,7 @@ input[type='range'] {
     overflow: visible;
     justify-items: center;
     text-align: center;
-    gap: 10px;
+    gap: 14px;
   }
 
   .flashcard-known-toggle {
@@ -2716,6 +2731,7 @@ input[type='range'] {
     min-height: 32px;
     padding-inline: 10px;
     font-size: var(--text-12);
+    margin-block-start: 12px;
   }
 
   .flashcard-inner--empty p,
@@ -2732,15 +2748,15 @@ input[type='range'] {
   .flashcard-actions {
     flex-shrink: 0;
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     justify-content: center;
-    gap: 8px;
+    gap: 6px;
   }
 
   .flashcard-actions .button {
-    min-height: 40px;
-    flex: 1 1 116px;
-    padding-inline: 8px;
+    min-height: 36px;
+    flex: 1 1 0;
+    padding-inline: 6px;
     font-size: var(--text-12);
   }
 }
