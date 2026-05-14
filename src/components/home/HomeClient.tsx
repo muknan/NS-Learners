@@ -1,6 +1,6 @@
 'use client';
 
-import { Play, RotateCcw, ShieldCheck, Trash2 } from 'lucide-react';
+import { ChevronRight, Play, RotateCcw, ShieldCheck, Trash2 } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
@@ -263,33 +263,62 @@ export function HomeClient({ flashcardTotal, stats }: HomeClientProps) {
         ) : history.length ? (
           <>
             <div className="history-list">
-              {history.slice(0, 5).map((entry) => (
-                <article
-                  className="history-item"
-                  key={entry.id}
-                  aria-label={`${getExamMode(entry.mode).label} session`}
-                >
-                  <ShieldCheck aria-hidden="true" />
-                  <strong>{getExamMode(entry.mode).label}</strong>
-                  <span
-                    aria-label={`Score: ${entry.correct} out of ${entry.total}, ${entry.percentage}%`}
+              {history.slice(0, 5).map((entry) => {
+                const hasSession = Boolean(entry.session);
+                return (
+                  <button
+                    className="history-item"
+                    disabled={!hasSession}
+                    key={entry.id}
+                    onClick={() => {
+                      if (hasSession) {
+                        router.push(`/results?historyId=${entry.id}`);
+                      } else {
+                        setToasts((current) => [
+                          ...current,
+                          {
+                            id: nextToastId(),
+                            message:
+                              'Full detail not available for this result — recorded before detailed history was enabled.',
+                            type: 'info' as const,
+                          },
+                        ]);
+                      }
+                    }}
+                    type="button"
+                    aria-label={`${getExamMode(entry.mode).label} session${hasSession ? '' : ' — details unavailable'}`}
                   >
-                    {entry.correct}/{entry.total} ({entry.percentage}%)
-                  </span>
-                  <Badge
-                    tone={entry.passed === null ? 'brand' : entry.passed ? 'success' : 'error'}
-                    aria-label={`Result: ${entry.passed === null ? 'Score' : entry.passed ? 'Pass' : 'Fail'}`}
-                  >
-                    {entry.passed === null ? 'Score' : entry.passed ? 'Pass' : 'Fail'}
-                  </Badge>
-                  <small>
-                    {new Date(entry.completedAt).toLocaleString('en-CA', {
-                      dateStyle: 'medium',
-                      timeStyle: 'short',
-                    })}
-                  </small>
-                </article>
-              ))}
+                    <div className="history-item__body">
+                      <div className="history-item__row">
+                        <ShieldCheck aria-hidden="true" />
+                        <strong>{getExamMode(entry.mode).label}</strong>
+                        <span
+                          aria-label={`Score: ${entry.correct} out of ${entry.total}, ${entry.percentage}%`}
+                        >
+                          {entry.correct}/{entry.total} ({entry.percentage}%)
+                        </span>
+                        <Badge
+                          tone={
+                            entry.passed === null ? 'brand' : entry.passed ? 'success' : 'error'
+                          }
+                          aria-label={`Result: ${entry.passed === null ? 'Score' : entry.passed ? 'Pass' : 'Fail'}`}
+                        >
+                          {entry.passed === null ? 'Score' : entry.passed ? 'Pass' : 'Fail'}
+                        </Badge>
+                      </div>
+                      <small className="history-item__meta">
+                        {new Date(entry.completedAt).toLocaleString('en-CA', {
+                          dateStyle: 'medium',
+                          timeStyle: 'short',
+                        })}
+                      </small>
+                    </div>
+                    {hasSession ? (
+                      <ChevronRight className="history-item__chevron" aria-hidden="true" />
+                    ) : null}
+                  </button>
+                );
+              })}
             </div>
             <Button
               tone="ghost"

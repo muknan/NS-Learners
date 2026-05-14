@@ -21,13 +21,20 @@ import {
   RETAKE_QUESTIONS_KEY,
   localSet,
   readCompletedSession,
+  readHistorySession,
   readSettings,
   saveSessionForMode,
 } from '@/lib/storage';
 import { nextToastId } from '@/lib/toast';
 import type { ExamSession, Question, QuestionResult } from '@/types/exam';
 
-export function ResultsClient({ questions }: { questions: Question[] }) {
+export function ResultsClient({
+  questions,
+  historyId,
+}: {
+  questions: Question[];
+  historyId: string | undefined;
+}) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [session, setSession] = useState<ExamSession | null>(null);
@@ -57,8 +64,12 @@ export function ResultsClient({ questions }: { questions: Question[] }) {
   );
 
   useEffect(() => {
-    setSession(readCompletedSession());
-  }, []);
+    if (historyId) {
+      setSession(readHistorySession(historyId));
+    } else {
+      setSession(readCompletedSession());
+    }
+  }, [historyId]);
 
   const dismissToast = useCallback((id: string): void => {
     setToasts((current) => current.filter((toast) => toast.id !== id));
@@ -155,7 +166,14 @@ export function ResultsClient({ questions }: { questions: Question[] }) {
             {expired ? ' after the timer expired.' : '.'}
           </p>
         </div>
-        <ScoreRing percentage={score.percentage} label={`${score.percentage}% score`} />
+        <ScoreRing
+          percentage={score.percentage}
+          correct={score.correct}
+          incorrect={score.incorrect}
+          missed={score.missed}
+          total={score.total}
+          label={`${score.percentage}% score`}
+        />
       </section>
 
       <section className="section-block" aria-labelledby="breakdown-title">
@@ -268,25 +286,75 @@ export function ResultsClient({ questions }: { questions: Question[] }) {
   );
 }
 
-function ScoreRing({ percentage, label }: { percentage: number; label: string }) {
+function ScoreRing({
+  percentage,
+  correct,
+  incorrect,
+  missed,
+  total,
+  label,
+}: {
+  percentage: number;
+  correct: number;
+  incorrect: number;
+  missed: number;
+  total: number;
+  label: string;
+}) {
   const radius = 48;
   const circumference = 2 * Math.PI * radius;
-  const offset = circumference - (percentage / 100) * circumference;
   const titleId = `score-ring-title-${percentage}`;
+
+  function arcProps(count: number, startAngle: number) {
+    const angle = total > 0 ? (count / total) * 360 : 0;
+    const dashLength = (angle / 360) * circumference;
+    return {
+      strokeDasharray: `${dashLength} ${circumference - dashLength}`,
+      strokeDashoffset: -((startAngle / 360) * circumference),
+      transform: `rotate(${-90 + startAngle} 60 60)`,
+    };
+  }
+
+  const correctAngle = total > 0 ? (correct / total) * 360 : 0;
+  const incorrectAngle = total > 0 ? (incorrect / total) * 360 : 0;
 
   return (
     <div className="score-ring" role="img" aria-labelledby={titleId}>
       <svg viewBox="0 0 120 120" aria-hidden="true">
-        <title id={titleId}>{label}</title>
+        <title id={titleId}>
+          {label} — {correct} correct, {incorrect} wrong, {missed} missed of {total}
+        </title>
         <circle className="score-ring__track" cx="60" cy="60" r={radius} />
-        <circle
-          className="score-ring__fill"
-          cx="60"
-          cy="60"
-          r={radius}
-          strokeDasharray={circumference}
-          strokeDashoffset={offset}
-        />
+        {correct > 0 && (
+          <circle
+            className="score-ring__segment score-ring__segment--correct"
+            cx="60"
+            cy="60"
+            r={radius}
+            strokeLinecap="butt"
+            {...arcProps(correct, 0)}
+          />
+        )}
+        {incorrect > 0 && (
+          <circle
+            className="score-ring__segment score-ring__segment--incorrect"
+            cx="60"
+            cy="60"
+            r={radius}
+            strokeLinecap="butt"
+            {...arcProps(incorrect, correctAngle)}
+          />
+        )}
+        {missed > 0 && (
+          <circle
+            className="score-ring__segment score-ring__segment--missed"
+            cx="60"
+            cy="60"
+            r={radius}
+            strokeLinecap="butt"
+            {...arcProps(missed, correctAngle + incorrectAngle)}
+          />
+        )}
       </svg>
       <strong>{percentage}%</strong>
       <span>Score</span>

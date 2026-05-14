@@ -59,7 +59,7 @@ describe('ResultsClient', () => {
 
   it('shows empty state when no completed session exists', () => {
     mockReadCompletedSession.mockReturnValue(null);
-    render(<ResultsClient questions={testQuestions} />);
+    render(<ResultsClient questions={testQuestions} historyId={undefined} />);
     expect(screen.getByRole('heading', { name: /no completed exam found/i })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /start a new exam/i })).toBeInTheDocument();
   });
@@ -76,7 +76,7 @@ describe('ResultsClient', () => {
     });
     mockReadCompletedSession.mockReturnValue(completed);
 
-    render(<ResultsClient questions={testQuestions} />);
+    render(<ResultsClient questions={testQuestions} historyId={undefined} />);
     expect(screen.getByText(/correct overall/i)).toBeInTheDocument();
     expect(screen.getByText(/breakdown/i)).toBeInTheDocument();
     expect(screen.getByText(/wrong answer review/i)).toBeInTheDocument();
@@ -94,7 +94,7 @@ describe('ResultsClient', () => {
     });
     mockReadCompletedSession.mockReturnValue(completed);
 
-    render(<ResultsClient questions={testQuestions} />);
+    render(<ResultsClient questions={testQuestions} historyId={undefined} />);
     expect(screen.getByRole('button', { name: /retake missed only/i })).toBeDisabled();
   });
 
@@ -110,7 +110,7 @@ describe('ResultsClient', () => {
     });
     mockReadCompletedSession.mockReturnValue(completed);
 
-    render(<ResultsClient questions={testQuestions} />);
+    render(<ResultsClient questions={testQuestions} historyId={undefined} />);
     expect(screen.getByRole('button', { name: /retake missed only/i })).toBeEnabled();
   });
 });

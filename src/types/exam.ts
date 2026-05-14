@@ -126,4 +126,5 @@ export interface HistoryEntry extends ScoreSummary {
   completedAt: number;
   source: ExamSource;
   mode: ModeId;
+  session?: ExamSession;
 }

@@ -94,6 +94,7 @@ export function toHistoryEntry(
     completedAt: session.completedAt ?? Date.now(),
     source: session.source,
     mode: session.mode,
+    session,
   };
 }
 

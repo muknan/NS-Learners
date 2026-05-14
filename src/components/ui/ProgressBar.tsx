@@ -45,33 +45,61 @@ export const ProgressBar = memo(function ProgressBar({
   const incorrectPct = (incorrect / total) * 100;
   const missedPct = (missed / total) * 100 + 0.01;
 
+  const legendItems: Array<{ label: string; count: number; dotClass: string }> = [];
+  if (correct > 0)
+    legendItems.push({
+      label: 'Correct',
+      count: correct,
+      dotClass: 'progress__legend-dot--correct',
+    });
+  if (incorrect > 0)
+    legendItems.push({
+      label: 'Wrong',
+      count: incorrect,
+      dotClass: 'progress__legend-dot--incorrect',
+    });
+  if (missed > 0)
+    legendItems.push({ label: 'Missed', count: missed, dotClass: 'progress__legend-dot--missed' });
+
   return (
-    <div
-      className="progress progress--stacked"
-      role="progressbar"
-      aria-valuemin={0}
-      aria-valuemax={100}
-      aria-valuenow={clamped}
-      aria-label={label}
-    >
-      {correctPct > 0 && (
-        <span
-          className="progress__segment progress__segment--correct"
-          style={{ inlineSize: `${correctPct}%` }}
-        />
+    <>
+      <div
+        className="progress progress--stacked"
+        role="progressbar"
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={clamped}
+        aria-label={label}
+      >
+        {correctPct > 0 && (
+          <span
+            className="progress__segment progress__segment--correct"
+            style={{ inlineSize: `${correctPct}%` }}
+          />
+        )}
+        {incorrectPct > 0 && (
+          <span
+            className="progress__segment progress__segment--incorrect"
+            style={{ inlineSize: `${incorrectPct}%` }}
+          />
+        )}
+        {missedPct > 0 && (
+          <span
+            className="progress__segment progress__segment--missed"
+            style={{ inlineSize: `${missedPct}%` }}
+          />
+        )}
+      </div>
+      {legendItems.length > 0 && (
+        <div className="progress__legend" aria-hidden="true">
+          {legendItems.map((item) => (
+            <span className="progress__legend-item" key={item.label}>
+              <span className={`progress__legend-dot ${item.dotClass}`} aria-hidden="true" />
+              {item.label} {item.count}
+            </span>
+          ))}
+        </div>
       )}
-      {incorrectPct > 0 && (
-        <span
-          className="progress__segment progress__segment--incorrect"
-          style={{ inlineSize: `${incorrectPct}%` }}
-        />
-      )}
-      {missedPct > 0 && (
-        <span
-          className="progress__segment progress__segment--missed"
-          style={{ inlineSize: `${missedPct}%` }}
-        />
-      )}
-    </div>
+    </>
   );
 });

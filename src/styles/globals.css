@@ -880,34 +880,64 @@ p {
   margin-block-end: 8px;
 }
 
-.history-item {
+button.history-item {
   display: grid;
-  grid-template-columns: 44px minmax(0, 1fr) auto auto;
-  grid-template-rows: auto auto;
-  grid-template-areas:
-    'icon label score badge'
-    'icon meta  meta  meta';
+  width: 100%;
+  grid-template-columns: 1fr auto;
   align-items: center;
-  gap: 4px 12px;
+  gap: 8px;
   border: 1px solid var(--color-border-default);
   border-radius: var(--radius-card);
   padding: 12px;
   background: var(--color-surface-card);
+  color: var(--color-text-primary);
+  text-align: start;
+  cursor: pointer;
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast);
 }
 
-.history-item > svg {
-  grid-area: icon;
+button.history-item:hover {
+  border-color: var(--color-border-strong);
+  background: var(--color-surface-muted);
+}
+
+button.history-item:focus-visible {
+  outline: 2px solid var(--color-brand-primary);
+  outline-offset: 2px;
+}
+
+button.history-item:disabled {
+  opacity: 0.65;
+  cursor: default;
+}
+
+.history-item__body {
   display: grid;
-  width: 44px;
-  height: 44px;
+  gap: 2px;
+  min-width: 0;
+}
+
+.history-item__row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.history-item__row > svg {
+  flex: 0 0 auto;
+  display: grid;
+  width: 36px;
+  height: 36px;
   place-items: center;
   border-radius: var(--radius-control);
   background: var(--color-brand-tertiary);
   color: var(--color-brand-primary);
 }
 
-.history-item > strong {
-  grid-area: label;
+.history-item__row > strong {
   min-width: 0;
   color: var(--color-text-primary);
   font-size: var(--text-14);
@@ -918,8 +948,9 @@ p {
   white-space: nowrap;
 }
 
-.history-item > span[aria-label^='Score:'] {
-  grid-area: score;
+.history-item__row > span[aria-label^='Score:'] {
+  flex: 0 0 auto;
+  margin-inline-start: auto;
   color: var(--color-text-secondary);
   font-size: var(--text-14);
   font-variant-numeric: tabular-nums;
@@ -927,36 +958,48 @@ p {
   white-space: nowrap;
 }
 
-.history-item > .badge {
-  grid-area: badge;
-  justify-self: end;
+.history-item__row > .badge {
+  flex: 0 0 auto;
 }
 
-.history-item small {
-  grid-area: meta;
+.history-item__meta {
+  display: block;
+  margin-inline-start: 44px;
   color: var(--color-text-muted);
   font-size: var(--text-12);
   line-height: 1.3;
 }
 
+.history-item__chevron {
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  color: var(--color-text-muted);
+  stroke-width: 2;
+}
+
 @media (max-width: 430px) {
-  .history-item {
-    grid-template-columns: 36px minmax(0, 1fr) auto;
-    grid-template-areas:
-      'icon label label'
-      'icon score badge'
-      'icon meta  meta';
-    row-gap: 2px;
+  button.history-item {
+    grid-template-columns: 1fr auto;
+    padding: 10px;
   }
 
-  .history-item > svg {
-    width: 36px;
-    height: 36px;
+  .history-item__row {
+    flex-wrap: wrap;
+    gap: 4px;
   }
 
-  .history-item > .badge {
-    grid-area: badge;
-    justify-self: end;
+  .history-item__row > svg {
+    width: 32px;
+    height: 32px;
+  }
+
+  .history-item__row > span[aria-label^='Score:'] {
+    margin-inline-start: 0;
+  }
+
+  .history-item__meta {
+    margin-inline-start: 0;
   }
 }
 
@@ -1418,7 +1461,44 @@ p {
 }
 
 .progress__segment--missed {
-  background: var(--color-warning);
+  /* Neutral grey so it's distinct from brand orange (--color-warning is too similar to brand). */
+  background: var(--color-text-muted);
+}
+
+.progress__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-block-start: 6px;
+}
+
+.progress__legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--color-text-muted);
+  font-size: var(--text-12);
+  line-height: 1;
+}
+
+.progress__legend-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  flex: 0 0 auto;
+  border-radius: 2px;
+}
+
+.progress__legend-dot--correct {
+  background: var(--color-success);
+}
+
+.progress__legend-dot--incorrect {
+  background: var(--color-error);
+}
+
+.progress__legend-dot--missed {
+  background: var(--color-text-muted);
 }
 
 .question-nav {
@@ -2289,7 +2369,7 @@ input[type='range'] {
 }
 
 .score-ring__track,
-.score-ring__fill {
+.score-ring__segment {
   fill: none;
   stroke-width: 14;
 }
@@ -2298,9 +2378,16 @@ input[type='range'] {
   stroke: var(--color-surface-muted);
 }
 
-.score-ring__fill {
-  stroke: var(--color-brand-primary);
-  stroke-linecap: round;
+.score-ring__segment--correct {
+  stroke: var(--color-success);
+}
+
+.score-ring__segment--incorrect {
+  stroke: var(--color-error);
+}
+
+.score-ring__segment--missed {
+  stroke: var(--color-warning);
 }
 
 .score-ring strong,

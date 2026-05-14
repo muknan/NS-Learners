@@ -129,6 +129,13 @@ export function readHistory(): HistoryEntry[] {
   return value.filter(isHistoryEntry).slice(0, HISTORY_LIMIT);
 }
 
+export function readHistorySession(id: string): ExamSession | null {
+  const history = readHistory();
+  const entry = history.find((h) => h.id === id);
+  if (!entry?.session) return null;
+  return normalizeSession(entry.session);
+}
+
 export function saveHistory(entry: HistoryEntry): void {
   const history = readHistory().filter((item) => item.id !== entry.id);
   writeJson(HISTORY_KEY, [entry, ...history].slice(0, HISTORY_LIMIT), 'local');

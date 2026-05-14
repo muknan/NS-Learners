@@ -16,11 +16,16 @@ const ResultsClient = nextDynamic(() =>
   import('@/components/results/ResultsClient').then((module) => module.ResultsClient),
 );
 
-export default function ResultsPage() {
+export default async function ResultsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ historyId?: string }>;
+}) {
+  const { historyId } = await searchParams;
   return (
     <PageWrapper>
       <Suspense fallback={<Badge tone="brand">Loading results</Badge>}>
-        <ResultsClient questions={questions} />
+        <ResultsClient questions={questions} historyId={historyId} />
       </Suspense>
     </PageWrapper>
   );
