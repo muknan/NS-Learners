@@ -1,13 +1,15 @@
 'use client';
 
 import { Play, RotateCcw, ShieldCheck, Trash2 } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
+import { ToastViewport, type ToastMessage } from '@/components/ui/Toast';
 import { EXAM_MODES, getExamMode } from '@/lib/modes';
+import { nextToastId } from '@/lib/toast';
 import {
   clearSessionForMode,
   HISTORY_KEY,
@@ -38,6 +40,8 @@ export function HomeClient({ flashcardTotal, stats }: HomeClientProps) {
   const [resetConfirmMode, setResetConfirmMode] = useState<string | null>(null);
   const [fullTestResetOpen, setFullTestResetOpen] = useState(false);
   const [resetAllConfirmOpen, setResetAllConfirmOpen] = useState(false);
+  const [toasts, setToasts] = useState<ToastMessage[]>([]);
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     setSessions(readAllActiveSessions());
@@ -45,6 +49,23 @@ export function HomeClient({ flashcardTotal, stats }: HomeClientProps) {
     setHistory(readHistory());
     setHistoryLoaded(true);
   }, []);
+
+  useEffect(() => {
+    if (searchParams.get('savedExit') === '1') {
+      setToasts((current) => [
+        ...current,
+        { id: nextToastId(), message: 'Progress saved to history', type: 'success' },
+      ]);
+      // Strip the query param so reload/refresh doesn't re-show the toast.
+      const url = new URL(window.location.href);
+      url.searchParams.delete('savedExit');
+      window.history.replaceState({}, '', url.toString());
+    }
+  }, [searchParams]);
+
+  function dismissToast(id: string): void {
+    setToasts((current) => current.filter((toast) => toast.id !== id));
+  }
 
   function startExam(mode: ExamMode = 'full-test'): void {
     router.push(`/exam?mode=${mode}`);
@@ -128,6 +149,7 @@ export function HomeClient({ flashcardTotal, stats }: HomeClientProps) {
         <div className="mode-grid">
           {modes.map((mode) => (
             <button
+              aria-label={`${mode.ctaLabel}: ${mode.label}. ${mode.description}`}
               className="mode-card"
               key={mode.id}
               onClick={() => startExam(mode.id)}
@@ -151,7 +173,12 @@ export function HomeClient({ flashcardTotal, stats }: HomeClientProps) {
               </span>
             </button>
           ))}
-          <button className="mode-card" onClick={() => router.push('/flashcards')} type="button">
+          <button
+            aria-label="Open Flashcards: Chapter Flashcards. Quick-summary cards from every chapter."
+            className="mode-card"
+            onClick={() => router.push('/flashcards')}
+            type="button"
+          >
             <span className="mode-card__top">
               <Badge tone="success">Flashcards</Badge>
               <strong>Chapter Flashcards</strong>
@@ -221,9 +248,14 @@ export function HomeClient({ flashcardTotal, stats }: HomeClientProps) {
           <h2 id="recent-title">Last completed runs.</h2>
         </div>
         {!historyLoaded ? (
-          <div className="history-list" aria-label="Loading recent scores">
+          <div
+            className="history-list"
+            role="status"
+            aria-busy="true"
+            aria-label="Loading recent scores"
+          >
             {[0, 1, 2].map((item) => (
-              <div className="history-skeleton" key={item} />
+              <div className="history-skeleton" aria-hidden="true" key={item} />
             ))}
           </div>
         ) : history.length ? (
@@ -336,6 +368,7 @@ export function HomeClient({ flashcardTotal, stats }: HomeClientProps) {
         onCancel={() => setResetAllConfirmOpen(false)}
         onConfirm={resetAllSessions}
       />
+      <ToastViewport toasts={toasts} onDismiss={dismissToast} />
     </div>
   );
 }

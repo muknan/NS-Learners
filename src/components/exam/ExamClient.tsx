@@ -139,20 +139,22 @@ export function ExamClient({ questions }: { questions: Question[] }) {
             ? 'There are no missed questions saved for a retake. Start a fresh full test when you are ready.'
             : 'Settings are saved locally, and the exam will be stored in this tab until submitted.'}
         </p>
-        {mode.id === 'retake' ? (
-          <>
-            <ButtonLink href="/exam?mode=full-test" icon={<RotateCcw aria-hidden="true" />}>
-              Start fresh full test
+        <div className="stats-row">
+          {mode.id === 'retake' ? (
+            <>
+              <ButtonLink href="/exam?mode=full-test" icon={<RotateCcw aria-hidden="true" />}>
+                Start fresh full test
+              </ButtonLink>
+              <ButtonLink href="/results" tone="ghost">
+                View results
+              </ButtonLink>
+            </>
+          ) : (
+            <ButtonLink href={`/exam?mode=${mode.id}`} icon={<RotateCcw aria-hidden="true" />}>
+              Start exam
             </ButtonLink>
-            <ButtonLink href="/results" tone="ghost">
-              View results
-            </ButtonLink>
-          </>
-        ) : (
-          <ButtonLink href={`/exam?mode=${mode.id}`} icon={<RotateCcw aria-hidden="true" />}>
-            Start exam
-          </ButtonLink>
-        )}
+          )}
+        </div>
       </section>
     );
   }
@@ -213,6 +215,8 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
   const cancelAutoAdvanceRef = useRef<() => void>(() => undefined);
   const handleFlagRef = useRef<() => void>(() => undefined);
   const requestSubmitRef = useRef<() => void>(() => undefined);
+  const keyboardHintVisibleRef = useRef(false);
+  const dismissKeyboardHintRef = useRef<() => void>(() => undefined);
   const continueToSectionTwoRef = useRef(continueToSectionTwo);
   const showSectionBreakRef = useRef(false);
   const questionNumber = session.currentIndex + 1;
@@ -229,7 +233,11 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
     session.questionIds[19] !== undefined &&
     session.answers[session.questionIds[19]] !== undefined &&
     !sectionBreakSeen;
-  const tip = drivingTips[Math.floor(Math.random() * drivingTips.length)]!;
+  const tip = useMemo(
+    () => drivingTips[Math.floor(Math.random() * drivingTips.length)]!,
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- stable for session lifetime
+    [session.id],
+  );
   const flaggedCount = session.flaggedIds.length;
   sessionRef.current = session;
   currentQuestionRef.current = currentQuestion;
@@ -399,6 +407,8 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
   cancelAutoAdvanceRef.current = cancelAutoAdvance;
   handleFlagRef.current = handleFlag;
   requestSubmitRef.current = requestSubmit;
+  keyboardHintVisibleRef.current = keyboardHintVisible;
+  dismissKeyboardHintRef.current = dismissKeyboardHint;
 
   useEffect(() => {
     setKeyboardHintVisible(!readBooleanFlag(KEYBOARD_HINT_KEY));
@@ -538,8 +548,12 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
       if (/^[1-4]$/.test(event.key)) {
         const optionIndex = Number(event.key) - 1;
         const optionId = activeSession.optionOrder[activeQuestion.id]?.[optionIndex];
+        const alreadyLocked =
+          activeSession.instantFeedback &&
+          activeSession.answers[activeQuestion.id] !== undefined &&
+          activeSession.phase === 'review';
 
-        if (optionId) {
+        if (optionId && !alreadyLocked) {
           event.preventDefault();
           dispatchRef.current({ type: 'answer', questionId: activeQuestion.id, optionId });
         }
@@ -572,6 +586,10 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
       }
 
       if (event.key === 'Escape') {
+        if (keyboardHintVisibleRef.current) {
+          event.preventDefault();
+          dismissKeyboardHintRef.current();
+        }
         return;
       }
 
@@ -602,15 +620,15 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
   }
 
   function exitExam(): void {
-    if (Object.keys(session.answers).length > 0) {
+    const hasAnswers = Object.keys(session.answers).length > 0;
+    if (hasAnswers) {
       const exited = completeSession(session);
       const historyEntry = toHistoryEntry(exited, questionsById);
       saveHistory(historyEntry);
-      addToast('Progress saved to history', 'info');
     }
     clearSessionForMode(session.mode);
     clearLocalFlag(SECTION_BREAK_SEEN_KEY);
-    router.push('/');
+    router.push(hasAnswers ? '/?savedExit=1' : '/');
   }
 
   function continueToSectionTwo(): void {
@@ -816,7 +834,7 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
 
       {shortcutsOpen ? (
         <Modal title="Keyboard shortcuts" onClose={() => setShortcutsOpen(false)}>
-          <dl className="shortcut-list settings-grid">
+          <dl className="shortcut-list shortcut-list--in-modal">
             <div>
               <dt>1-4</dt>
               <dd>Choose an answer</dd>

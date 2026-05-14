@@ -98,9 +98,9 @@ export function SettingsPanel({ open, onClose }: { open: boolean; onClose: () =>
 
           <section
             className="settings-section settings-section--data"
-            aria-labelledby="keyboard-settings-title"
+            aria-labelledby="data-settings-title"
           >
-            <h3 id="keyboard-settings-title">Data & shortcuts</h3>
+            <h3 id="data-settings-title">Data &amp; shortcuts</h3>
             <dl className="shortcut-list">
               <div>
                 <dt>1-4</dt>
