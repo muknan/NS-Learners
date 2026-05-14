@@ -17,6 +17,7 @@ body {
   font-size: var(--text-16);
   font-weight: 400;
   line-height: 1.6;
+  overflow-x: hidden;
 }
 
 button,
@@ -175,6 +176,8 @@ p {
   overflow-x: auto;
   flex-wrap: nowrap;
   scrollbar-width: none;
+  padding-block: 4px;
+  margin-block: -4px;
 }
 
 .site-nav::-webkit-scrollbar {
@@ -2915,6 +2918,10 @@ input[type='range'] {
   }
 
   .hero-sign-wall {
+    display: none;
+  }
+
+  .site-nav > a {
     display: none;
   }
 }

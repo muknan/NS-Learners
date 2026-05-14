@@ -34,7 +34,8 @@ test('blocks browser back navigation on first visit (phase 1)', async ({ page })
     window.history.replaceState({}, '', '/');
   });
 
-  await page.getByRole('link', { name: 'Flashcards' }).click();
+  // Nav text links are hidden below 520px; navigate directly.
+  await page.goto('/flashcards');
   await expect(page).toHaveURL(/\/flashcards/);
 
   // Give the guard a moment to arm (effect runs after React commit).
@@ -55,7 +56,8 @@ test('blocks browser back navigation on repeat visit (phase 2)', async ({ page }
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');
 
-  await page.getByRole('link', { name: 'Flashcards' }).click();
+  // Nav text links are hidden below 520px; navigate directly.
+  await page.goto('/flashcards');
   await expect(page).toHaveURL(/\/flashcards/);
 
   await page.waitForTimeout(300);
@@ -69,7 +71,7 @@ test('blocks browser back navigation on repeat visit (phase 2)', async ({ page }
   await dialog.getByRole('button', { name: 'Leave' }).click();
   await page.waitForURL(/\//, { timeout: 5000 });
 
-  await page.getByRole('link', { name: 'Flashcards' }).click();
+  await page.goto('/flashcards');
   await expect(page).toHaveURL(/\/flashcards/);
 
   await page.waitForTimeout(300);
