@@ -2,7 +2,7 @@
 
 import { Play, RotateCcw, ShieldCheck, Trash2 } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
@@ -63,9 +63,9 @@ export function HomeClient({ flashcardTotal, stats }: HomeClientProps) {
     }
   }, [searchParams]);
 
-  function dismissToast(id: string): void {
+  const dismissToast = useCallback((id: string): void => {
     setToasts((current) => current.filter((toast) => toast.id !== id));
-  }
+  }, []);
 
   function startExam(mode: ExamMode = 'full-test'): void {
     router.push(`/exam?mode=${mode}`);
@@ -158,7 +158,7 @@ export function HomeClient({ flashcardTotal, stats }: HomeClientProps) {
               <span className="mode-card__top">
                 <span className="mode-card__category">{mode.categoryLabel}</span>
                 <strong>{mode.label}</strong>
-                <p>{mode.description}</p>
+                <span className="mode-card__description">{mode.description}</span>
               </span>
               <span className="mode-card__bottom">
                 <span className="mode-card__meta">{mode.stats.join(' · ')}</span>
@@ -182,7 +182,9 @@ export function HomeClient({ flashcardTotal, stats }: HomeClientProps) {
             <span className="mode-card__top">
               <Badge tone="success">Flashcards</Badge>
               <strong>Chapter Flashcards</strong>
-              <p>Quick-summary cards from every chapter — perfect for revision on the go.</p>
+              <span className="mode-card__description">
+                Quick-summary cards from every chapter — perfect for revision on the go.
+              </span>
             </span>
             <span className="mode-card__bottom">
               <span className="mode-card__meta">{flashcardTotal} cards · Keyboard friendly</span>

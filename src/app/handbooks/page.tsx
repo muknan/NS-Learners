@@ -35,6 +35,7 @@ export default function HandbooksPage() {
             <h2>{group.section}</h2>
             {group.materials.map((material) => (
               <a
+                aria-label={`${material.label} — opens in a new tab`}
                 className="pdf-card"
                 href={material.href}
                 key={material.id}

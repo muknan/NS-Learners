@@ -4,6 +4,7 @@ import { Flag, LogOut, Menu, Moon, Sun } from 'lucide-react';
 import { Timer } from '@/components/exam/Timer';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
+import { useMounted } from '@/hooks/useMounted';
 import { useTheme } from '@/hooks/useTheme';
 
 interface ExamTopBarProps {
@@ -26,6 +27,7 @@ export function ExamTopBar({
   onOpenNavigator,
 }: ExamTopBarProps) {
   const { theme, setTheme } = useTheme();
+  const mounted = useMounted();
 
   return (
     <header className="exam-top-bar" data-testid="exam-top-bar">
@@ -61,11 +63,23 @@ export function ExamTopBar({
       />
 
       <Button
-        aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+        aria-label={
+          mounted ? `Switch to ${theme === 'dark' ? 'light' : 'dark'} mode` : 'Toggle color theme'
+        }
         className="exam-top-bar__icon-button"
         tone="ghost"
         size="icon"
-        icon={theme === 'dark' ? <Sun aria-hidden="true" /> : <Moon aria-hidden="true" />}
+        icon={
+          mounted ? (
+            theme === 'dark' ? (
+              <Sun aria-hidden="true" />
+            ) : (
+              <Moon aria-hidden="true" />
+            )
+          ) : (
+            <span className="icon-placeholder" aria-hidden="true" />
+          )
+        }
         onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
       />
     </header>

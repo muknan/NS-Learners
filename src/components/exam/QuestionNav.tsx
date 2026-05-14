@@ -46,9 +46,30 @@ export function QuestionNav({ session, questionsById, onSelect }: QuestionNavPro
             type="button"
           >
             <span aria-hidden="true">{index + 1}</span>
-            {flagged ? <Flag aria-hidden="true" /> : null}
-            {correct ? <Check aria-hidden="true" /> : null}
-            {wrong ? <X aria-hidden="true" /> : null}
+            {flagged ? (
+              <span
+                className="question-nav__item-icon question-nav__item-icon--flag"
+                aria-hidden="true"
+              >
+                <Flag aria-hidden="true" />
+              </span>
+            ) : null}
+            {correct ? (
+              <span
+                className="question-nav__item-icon question-nav__item-icon--correct"
+                aria-hidden="true"
+              >
+                <Check aria-hidden="true" />
+              </span>
+            ) : null}
+            {wrong ? (
+              <span
+                className="question-nav__item-icon question-nav__item-icon--wrong"
+                aria-hidden="true"
+              >
+                <X aria-hidden="true" />
+              </span>
+            ) : null}
           </button>
         );
       })}

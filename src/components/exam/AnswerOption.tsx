@@ -34,7 +34,7 @@ export function AnswerOption({
   return (
     <button
       aria-checked={selected}
-      aria-disabled={disabled}
+      aria-disabled={disabled || undefined}
       className={[
         'answer-option',
         selected ? 'is-selected' : '',
@@ -45,6 +45,7 @@ export function AnswerOption({
         .filter(Boolean)
         .join(' ')}
       data-testid="answer-option"
+      disabled={disabled}
       onClick={handleSelect}
       role="radio"
       type="button"

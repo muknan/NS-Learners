@@ -32,7 +32,7 @@ const categoryFilters: Array<{ label: string; value: CategoryFilter }> = [
 ];
 
 export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
-  const allCards = useMemo(() => deck, [deck]);
+  const allCards = deck;
   const mounted = useMounted();
   const [sessionDeck, setSessionDeck] = useState<Flashcard[]>([]);
   const [index, setIndex] = useState(0);
@@ -399,7 +399,6 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
                 <span>Details</span>
               </button>
             </div>
-
           </>
         ) : (
           <div className="flashcard-inner flashcard-inner--empty">

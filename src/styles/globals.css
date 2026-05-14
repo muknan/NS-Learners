@@ -653,7 +653,8 @@ p {
   transform: translateY(0);
 }
 
-.mode-card p {
+.mode-card__description {
+  display: block;
   margin: 0;
   color: var(--color-text-secondary);
   font-size: 14px;
@@ -1439,12 +1440,29 @@ p {
   font-weight: 600;
 }
 
-.question-nav__item svg {
+.question-nav__item-icon {
   position: absolute;
-  inset-block-start: 3px;
-  inset-inline-end: 3px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 12px;
   height: 12px;
+}
+
+.question-nav__item-icon svg {
+  width: 12px;
+  height: 12px;
+}
+
+.question-nav__item-icon--flag {
+  inset-block-start: 3px;
+  inset-inline-start: 3px;
+}
+
+.question-nav__item-icon--correct,
+.question-nav__item-icon--wrong {
+  inset-block-start: 3px;
+  inset-inline-end: 3px;
 }
 
 .question-nav__item.is-current {
