@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Moon, Play, RotateCcw, Settings, Sun } from 'lucide-react';
+import { BookOpen, Home, Layers, Moon, Play, RotateCcw, Settings, Sun } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { SettingsPanel } from '@/components/layout/SettingsPanel';
@@ -65,21 +65,24 @@ export function Header() {
 
       <nav className="site-nav" aria-label="Primary navigation">
         <Link aria-current={pathname === '/' ? 'page' : undefined} href="/" prefetch={false}>
-          Home
+          <Home aria-hidden="true" />
+          <span className="site-nav__label">Home</span>
         </Link>
         <Link
           aria-current={pathname === '/handbooks' ? 'page' : undefined}
           href="/handbooks"
           prefetch={false}
         >
-          Handbooks
+          <BookOpen aria-hidden="true" />
+          <span className="site-nav__label">Handbooks</span>
         </Link>
         <Link
           aria-current={pathname === '/flashcards' ? 'page' : undefined}
           href="/flashcards"
           prefetch={false}
         >
-          Flashcards
+          <Layers aria-hidden="true" />
+          <span className="site-nav__label">Flashcards</span>
         </Link>
         <button
           type="button"

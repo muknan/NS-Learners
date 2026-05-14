@@ -239,6 +239,7 @@ p {
   width: 20px;
   height: 20px;
   flex-shrink: 0;
+  visibility: hidden;
 }
 
 .site-footer {
@@ -2921,8 +2922,12 @@ input[type='range'] {
     display: none;
   }
 
-  .site-nav > a {
+  .site-nav__label {
     display: none;
+  }
+
+  .site-nav > a {
+    padding-inline: 10px;
   }
 }
 
