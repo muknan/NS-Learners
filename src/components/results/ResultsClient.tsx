@@ -305,18 +305,15 @@ function ScoreRing({
   const circumference = 2 * Math.PI * radius;
   const titleId = `score-ring-title-${percentage}`;
 
-  function arcProps(count: number, startAngle: number) {
-    const angle = total > 0 ? (count / total) * 360 : 0;
-    const dashLength = (angle / 360) * circumference;
+  function arcProps(count: number, startCount: number) {
+    if (total === 0) return {};
+    const dashLength = (count / total) * circumference;
+    const startOffset = (startCount / total) * circumference;
     return {
       strokeDasharray: `${dashLength} ${circumference - dashLength}`,
-      strokeDashoffset: -((startAngle / 360) * circumference),
-      transform: `rotate(${-90 + startAngle} 60 60)`,
+      strokeDashoffset: -startOffset,
     };
   }
-
-  const correctAngle = total > 0 ? (correct / total) * 360 : 0;
-  const incorrectAngle = total > 0 ? (incorrect / total) * 360 : 0;
 
   return (
     <div className="score-ring" role="img" aria-labelledby={titleId}>
@@ -342,7 +339,7 @@ function ScoreRing({
             cy="60"
             r={radius}
             strokeLinecap="butt"
-            {...arcProps(incorrect, correctAngle)}
+            {...arcProps(incorrect, correct)}
           />
         )}
         {missed > 0 && (
@@ -352,7 +349,7 @@ function ScoreRing({
             cy="60"
             r={radius}
             strokeLinecap="butt"
-            {...arcProps(missed, correctAngle + incorrectAngle)}
+            {...arcProps(missed, correct + incorrect)}
           />
         )}
       </svg>

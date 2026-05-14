@@ -820,7 +820,7 @@ p {
 }
 
 .home-layout .history-list {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: 1fr;
 }
 
 .pdf-card {
@@ -1426,8 +1426,11 @@ button.history-item:disabled {
   display: block;
   height: 100%;
   border-radius: inherit;
-  background: var(--color-brand-primary);
   transition: inline-size 220ms ease;
+}
+
+.progress:not(.progress--stacked) span {
+  background: var(--color-brand-primary);
 }
 
 .progress--stacked {
@@ -2387,7 +2390,7 @@ input[type='range'] {
 }
 
 .score-ring__segment--missed {
-  stroke: var(--color-warning);
+  stroke: var(--color-text-muted);
 }
 
 .score-ring strong,

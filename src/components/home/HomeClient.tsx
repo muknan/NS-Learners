@@ -144,7 +144,7 @@ export function HomeClient({ flashcardTotal, stats }: HomeClientProps) {
       <section className="section-block" aria-labelledby="modes-title">
         <div className="section-heading">
           <Badge tone="neutral">{stats.total} questions</Badge>
-          <h2 id="modes-title">Choose a practice mode.</h2>
+          <h2 id="modes-title">Choose a practice mode</h2>
         </div>
         <div className="mode-grid">
           {modes.map((mode) => (
@@ -247,7 +247,7 @@ export function HomeClient({ flashcardTotal, stats }: HomeClientProps) {
       <section className="section-block" aria-labelledby="recent-title">
         <div className="section-heading">
           <Badge tone="success">Recent scores</Badge>
-          <h2 id="recent-title">Last completed runs.</h2>
+          <h2 id="recent-title">Last completed runs</h2>
         </div>
         {!historyLoaded ? (
           <div
@@ -337,7 +337,7 @@ export function HomeClient({ flashcardTotal, stats }: HomeClientProps) {
       <section className="section-block" aria-labelledby="how-title">
         <div className="section-heading">
           <Badge tone="neutral">How it works</Badge>
-          <h2 id="how-title">Practice in three clean steps.</h2>
+          <h2 id="how-title">Practice in three clean steps</h2>
         </div>
         <div className="steps-grid">
           <article>
