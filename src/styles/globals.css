@@ -2347,17 +2347,30 @@ input[type='range'] {
 }
 
 .results-hero {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 24px;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  padding: 28px;
+  gap: 20px;
+  padding: 36px 28px 32px;
+  text-align: center;
+}
+
+.results-hero__status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.results-hero__expired {
+  font-size: var(--text-12);
+  color: var(--color-text-muted);
+  font-weight: 500;
 }
 
 .score-ring {
   display: grid;
   position: relative;
-  width: 156px;
+  width: 180px;
   aspect-ratio: 1;
   place-items: center;
   border-radius: 50%;
@@ -2369,12 +2382,13 @@ input[type='range'] {
   width: 100%;
   height: 100%;
   transform: rotate(-90deg);
+  filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.25));
 }
 
 .score-ring__track,
 .score-ring__segment {
   fill: none;
-  stroke-width: 14;
+  stroke-width: 12;
 }
 
 .score-ring__track {
@@ -2393,23 +2407,133 @@ input[type='range'] {
   stroke: var(--color-text-muted);
 }
 
-.score-ring strong,
-.score-ring span {
+.score-ring[data-passed='pass'] .score-ring__track {
+  stroke: var(--color-success-bg);
+}
+
+.score-ring[data-passed='fail'] .score-ring__track {
+  stroke: var(--color-error-bg);
+}
+
+.score-ring__text {
   position: relative;
   z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
 }
 
-.score-ring strong {
-  transform: translateY(-10px);
+.score-ring__text strong {
   font-size: var(--text-36);
   line-height: 1;
+  color: var(--color-text-primary);
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
-.score-ring span {
-  transform: translateY(14px);
+.score-ring__text span {
   color: var(--color-text-muted);
   font-size: var(--text-12);
   font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.results-hero__copy {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.results-hero__copy h1 {
+  margin: 0;
+  font-size: var(--text-28);
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--color-text-primary);
+}
+
+.results-hero__copy p {
+  margin: 0;
+  font-size: var(--text-14);
+  color: var(--color-text-secondary);
+}
+
+.results-hero__stats {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-pill);
+  padding: 10px 20px;
+  background: var(--color-surface-muted);
+}
+
+.results-hero__stat {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 16px;
+  font-size: var(--text-13);
+}
+
+.results-hero__stat:first-child {
+  padding-inline-start: 0;
+}
+
+.results-hero__stat:last-child {
+  padding-inline-end: 0;
+}
+
+.results-hero__stat strong {
+  font-size: var(--text-16);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.results-hero__stat span:last-child {
+  color: var(--color-text-muted);
+  font-size: var(--text-12);
+  font-weight: 500;
+}
+
+.results-hero__stat-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+}
+
+.results-hero__stat--correct .results-hero__stat-dot {
+  background: var(--color-success);
+}
+
+.results-hero__stat--wrong .results-hero__stat-dot {
+  background: var(--color-error);
+}
+
+.results-hero__stat--missed .results-hero__stat-dot {
+  background: var(--color-text-muted);
+}
+
+.results-hero__stat--correct strong {
+  color: var(--color-success);
+}
+
+.results-hero__stat--wrong strong {
+  color: var(--color-error);
+}
+
+.results-hero__stat--missed strong {
+  color: var(--color-text-muted);
+}
+
+.results-hero__stat-divider {
+  width: 1px;
+  height: 24px;
+  background: var(--color-border-default);
+  flex: 0 0 auto;
 }
 
 .breakdown-grid {
@@ -2601,7 +2725,6 @@ input[type='range'] {
   }
 
   .hero-section,
-  .results-hero,
   .exam-layout,
   .wrong-item {
     grid-template-columns: 1fr;
@@ -2720,7 +2843,29 @@ input[type='range'] {
   }
 
   .results-hero {
-    padding: 20px;
+    padding: 24px 16px 20px;
+    gap: 16px;
+  }
+
+  .score-ring {
+    width: 156px;
+  }
+
+  .results-hero__copy h1 {
+    font-size: var(--text-22);
+  }
+
+  .results-hero__stats {
+    padding: 8px 14px;
+  }
+
+  .results-hero__stat {
+    padding: 0 10px;
+    gap: 4px;
+  }
+
+  .results-hero__stat strong {
+    font-size: var(--text-14);
   }
 
   .exam-card {

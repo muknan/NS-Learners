@@ -151,8 +151,8 @@ export function ResultsClient({
 
   return (
     <div className="results-layout">
-      <section className="results-hero">
-        <div>
+      <section className="results-hero" aria-labelledby="results-title">
+        <div className="results-hero__status">
           {score.passed === null ? (
             <Badge tone="brand">Score</Badge>
           ) : (
@@ -160,20 +160,46 @@ export function ResultsClient({
               {score.passed ? 'Pass' : 'Fail'}
             </Badge>
           )}
-          <h1>{getExamMode(completedSession.mode).label}</h1>
-          <p>
-            {score.correct}/{score.total} correct overall
-            {expired ? ' after the timer expired.' : '.'}
-          </p>
+          {expired && <span className="results-hero__expired">Time expired</span>}
         </div>
+
         <ScoreRing
           percentage={score.percentage}
           correct={score.correct}
           incorrect={score.incorrect}
           missed={score.missed}
           total={score.total}
+          passed={score.passed}
           label={`${score.percentage}% score`}
         />
+
+        <div className="results-hero__copy">
+          <h1 id="results-title">{getExamMode(completedSession.mode).label}</h1>
+          <p>
+            {score.correct} of {score.total} correct overall
+            {expired ? ' — time expired' : ''}
+          </p>
+        </div>
+
+        <div className="results-hero__stats" aria-label="Score breakdown">
+          <span className="results-hero__stat results-hero__stat--correct">
+            <span className="results-hero__stat-dot" aria-hidden="true" />
+            <strong>{score.correct}</strong>
+            <span>Correct</span>
+          </span>
+          <span className="results-hero__stat-divider" aria-hidden="true" />
+          <span className="results-hero__stat results-hero__stat--wrong">
+            <span className="results-hero__stat-dot" aria-hidden="true" />
+            <strong>{score.incorrect}</strong>
+            <span>Wrong</span>
+          </span>
+          <span className="results-hero__stat-divider" aria-hidden="true" />
+          <span className="results-hero__stat results-hero__stat--missed">
+            <span className="results-hero__stat-dot" aria-hidden="true" />
+            <strong>{score.missed}</strong>
+            <span>Missed</span>
+          </span>
+        </div>
       </section>
 
       <section className="section-block" aria-labelledby="breakdown-title">
@@ -292,6 +318,7 @@ function ScoreRing({
   incorrect,
   missed,
   total,
+  passed,
   label,
 }: {
   percentage: number;
@@ -299,6 +326,7 @@ function ScoreRing({
   incorrect: number;
   missed: number;
   total: number;
+  passed: boolean | null;
   label: string;
 }) {
   const radius = 48;
@@ -316,7 +344,12 @@ function ScoreRing({
   }
 
   return (
-    <div className="score-ring" role="img" aria-labelledby={titleId}>
+    <div
+      className="score-ring"
+      data-passed={passed === null ? 'neutral' : passed ? 'pass' : 'fail'}
+      role="img"
+      aria-labelledby={titleId}
+    >
       <svg viewBox="0 0 120 120" aria-hidden="true">
         <title id={titleId}>
           {label} — {correct} correct, {incorrect} wrong, {missed} missed of {total}
@@ -353,8 +386,10 @@ function ScoreRing({
           />
         )}
       </svg>
-      <strong>{percentage}%</strong>
-      <span>Score</span>
+      <div className="score-ring__text">
+        <strong>{percentage}%</strong>
+        <span>Score</span>
+      </div>
     </div>
   );
 }
