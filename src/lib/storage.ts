@@ -1,6 +1,7 @@
 import type { AnswerOption, ExamSession, ExamSettings, HistoryEntry } from '@/types/exam';
 import { normalizeSettings } from '@/lib/session';
 import { EXAM_MODES, normalizeModeId } from '@/lib/modes';
+import { getQuestionById } from '@/lib/questions';
 
 export const CURRENT_SESSION_KEY = 'nsLearner.currentSession';
 export const COMPLETED_SESSION_KEY = 'nsLearner.completedSession';
@@ -8,7 +9,6 @@ export const SETTINGS_KEY = 'nsLearner.settings';
 export const HISTORY_KEY = 'ns-learner-scores';
 export const THEME_KEY = 'nsLearner.theme';
 export const KEYBOARD_HINT_KEY = 'nsLearner.keyboardHintSeen';
-export const SECTION_BREAK_SEEN_KEY = 'nsLearner.sectionBreakSeen';
 export const ADVANCE_DURATION_KEY = 'ns-learner-advance-duration';
 export const RETAKE_QUESTIONS_KEY = 'ns-retake-questions';
 export const SESSION_CHANGE_EVENT = 'nsLearner.sessionChange';
@@ -68,10 +68,11 @@ export function readCurrentSession(): ExamSession | null {
   return normalizeSession(readJson(CURRENT_SESSION_KEY, 'local'));
 }
 
-export function saveCurrentSession(session: ExamSession): void {
+export function saveCurrentSession(session: ExamSession): boolean {
+  const saved = writeJson(getModeSessionKey(session.mode), session, 'local');
   writeJson(CURRENT_SESSION_KEY, session, 'local');
-  writeJson(getModeSessionKey(session.mode), session, 'local');
   notifySessionChange();
+  return saved;
 }
 
 export function clearCurrentSession(): void {
@@ -81,21 +82,22 @@ export function clearCurrentSession(): void {
 
 export function readSessionForMode(modeId: string): ExamSession | null {
   const session = normalizeSession(readJson(getModeSessionKey(modeId), 'local'));
-  if (!session || session.phase === 'complete') {
+  if (!session || session.mode !== modeId || session.phase === 'complete') {
     return null;
   }
   return session;
 }
 
 export function readAllActiveSessions(): ExamSession[] {
-  return Object.values(EXAM_MODES)
-    .map((mode) => readSessionForMode(mode.id))
+  return [...Object.keys(EXAM_MODES), 'retake']
+    .map((mode) => readSessionForMode(mode))
     .filter((session): session is ExamSession => session !== null);
 }
 
-export function saveSessionForMode(session: ExamSession): void {
-  writeJson(getModeSessionKey(session.mode), session, 'local');
+export function saveSessionForMode(session: ExamSession): boolean {
+  const saved = writeJson(getModeSessionKey(session.mode), session, 'local');
   notifySessionChange();
+  return saved;
 }
 
 export function clearSessionForMode(modeId: string): void {
@@ -115,8 +117,8 @@ export function readCompletedSession(): ExamSession | null {
   return normalizeSession(readJson(COMPLETED_SESSION_KEY, 'local'));
 }
 
-export function saveCompletedSession(session: ExamSession): void {
-  writeJson(COMPLETED_SESSION_KEY, session, 'local');
+export function saveCompletedSession(session: ExamSession): boolean {
+  return writeJson(COMPLETED_SESSION_KEY, session, 'local');
 }
 
 export function readHistory(): HistoryEntry[] {
@@ -136,9 +138,23 @@ export function readHistorySession(id: string): ExamSession | null {
   return normalizeSession(entry.session);
 }
 
-export function saveHistory(entry: HistoryEntry): void {
+export function saveHistory(entry: HistoryEntry): boolean {
   const history = readHistory().filter((item) => item.id !== entry.id);
-  writeJson(HISTORY_KEY, [entry, ...history].slice(0, HISTORY_LIMIT), 'local');
+  const saved = writeJson(HISTORY_KEY, [entry, ...history].slice(0, HISTORY_LIMIT), 'local');
+  notifySessionChange();
+  return saved;
+}
+
+export function clearHistory(): boolean {
+  try {
+    const storage = getStorage('local');
+    if (!storage) return false;
+    storage.removeItem(HISTORY_KEY);
+    notifySessionChange();
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 export function readBooleanFlag(key: string): boolean {
@@ -155,40 +171,6 @@ export function saveBooleanFlag(key: string, value: boolean): void {
   } catch {
     // Storage persistence is best-effort only.
   }
-}
-
-/** @deprecated Use {@link readBooleanLocalFlag} instead. */
-export function readSessionBooleanFlag(key: string): boolean {
-  return readBooleanLocalFlag(key);
-}
-
-/** Reads a boolean flag from localStorage. Despite the "Session" naming legacy,
- *  these flags persist across refreshes within a browser session (e.g. SECTION_BREAK_SEEN_KEY). */
-export function readBooleanLocalFlag(key: string): boolean {
-  try {
-    return getStorage('local')?.getItem(key) === 'true';
-  } catch {
-    return false;
-  }
-}
-
-/** @deprecated Use {@link saveBooleanLocalFlag} instead. */
-export function saveSessionBooleanFlag(key: string, value: boolean): void {
-  saveBooleanLocalFlag(key, value);
-}
-
-/** Saves a boolean flag to localStorage. */
-export function saveBooleanLocalFlag(key: string, value: boolean): void {
-  try {
-    getStorage('local')?.setItem(key, String(value));
-  } catch {
-    // Storage persistence is best-effort only.
-  }
-}
-
-/** @deprecated Use {@link clearLocalFlag} instead. */
-export function clearSessionFlag(key: string): void {
-  clearLocalFlag(key);
 }
 
 /** Removes a flag from localStorage. */
@@ -214,17 +196,18 @@ function readJson(key: string, storageType: 'local' | 'session'): unknown {
   }
 }
 
-function writeJson(key: string, value: unknown, storageType: 'local' | 'session'): void {
+function writeJson(key: string, value: unknown, storageType: 'local' | 'session'): boolean {
   const storage = getStorage(storageType);
 
   if (!storage) {
-    return;
+    return false;
   }
 
   try {
     storage.setItem(key, JSON.stringify(value));
+    return true;
   } catch {
-    // Storage persistence is best-effort only.
+    return false;
   }
 }
 
@@ -260,18 +243,63 @@ function normalizeSession(value: unknown): ExamSession | null {
   const candidate = value as Partial<ExamSession>;
 
   if (
+    (candidate.version !== undefined && candidate.version !== 2) ||
+    (candidate.mode !== undefined &&
+      candidate.mode !== 'retake' &&
+      !Object.hasOwn(EXAM_MODES, candidate.mode)) ||
     typeof candidate.id !== 'string' ||
     !Array.isArray(candidate.questionIds) ||
     typeof candidate.currentIndex !== 'number' ||
     !candidate.answers ||
+    Array.isArray(candidate.answers) ||
     typeof candidate.answers !== 'object' ||
     !candidate.optionOrder ||
+    Array.isArray(candidate.optionOrder) ||
     typeof candidate.optionOrder !== 'object'
   ) {
     return null;
   }
 
+  const ids = candidate.questionIds;
+  if (
+    !ids.length ||
+    new Set(ids).size !== ids.length ||
+    !Number.isInteger(candidate.currentIndex) ||
+    candidate.currentIndex < 0 ||
+    candidate.currentIndex >= ids.length ||
+    ids.some((id) => {
+      if (typeof id !== 'string' || !getQuestionById(id)) return true;
+      const order = candidate.optionOrder?.[id];
+      return (
+        !Array.isArray(order) ||
+        order.length !== 4 ||
+        new Set(order).size !== 4 ||
+        order.some((option) => !['a', 'b', 'c', 'd'].includes(option))
+      );
+    }) ||
+    Object.entries(candidate.answers).some(
+      ([id, answer]) => !ids.includes(id) || !['a', 'b', 'c', 'd'].includes(answer),
+    ) ||
+    !Number.isFinite(candidate.startedAt) ||
+    (candidate.sectionTwoStartedAt != null &&
+      (!Number.isFinite(candidate.sectionTwoStartedAt) || candidate.currentIndex < 20)) ||
+    (candidate.expiresAt != null && !Number.isFinite(candidate.expiresAt)) ||
+    (candidate.completedAt != null && !Number.isFinite(candidate.completedAt))
+  )
+    return null;
+
+  const mode = candidate.mode === 'retake' ? 'retake' : normalizeModeId(candidate.mode);
+  const sectionTwoStartedAt =
+    mode === 'full-test' && candidate.currentIndex >= 20
+      ? (candidate.sectionTwoStartedAt ??
+        (candidate.version === undefined && candidate.expiresAt != null
+          ? candidate.expiresAt - 30 * 60000
+          : candidate.startedAt!))
+      : null;
   return {
+    version: 2,
+    sectionTwoStartedAt,
+    sectionBreakSeen: candidate.sectionBreakSeen === true,
     id: candidate.id,
     phase:
       candidate.phase === 'in-progress' ||
@@ -280,13 +308,19 @@ function normalizeSession(value: unknown): ExamSession | null {
         ? candidate.phase
         : 'in-progress',
     source: candidate.source === 'missed' ? 'missed' : 'full',
-    mode: normalizeModeId(candidate.mode),
+    mode,
     questionIds: candidate.questionIds.filter((id): id is string => typeof id === 'string'),
     optionOrder: normalizeStringRecord(candidate.optionOrder),
     currentIndex: candidate.currentIndex,
     answers: normalizeAnswers(candidate.answers),
     flaggedIds: Array.isArray(candidate.flaggedIds)
-      ? candidate.flaggedIds.filter((id): id is string => typeof id === 'string')
+      ? [
+          ...new Set(
+            candidate.flaggedIds.filter(
+              (id): id is string => typeof id === 'string' && ids.includes(id),
+            ),
+          ),
+        ]
       : [],
     instantFeedback:
       typeof candidate.instantFeedback === 'boolean'
@@ -304,15 +338,22 @@ function normalizeSession(value: unknown): ExamSession | null {
     autoAdvancedIds: Array.isArray(candidate.autoAdvancedIds)
       ? candidate.autoAdvancedIds.filter((id): id is string => typeof id === 'string')
       : [],
-    shouldAutoAdvance: candidate.shouldAutoAdvance === true,
+    shouldAutoAdvance: false,
     settings: normalizeSettings(candidate.settings),
     startedAt: typeof candidate.startedAt === 'number' ? candidate.startedAt : Date.now(),
-    expiresAt: typeof candidate.expiresAt === 'number' ? candidate.expiresAt : null,
+    expiresAt:
+      mode === 'full-test' && candidate.phase !== 'complete'
+        ? Math.min(
+            candidate.expiresAt ?? Infinity,
+            (sectionTwoStartedAt ?? candidate.startedAt!) + 30 * 60000,
+          )
+        : (candidate.expiresAt ?? null),
     completedAt: typeof candidate.completedAt === 'number' ? candidate.completedAt : null,
   };
 }
 
 function normalizeAdvanceDuration(value: unknown): number {
+  if (value === null || value === undefined || value === '') return DEFAULT_ADVANCE_DURATION;
   const numeric = typeof value === 'number' ? value : Number(value);
 
   if (!Number.isFinite(numeric)) {

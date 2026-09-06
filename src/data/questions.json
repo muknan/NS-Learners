@@ -1208,7 +1208,7 @@
     "category": "rules",
     "topic": "pavement-markings",
     "difficulty": "easy",
-    "text": "What does a solid yellow line on your side of the centre line usually mean?",
+    "text": "When the centre marking has a solid yellow line on your side and a broken yellow line on the other side, what does it mean for passing?",
     "options": [
       {
         "id": "a",
@@ -1228,7 +1228,7 @@
       }
     ],
     "correctId": "a",
-    "explanation": "A solid yellow line on your side means passing is restricted. Wait for legal markings and clear sight distance.",
+    "explanation": "With paired solid and broken yellow centre lines, do not pass from the solid-line side. This differs from a single solid yellow centre line, which permits passing under ideal conditions. See the Nova Scotia Driver's Handbook, Chapter 3, pages 84–85.",
     "handbookSection": "Chapter 3 — Signs, Pavement Markings and Work Zones, Pavement Markings"
   },
   {

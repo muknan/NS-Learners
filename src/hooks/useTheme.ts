@@ -9,7 +9,12 @@ export function useTheme(): { theme: Theme; setTheme: (next: Theme) => void } {
   const [theme, setThemeState] = useState<Theme>('light');
 
   useEffect(() => {
-    function sync(): void {
+    function sync(event?: Event): void {
+      if (event instanceof StorageEvent && (event.key === THEME_KEY || event.key === null)) {
+        const next = event.newValue === 'dark' ? 'dark' : 'light';
+        document.documentElement.dataset.theme = next;
+        document.documentElement.style.colorScheme = next;
+      }
       setThemeState(document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light');
     }
 

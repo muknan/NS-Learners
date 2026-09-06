@@ -9,6 +9,7 @@ import { getTopicLabel } from '@/lib/questions';
 import { memo, useEffect, useRef } from 'react';
 
 interface ExamCardProps {
+  locked?: boolean;
   session: ExamSession;
   question: Question;
   questionIndex: number;
@@ -18,6 +19,7 @@ interface ExamCardProps {
 }
 
 export const ExamCard = memo(function ExamCard({
+  locked = false,
   session,
   question,
   questionIndex,
@@ -29,12 +31,14 @@ export const ExamCard = memo(function ExamCard({
   const showFeedback = instantFeedback && selectedId !== null && session.phase === 'review';
   const orderedOptions = getOrderedOptions(question, session);
   const answerListRef = useRef<HTMLDivElement>(null);
+  const headingRef = useRef<HTMLHeadingElement>(null);
   const hasImage = Boolean(question.image);
   const cardClassName = ['exam-card', hasImage ? 'exam-card--with-image' : '']
     .filter(Boolean)
     .join(' ');
 
   useEffect(() => {
+    headingRef.current?.focus({ preventScroll: true });
     if (answerListRef.current) {
       answerListRef.current.scrollTop = 0;
     }
@@ -60,7 +64,7 @@ export const ExamCard = memo(function ExamCard({
           </span>
         </div>
 
-        <h2 className="exam-question" data-testid="exam-question" tabIndex={-1}>
+        <h2 ref={headingRef} className="exam-question" data-testid="exam-question" tabIndex={-1}>
           {question.text}
         </h2>
 
@@ -72,8 +76,9 @@ export const ExamCard = memo(function ExamCard({
         >
           {orderedOptions.map((option, index) => (
             <AnswerOption
+              tabIndex={selectedId === option.id || (selectedId === null && index === 0) ? 0 : -1}
               correct={option.id === question.correctId}
-              disabled={showFeedback}
+              disabled={showFeedback || locked}
               index={index}
               key={option.id}
               onSelect={() => onAnswer(option.id)}

@@ -25,7 +25,7 @@ export const QuestionTopicSchema = z.enum(QUESTION_TOPICS);
 
 export const AnswerOptionSchema = z.object({
   id: z.enum(['a', 'b', 'c', 'd']),
-  text: z.string().min(1).max(200),
+  text: z.string().trim().min(1).max(200),
 });
 
 export const QuestionSchema = z
@@ -35,8 +35,11 @@ export const QuestionSchema = z
     topic: QuestionTopicSchema,
     difficulty: z.enum(['easy', 'medium', 'hard']),
     text: z.string().min(10).max(300),
-    image: z.string().optional(),
-    imageAlt: z.string().optional(),
+    image: z
+      .string()
+      .regex(/^\/signs\/[a-zA-Z0-9_-]+\.(svg|png|webp|jpg|jpeg)$/)
+      .optional(),
+    imageAlt: z.string().trim().min(1).optional(),
     options: z.array(AnswerOptionSchema).length(4),
     correctId: z.enum(['a', 'b', 'c', 'd']),
     explanation: z.string().min(20).max(500),
@@ -47,6 +50,13 @@ export const QuestionSchema = z
   })
   .superRefine((question, context) => {
     const ids = new Set(question.options.map((option) => option.id));
+    if (new Set(question.options.map((option) => option.text.toLowerCase())).size !== 4) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Answer choices must have distinct text',
+        path: ['options'],
+      });
+    }
 
     if (ids.size !== question.options.length) {
       context.addIssue({
@@ -70,8 +80,17 @@ export const QuestionBankSchema = z
   .min(80)
   .superRefine((questions, context) => {
     const ids = new Set<string>();
+    const content = new Set<string>();
 
     for (const [index, question] of questions.entries()) {
+      const key = `${question.text.trim().toLowerCase()}|${question.image ?? ''}`;
+      if (content.has(key))
+        context.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'Duplicate question text and image',
+          path: [index, 'text'],
+        });
+      content.add(key);
       if (ids.has(question.id)) {
         context.addIssue({
           code: z.ZodIssueCode.custom,

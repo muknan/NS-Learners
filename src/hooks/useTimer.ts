@@ -12,9 +12,21 @@ export function useTimer(expiresAt: number | null, onExpire: () => void): number
 
   useEffect(() => {
     let expired = false;
+    const initialRemaining = expiresAt === null ? null : Math.max(0, expiresAt - Date.now());
+    const monotonicStart = performance.now();
+    let previousRemaining = initialRemaining;
 
     function syncRemaining(): void {
-      const nextRemaining = getRemainingSeconds(expiresAt);
+      const nextMilliseconds =
+        expiresAt === null || initialRemaining === null
+          ? null
+          : Math.min(
+              expiresAt - Date.now(),
+              initialRemaining - (performance.now() - monotonicStart),
+              previousRemaining ?? initialRemaining,
+            );
+      previousRemaining = nextMilliseconds;
+      const nextRemaining = nextMilliseconds === null ? null : Math.ceil(nextMilliseconds / 1000);
       setRemaining(nextRemaining);
 
       if (!expired && nextRemaining !== null && nextRemaining <= 0) {

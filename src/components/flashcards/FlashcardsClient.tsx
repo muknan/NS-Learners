@@ -148,6 +148,7 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
         return;
       }
 
+      if (event.defaultPrevented || document.querySelector('[role="dialog"], dialog[open]')) return;
       const target = event.target;
       if (
         target instanceof HTMLInputElement ||

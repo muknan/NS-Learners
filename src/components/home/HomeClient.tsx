@@ -12,7 +12,8 @@ import { EXAM_MODES, getExamMode } from '@/lib/modes';
 import { nextToastId } from '@/lib/toast';
 import {
   clearSessionForMode,
-  HISTORY_KEY,
+  clearHistory as clearStoredHistory,
+  SESSION_CHANGE_EVENT,
   readAllActiveSessions,
   readHistory,
   readSessionForMode,
@@ -44,10 +45,19 @@ export function HomeClient({ flashcardTotal, stats }: HomeClientProps) {
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    setSessions(readAllActiveSessions());
-    setFullTestSession(readSessionForMode('full-test'));
-    setHistory(readHistory());
-    setHistoryLoaded(true);
+    function sync() {
+      setSessions(readAllActiveSessions());
+      setFullTestSession(readSessionForMode('full-test'));
+      setHistory(readHistory());
+      setHistoryLoaded(true);
+    }
+    sync();
+    window.addEventListener('storage', sync);
+    window.addEventListener(SESSION_CHANGE_EVENT, sync);
+    return () => {
+      window.removeEventListener('storage', sync);
+      window.removeEventListener(SESSION_CHANGE_EVENT, sync);
+    };
   }, []);
 
   useEffect(() => {
@@ -84,11 +94,7 @@ export function HomeClient({ flashcardTotal, stats }: HomeClientProps) {
   }
 
   function clearHistory(): void {
-    try {
-      window.localStorage.removeItem(HISTORY_KEY);
-    } catch {
-      // Best effort only.
-    }
+    if (!clearStoredHistory()) return;
     setHistory([]);
     setClearHistoryOpen(false);
   }

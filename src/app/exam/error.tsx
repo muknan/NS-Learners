@@ -2,11 +2,12 @@
 
 import { useEffect } from 'react';
 import { ButtonLink } from '@/components/ui/Button';
-import { clearCurrentSession } from '@/lib/storage';
+import { clearCurrentSession, clearSessionForMode } from '@/lib/storage';
 
 export default function ExamError() {
   useEffect(() => {
     clearCurrentSession();
+    clearSessionForMode(new URLSearchParams(window.location.search).get('mode') ?? 'full-test');
   }, []);
 
   return (

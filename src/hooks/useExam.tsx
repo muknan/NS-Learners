@@ -1,7 +1,15 @@
 'use client';
 
 import type { AnswerOption, ExamSession } from '@/types/exam';
-import { createContext, useContext, useEffect, useMemo, useReducer, type ReactNode } from 'react';
+import {
+  createContext,
+  useContext,
+  useLayoutEffect,
+  useMemo,
+  useReducer,
+  useState,
+  type ReactNode,
+} from 'react';
 import { saveCurrentSession } from '@/lib/storage';
 
 export type ExamAction =
@@ -14,6 +22,7 @@ export type ExamAction =
   | { type: 'set-auto-advance'; value: boolean }
   | { type: 'set-auto-advance-duration'; valueMs: number }
   | { type: 'cancel-auto-advance' }
+  | { type: 'dismiss-section-break' }
   | { type: 'submit'; now: number }
   | { type: 'replace'; session: ExamSession };
 
@@ -23,6 +32,7 @@ export interface ExamState {
 }
 
 interface ExamContextValue {
+  saveFailed: boolean;
   state: ExamState;
   dispatch: React.Dispatch<ExamAction>;
 }
@@ -40,16 +50,18 @@ export function ExamProvider({
     phase: initialSession.phase,
     session: initialSession,
   });
+  const [saveFailed, setSaveFailed] = useState(false);
 
-  useEffect(() => {
+  // Persist the committed state before passive timer effects can complete and remove it.
+  useLayoutEffect(() => {
     if (state.session.phase === 'in-progress' || state.session.phase === 'review') {
       // Never persist the transient shouldAutoAdvance flag;
       // it must always start false on restore to avoid accidental auto-advance.
-      saveCurrentSession({ ...state.session, shouldAutoAdvance: false });
+      setSaveFailed(!saveCurrentSession({ ...state.session, shouldAutoAdvance: false }));
     }
   }, [state.session]);
 
-  const value = useMemo(() => ({ state, dispatch }), [state]);
+  const value = useMemo(() => ({ state, dispatch, saveFailed }), [state, saveFailed]);
 
   return <ExamContext.Provider value={value}>{children}</ExamContext.Provider>;
 }
@@ -65,8 +77,14 @@ export function useExam(): ExamContextValue {
 }
 
 function examReducer(state: ExamState, action: ExamAction): ExamState {
+  if (state.phase === 'complete' && action.type !== 'replace') return state;
   switch (action.type) {
+    case 'dismiss-section-break':
+      return { ...state, session: { ...state.session, sectionBreakSeen: true } };
     case 'answer': {
+      if (state.session.expiresAt !== null && state.session.expiresAt <= Date.now()) return state;
+      const index = state.session.questionIds.indexOf(action.questionId);
+      if (index < 0 || (state.session.sectionTwoStartedAt != null && index < 20)) return state;
       const autoAdvanced = new Set(state.session.autoAdvancedIds);
       const isFirstAnswer = state.session.answers[action.questionId] === undefined;
       const alreadyAutoAdvanced = autoAdvanced.has(action.questionId);
@@ -167,14 +185,17 @@ function examReducer(state: ExamState, action: ExamAction): ExamState {
       };
     }
     case 'set-auto-advance-duration':
+      if (state.session.autoAdvanceDurationMs === action.valueMs) return state;
       return {
         ...state,
         session: {
           ...state.session,
           autoAdvanceDurationMs: action.valueMs,
+          settings: { ...state.session.settings, autoAdvanceDurationMs: action.valueMs },
         },
       };
     case 'cancel-auto-advance':
+      if (!state.session.shouldAutoAdvance) return state;
       return {
         ...state,
         session: {
@@ -202,6 +223,10 @@ function examReducer(state: ExamState, action: ExamAction): ExamState {
 }
 
 function moveToIndex(state: ExamState, index: number): ExamState {
+  const isFull = state.session.mode === 'full-test' && state.session.questionIds.length === 40;
+  if (isFull && state.session.sectionTwoStartedAt != null) index = Math.max(20, index);
+  const beginSecond = isFull && index >= 20 && state.session.sectionTwoStartedAt == null;
+  const now = Date.now();
   const questionId = state.session.questionIds[index];
   const phase =
     state.session.phase === 'complete'
@@ -218,6 +243,9 @@ function moveToIndex(state: ExamState, index: number): ExamState {
       ...state.session,
       phase,
       currentIndex: index,
+      ...(beginSecond
+        ? { sectionTwoStartedAt: now, expiresAt: now + 30 * 60000, sectionBreakSeen: false }
+        : {}),
       shouldAutoAdvance: false,
     },
   };

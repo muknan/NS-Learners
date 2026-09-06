@@ -15,7 +15,7 @@ NS Learner Test Practice is a free public Nova Scotia Class 7 learner-test app b
 ## Local Development
 
 ```bash
-pnpm install
+pnpm install --frozen-lockfile
 pnpm dev
 ```
 
@@ -34,7 +34,7 @@ pnpm test:e2e
 
 Questions live in `src/data/questions.json` and are validated by `src/lib/questions.schema.ts`. Each question uses a stable `q-###` ID, `rules` or `signs` category, one of the allowed handbook topics, four options with IDs `a` through `d`, a `correctId`, a plain-language explanation, and an optional `handbookSection`.
 
-Image questions must use a path under `public/signs/` or `public/images/` and must include `imageAlt`.
+Image questions use a `/signs/` path under `public/signs/` and nonblank `imageAlt`. The schema rejects duplicate IDs, repeated question/image content, and repeated answer text. The build validates image existence, handbook references and enough questions for both sections.
 
 To add questions:
 
@@ -59,9 +59,27 @@ The main routes are:
 - `/results`
 - `/handbooks`
 
+Full Test contains twenty road-rule questions followed by twenty road-sign questions. Each section has thirty minutes and requires at least sixteen correct answers. Entering the second section locks the first; its timer begins immediately, including on the section-break screen. If the first section expires, the second starts; if the second expires, results are submitted. Practice modes are untimed and report a score without an official pass/fail verdict.
+
+## Persistence and recovery
+
+Version 2 sessions preserve shuffled question and option order, answers, flags, section timing and section-break acknowledgment across reloads. Compatible unversioned records are normalized conservatively; malformed IDs, option orders, indices and unsupported versions are rejected. New full tests use ordered sections; a legacy mixed attempt is scored by category and cannot pass without twenty questions in each category and sixteen correct in each.
+
+Saving results and history must succeed before the active attempt is removed. If saving fails, keep the tab open, free browser storage and retry submission. Progress-save failures are shown in the exam. History is shared across tabs; `/results?historyId=...` selects that exact saved attempt.
+
+The timer combines the stored deadline with monotonic elapsed time and visibility updates. In-page backward clock changes cannot add time. A client-only offline app cannot authenticate elapsed time across device clock changes and reloads.
+
+q-044 specifies paired solid/broken yellow centre lines. Its stable ID and answer key are unchanged; the distinction from a single solid yellow centre line follows [official Handbook Chapter 3, printed pages 84–85](https://novascotia.ca/sns/rmv/handbook/DH-Chapter3.pdf).
+
+## Offline and verification
+
+Run `pnpm build` before `pnpm test:e2e`: Playwright serves the actual static export on localhost:4174, including the production service worker. To preview the export manually, run `pnpm start`. CI builds, installs Chromium and runs this same browser suite, retaining failure artifacts.
+
+After one successful online installation, the worker precaches the application routes and bundled assets. External handbook PDFs require an initial online fetch. Newly installed worker versions wait until older controlled tabs close; open exam pages are not forcibly reloaded. Offline availability still depends on browser storage permission and eviction. Development mode does not install the worker.
+
 ## Architecture
 
-The app uses App Router server pages for static shells and client components for exam interaction. Question data is imported statically and validated at module load plus prebuild. Exam sessions are stored in `sessionStorage` per mode, completed results are stored in `sessionStorage`, and score history plus settings are stored in `localStorage` through guarded helpers in `src/lib/storage.ts`.
+The app uses App Router server pages for static shells and client components for exam interaction. Question data is imported statically and validated at module load plus prebuild. Sessions, completed results, the ten most recent scores, and preferences use `localStorage` through `src/lib/storage.ts`. Each mode has a separate session key; retakes remain separate practice sessions. A browser Web Lock permits one open exam per mode across tabs. Different modes can run independently. Use a current browser over HTTPS (localhost works for development).
 
 Pure scoring, question loading, session creation, and storage normalization live under `src/lib/`. Exam state transitions live in `src/hooks/useExam.tsx`. UI primitives and feature components are split under `src/components/`, with design tokens centralized in `src/styles/tokens.css`.
 
@@ -77,6 +95,8 @@ Pure scoring, question loading, session creation, and storage normalization live
 | `?`                 | Open the keyboard shortcuts modal   |
 | `Escape`            | Close panels and dialogs            |
 
+Shortcuts pause while a dialog is open or a text input has focus. Focused answer choices use Enter/Space to select and arrow keys to move between options; these do not navigate questions. Enter/Space on other controls preserve the control’s native action. New questions receive keyboard focus. Auto-advance is cancelled when opening exam overlays/settings; its default delay is three seconds.
+
 ## Deployment
 
 Production is deployed on Vercel at `https://nova-scotia-learners-test.vercel.app/`. The linked Vercel project can be deployed manually with:
@@ -90,3 +110,5 @@ Pushes to `main` are expected to deploy automatically through Vercel Git integra
 ## Known Limitations
 
 The app is a study aid, not an official government test. Question wording is designed to match the handbook and common knowledge-test style, but users should still study the official Nova Scotia Driver's Handbook linked on the Handbooks page.
+
+Historical detailed results are recomputed against the bundled bank. Before changing a correctId, deleting an ID, or reusing its meaning, implement a bank-revision/snapshot migration; this series does not introduce one. No source changes here configure repository branch protection or deploy production.

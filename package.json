@@ -10,7 +10,7 @@
     "validate-questions": "tsx scripts/validate-questions.ts",
     "prebuild": "pnpm validate-questions",
     "build": "next build --webpack",
-    "start": "next start",
+    "start": "node scripts/serve-export.mjs",
     "lint": "eslint . --max-warnings=0",
     "type-check": "tsc --noEmit",
     "test": "vitest run",

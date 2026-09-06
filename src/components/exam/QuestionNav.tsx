@@ -21,6 +21,9 @@ export function QuestionNav({ session, questionsById, onSelect }: QuestionNavPro
 
         return (
           <button
+            disabled={
+              session.mode === 'full-test' && session.sectionTwoStartedAt != null && index < 20
+            }
             aria-current={session.currentIndex === index ? 'step' : undefined}
             aria-label={[
               `Question ${index + 1}`,

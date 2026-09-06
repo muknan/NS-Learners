@@ -1,5 +1,8 @@
 import bundleAnalyzer from '@next/bundle-analyzer';
 import nextPwa from 'next-pwa';
+import { randomUUID } from 'node:crypto';
+
+const buildRevision = randomUUID();
 
 const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
@@ -8,8 +11,22 @@ const withBundleAnalyzer = bundleAnalyzer({
 const withPwa = nextPwa({
   dest: 'public',
   disable: process.env.NODE_ENV === 'development',
-  register: true,
-  skipWaiting: true,
+  register: false,
+  skipWaiting: false,
+  clientsClaim: true,
+  dynamicStartUrl: false,
+  additionalManifestEntries: ['/', '/exam/', '/results/', '/handbooks/', '/flashcards/'].map(
+    (url) => ({ url, revision: buildRevision }),
+  ),
+  ignoreURLParametersMatching: [
+    /^utm_/,
+    /^fbclid$/,
+    /^mode$/,
+    /^historyId$/,
+    /^expired$/,
+    /^savedExit$/,
+    /^_rsc$/,
+  ],
   runtimeCaching: [
     {
       urlPattern: /^https:\/\/novascotia\.ca\/sns\/rmv\/handbook\/.*\.pdf$/i,
@@ -38,6 +55,7 @@ const withPwa = nextPwa({
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  generateBuildId: async () => buildRevision,
   reactStrictMode: true,
   poweredByHeader: false,
   output: 'export',

@@ -2,6 +2,7 @@ import { Check, X } from 'lucide-react';
 import type { AnswerOption as AnswerOptionType } from '@/types/exam';
 
 interface AnswerOptionProps {
+  tabIndex?: number;
   option: AnswerOptionType;
   index: number;
   selected: boolean;
@@ -13,6 +14,7 @@ interface AnswerOptionProps {
 }
 
 export function AnswerOption({
+  tabIndex = 0,
   option,
   index,
   selected,
@@ -47,6 +49,30 @@ export function AnswerOption({
       data-testid="answer-option"
       disabled={disabled}
       onClick={handleSelect}
+      tabIndex={tabIndex}
+      onKeyDown={(event) => {
+        if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End'].includes(event.key))
+          return;
+        event.preventDefault();
+        event.stopPropagation();
+        const radios = [
+          ...(event.currentTarget
+            .closest('[role="radiogroup"]')
+            ?.querySelectorAll<HTMLButtonElement>('[role="radio"]:not(:disabled)') ?? []),
+        ];
+        const current = radios.indexOf(event.currentTarget);
+        const next =
+          event.key === 'Home'
+            ? 0
+            : event.key === 'End'
+              ? radios.length - 1
+              : (current +
+                  (event.key === 'ArrowLeft' || event.key === 'ArrowUp' ? -1 : 1) +
+                  radios.length) %
+                radios.length;
+        radios[next]?.focus();
+        radios[next]?.click();
+      }}
       role="radio"
       type="button"
     >

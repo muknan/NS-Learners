@@ -52,6 +52,9 @@ export interface ExamSettings {
 }
 
 export interface ExamSession {
+  version?: 2;
+  sectionTwoStartedAt?: number | null;
+  sectionBreakSeen?: boolean;
   id: string;
   phase: ExamPhase;
   source: ExamSource;

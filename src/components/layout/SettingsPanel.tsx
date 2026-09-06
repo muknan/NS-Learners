@@ -5,7 +5,7 @@ import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
 import { Modal } from '@/components/ui/Modal';
 import { ToggleSwitch } from '@/components/ui/ToggleSwitch';
 import { useTheme } from '@/hooks/useTheme';
-import { HISTORY_KEY, readAdvanceDuration, saveAdvanceDuration } from '@/lib/storage';
+import { clearHistory, readAdvanceDuration, saveAdvanceDuration } from '@/lib/storage';
 
 type PendingConfirm = 'score-history' | 'all-data' | null;
 const ADVANCE_DURATION_OPTIONS = [2, 3, 5, 8] as const;
@@ -14,6 +14,7 @@ export function SettingsPanel({ open, onClose }: { open: boolean; onClose: () =>
   const { theme, setTheme } = useTheme();
   const [advanceDuration, setAdvanceDuration] = useState(3);
   const [pendingConfirm, setPendingConfirm] = useState<PendingConfirm>(null);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     if (open) {
@@ -34,7 +35,10 @@ export function SettingsPanel({ open, onClose }: { open: boolean; onClose: () =>
   }
 
   function clearScoreHistory(): void {
-    window.localStorage.removeItem(HISTORY_KEY);
+    if (!clearHistory()) {
+      setError('Could not clear history. Check browser storage access and try again.');
+      return;
+    }
     setPendingConfirm(null);
   }
 
@@ -60,6 +64,7 @@ export function SettingsPanel({ open, onClose }: { open: boolean; onClose: () =>
   return (
     <>
       <Modal title="Practice settings" onClose={onClose}>
+        {error ? <p role="alert">{error}</p> : null}
         <div className="settings-grid">
           <section className="settings-section" aria-labelledby="appearance-settings-title">
             <h3 id="appearance-settings-title">Appearance</h3>

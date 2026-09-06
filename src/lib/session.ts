@@ -64,7 +64,9 @@ export function createExamSession({
   const modeConfig = getExamMode(mode);
   const questionCount = questionIds?.length ? 'all' : modeConfig.questionCount;
   const selectedQuestions = selectQuestions(
-    questions,
+    questions.filter(
+      (question) => modeConfig.filter === 'all' || question.category === modeConfig.filter,
+    ),
     questionCount,
     questionIds,
     modeConfig.filter,
@@ -82,6 +84,9 @@ export function createExamSession({
 
   return {
     id: globalThis.crypto?.randomUUID?.() ?? String(now),
+    version: 2,
+    sectionTwoStartedAt: null,
+    sectionBreakSeen: false,
     phase: 'in-progress',
     source,
     mode: modeConfig.id,
@@ -103,7 +108,7 @@ export function createExamSession({
     shouldAutoAdvance: false,
     settings: sessionSettings,
     startedAt: now,
-    expiresAt: sessionSettings.timerMinutes ? now + sessionSettings.timerMinutes * 60 * 1000 : null,
+    expiresAt: mode === 'full-test' ? now + 30 * 60 * 1000 : null,
     completedAt: null,
   };
 }

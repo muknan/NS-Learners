@@ -5,6 +5,7 @@ import '@/styles/globals.css';
 import type { Metadata, Viewport } from 'next';
 import { AppChrome } from '@/components/layout/AppChrome';
 import { ThemeScript } from '@/components/layout/ThemeScript';
+import { ServiceWorkerRegistration } from '@/components/layout/ServiceWorkerRegistration';
 import { SITE_URL } from '@/lib/site';
 
 export const metadata: Metadata = {
@@ -46,12 +47,13 @@ const jsonLd = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en-CA" suppressHydrationWarning>
+    <html lang="en-CA" data-scroll-behavior="smooth" suppressHydrationWarning>
       <body>
         <a className="skip-link" href="#main-content">
           Skip to content
         </a>
         <ThemeScript />
+        <ServiceWorkerRegistration />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

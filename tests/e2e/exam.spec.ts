@@ -84,6 +84,7 @@ test('retake with no missed questions shows an empty state', async ({ page }) =>
         }
       }
     }
+    window.dispatchEvent(new Event('nsLearner.sessionChange'));
   });
 
   await page.goto('/exam?mode=retake');
@@ -259,11 +260,12 @@ test.describe('exam viewport fit', () => {
         await expect(page.getByTestId('exam-shell')).toBeVisible();
         await assertExamFit(page, `${viewport.name} ${colorScheme} initial question`);
 
-        await goToQuestionWithImageState(page, true);
+        await expect(page.getByTestId('sign-image')).toHaveCount(0);
+        await page.getByRole('button', { name: 'Open question navigator' }).click();
+        await page.getByRole('button', { name: /^Question 21,/ }).click();
+        await page.getByRole('button', { name: /continue to section 2/i }).click();
+        await expect(page.getByTestId('sign-image')).toBeVisible();
         await assertExamFit(page, `${viewport.name} ${colorScheme} image question`);
-
-        await goToQuestionWithImageState(page, false);
-        await assertExamFit(page, `${viewport.name} ${colorScheme} rules question`);
 
         await page.getByRole('button', { name: 'Open question navigator' }).click();
         await expect(page.getByTestId('navigator-drawer')).toBeVisible();
@@ -293,6 +295,7 @@ async function startFreshFullTest(page: Page, colorScheme: 'light' | 'dark') {
     }
   });
   await page.evaluate((theme) => {
+    window.dispatchEvent(new Event('nsLearner.sessionChange'));
     window.localStorage.setItem('nsLearner.theme', theme);
     document.documentElement.dataset.theme = theme;
     document.documentElement.style.colorScheme = theme;
@@ -305,26 +308,6 @@ async function startFreshFullTest(page: Page, colorScheme: 'light' | 'dark') {
     await page.waitForURL(/\/exam/, { timeout: 5000 });
   });
   await expect(page.getByTestId('answer-option').first()).toBeVisible();
-}
-
-async function goToQuestionWithImageState(page: Page, needsImage: boolean) {
-  for (let index = 0; index < 45; index += 1) {
-    const hasImage = (await page.getByTestId('sign-image').count()) > 0;
-    if (hasImage === needsImage) {
-      return;
-    }
-
-    const continueSection = page.getByRole('button', { name: /continue to section 2/i });
-    if (await continueSection.isVisible()) {
-      await continueSection.click();
-      continue;
-    }
-
-    await page.getByRole('button', { name: /^next$/i }).click();
-    await expect(page.getByTestId('answer-option').first()).toBeVisible();
-  }
-
-  throw new Error(`Could not find a question with image=${needsImage}`);
 }
 
 async function assertExamFit(page: Page, label: string) {

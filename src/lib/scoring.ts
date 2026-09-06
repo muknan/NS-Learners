@@ -36,7 +36,7 @@ export function scoreSession(
       : bySection.length === passMark.sections &&
         bySection
           .slice(0, passMark.sections)
-          .every((section) => section.correct >= passMark.perSection);
+          .every((section) => section.total === 20 && section.correct >= passMark.perSection);
 
   return {
     correct,
@@ -142,10 +142,12 @@ function getSectionBreakdown(
 ): SectionBreakdown[] {
   const shouldSplitSections = modeId === 'full-test' && results.length === 40;
   const sectionSize = shouldSplitSections ? 20 : results.length;
-  const sections = shouldSplitSections ? ['Section 1', 'Section 2'] : ['Practice'];
+  const sections = shouldSplitSections ? ['Road rules', 'Road signs'] : ['Practice'];
 
   return sections.map((section, index) => {
-    const chunk = results.slice(index * sectionSize, (index + 1) * sectionSize);
+    const chunk = shouldSplitSections
+      ? results.filter((result) => result.question.category === (index === 0 ? 'rules' : 'signs'))
+      : results.slice(index * sectionSize, (index + 1) * sectionSize);
     const correct = chunk.filter((result) => result.isCorrect).length;
     const incorrect = chunk.filter(
       (result) => !result.isCorrect && result.selectedId !== null,

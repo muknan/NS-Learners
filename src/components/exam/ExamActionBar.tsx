@@ -14,6 +14,7 @@ interface ExamActionBarProps {
   instantFeedback: boolean;
   isLast: boolean;
   onOpenExplanation: () => void;
+  onOpenSettings: () => void;
   onFlag: () => void;
   onNext: () => void;
   onSubmit: () => void;
@@ -30,6 +31,7 @@ export const ExamActionBar = memo(function ExamActionBar({
   instantFeedback,
   isLast,
   onOpenExplanation,
+  onOpenSettings,
   onFlag,
   onNext,
   onSubmit,
@@ -99,7 +101,10 @@ export const ExamActionBar = memo(function ExamActionBar({
             tone="ghost"
             size="icon"
             icon={<Settings2 aria-hidden="true" />}
-            onClick={() => setSettingsOpen((open) => !open)}
+            onClick={() => {
+              onOpenSettings();
+              setSettingsOpen((open) => !open);
+            }}
           />
           {settingsOpen ? (
             <div className="exam-action-popover" role="dialog" aria-label="Exam settings">

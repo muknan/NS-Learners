@@ -18,8 +18,6 @@ import {
 } from '@/lib/scoring';
 import { createExamSession } from '@/lib/session';
 import {
-  RETAKE_QUESTIONS_KEY,
-  localSet,
   readCompletedSession,
   readHistorySession,
   readSettings,
@@ -28,15 +26,10 @@ import {
 import { nextToastId } from '@/lib/toast';
 import type { ExamSession, Question, QuestionResult } from '@/types/exam';
 
-export function ResultsClient({
-  questions,
-  historyId,
-}: {
-  questions: Question[];
-  historyId: string | undefined;
-}) {
+export function ResultsClient({ questions }: { questions: Question[] }) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const historyId = searchParams.get('historyId');
   const [session, setSession] = useState<ExamSession | null>(null);
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
   const questionsById = useMemo(
@@ -55,10 +48,7 @@ export function ResultsClient({
   const lowestTopics = useMemo(
     () =>
       score
-        ? [...score.byTopic]
-            .filter((topic) => topic.correct > 0 || topic.percentage > 0)
-            .sort((left, right) => left.percentage - right.percentage)
-            .slice(0, 8)
+        ? [...score.byTopic].sort((left, right) => left.percentage - right.percentage).slice(0, 8)
         : [],
     [score],
   );
@@ -75,13 +65,13 @@ export function ResultsClient({
     setToasts((current) => current.filter((toast) => toast.id !== id));
   }, []);
 
-  const addToast = useCallback((message: string): void => {
+  const addToast = useCallback((message: string, type: 'success' | 'error' = 'success'): void => {
     setToasts((current) => [
       ...current,
       {
         id: nextToastId(),
         message,
-        type: 'success',
+        type,
       },
     ]);
   }, []);
@@ -92,8 +82,8 @@ export function ResultsClient({
         <Badge tone="warning">No result</Badge>
         <h1>No completed exam found.</h1>
         <p>
-          Results are only stored after submitting an exam in this browser tab. If you completed an
-          exam in another tab, results won&apos;t be available here.
+          No saved result is available for this attempt in this browser. Submit an exam to save its
+          result, or choose an available attempt from recent scores.
         </p>
         <div className="stats-row">
           <ButtonLink href="/exam?mode=full-test">Start a new exam</ButtonLink>
@@ -124,29 +114,45 @@ export function ResultsClient({
     }
   }
 
-  function retakeMissed(): void {
+  async function retakeMissed(): Promise<void> {
     const missedIds = getMissedQuestionIds(completedSession, questionsById);
 
     if (!missedIds.length) {
       return;
     }
 
-    localSet(RETAKE_QUESTIONS_KEY, missedIds.join(','));
-    const nextSession = createExamSession({
-      questions,
-      settings: {
-        ...readSettings(),
-        questionCount: 'all',
-        instantFeedback: true,
-        autoAdvance: false,
-      },
-      source: 'missed',
-      questionIds: missedIds,
-      mode: 'retake',
-    });
+    if (!navigator.locks) {
+      addToast('Use a current browser over HTTPS to start a retake.', 'error');
+      return;
+    }
+    await navigator.locks
+      .request('ns-exam-mode-retake', { ifAvailable: true }, (lock) => {
+        if (!lock) {
+          addToast('A retake is already open in another tab. Finish or close it first.', 'error');
+          return;
+        }
+        const nextSession = createExamSession({
+          questions,
+          settings: {
+            ...readSettings(),
+            questionCount: 'all',
+            instantFeedback: true,
+            autoAdvance: false,
+          },
+          source: 'missed',
+          questionIds: missedIds,
+          mode: 'retake',
+        });
 
-    saveSessionForMode(nextSession);
-    router.push('/exam?mode=retake');
+        if (!saveSessionForMode(nextSession)) {
+          addToast('Could not save the retake. Free browser storage and try again.', 'error');
+          return;
+        }
+        router.push('/exam?mode=retake');
+      })
+      .catch(() =>
+        addToast('Could not start the retake. Check browser storage access and retry.', 'error'),
+      );
   }
 
   return (

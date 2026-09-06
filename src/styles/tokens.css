@@ -1,8 +1,8 @@
 :root {
-  --color-brand-primary: #e8601c;
-  --color-brand-secondary: #f5934a;
+  --color-brand-primary: #ad400c;
+  --color-brand-secondary: #92340a;
   --color-brand-tertiary: #fbe4d3;
-  --color-brand-dark: #c44e10;
+  --color-brand-dark: #92340a;
   --color-surface-base: #f7f2ec;
   --color-surface-card: #ffffff;
   --color-surface-muted: #efe8df;
@@ -10,7 +10,7 @@
   --color-surface-overlay: rgba(0, 0, 0, 0.4);
   --color-text-primary: #1a1410;
   --color-text-secondary: #6b5c50;
-  --color-text-muted: #a89485;
+  --color-text-muted: #706052;
   --color-text-inverse: #ffffff;
   --color-border-default: rgba(26, 20, 16, 0.08);
   --color-border-strong: rgba(26, 20, 16, 0.18);
@@ -85,6 +85,11 @@
 }
 
 [data-theme='dark'] {
+  --color-brand-dark: #ffad78;
+  --color-brand-tertiary: #422718;
+  --color-brand-primary: #ffad78;
+  --color-brand-secondary: #ffc399;
+  --color-text-inverse: #271c14;
   --color-surface-base: #18110c;
   --color-surface-card: #271c14;
   --color-surface-muted: #332318;
@@ -92,7 +97,7 @@
   --color-surface-overlay: rgba(0, 0, 0, 0.6);
   --color-text-primary: #f5ede4;
   --color-text-secondary: #c4a898;
-  --color-text-muted: #8c6e60;
+  --color-text-muted: #c4a898;
   --color-border-default: rgba(255, 200, 160, 0.08);
   --color-border-strong: rgba(255, 200, 160, 0.18);
   --color-success: #34d27a;
