@@ -1,6 +1,8 @@
 import { expect, test } from '@playwright/test';
 
 test('save and exit preserves an attempt for resume without creating a score', async ({ page }) => {
+  const errors: string[] = [];
+  page.on('pageerror', (error) => errors.push(error.message));
   await page.goto('/exam/?mode=rules-drill');
   await page.getByRole('radio').first().click();
   const before = await page.evaluate(() =>
@@ -20,6 +22,7 @@ test('save and exit preserves an attempt for resume without creating a score', a
   );
   expect(after.id).toBe(before.id);
   expect(after.answers).toEqual(before.answers);
+  expect(errors).toEqual([]);
 });
 
 test('cancel stays in exam; discard removes the attempt without a score or saved toast', async ({

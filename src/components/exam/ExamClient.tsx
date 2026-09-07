@@ -140,7 +140,7 @@ export function ExamClient({ questions }: { questions: Question[] }) {
   }, [mode.id, questions]);
 
   if (loadState === 'loading') {
-    return <LoadingTip modeLabel={mode.label} />;
+    return <LoadingTip />;
   }
 
   if (loadState === 'locked' || loadState === 'unsupported') {
@@ -987,17 +987,13 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
   );
 }
 
-function LoadingTip({ modeLabel }: { modeLabel?: string }) {
-  // Use a deterministic tip index derived from the mode label so SSR and
-  // client hydration render the same text and avoid a mismatch.
-  const tipIndex =
-    (modeLabel?.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) ?? 0) %
-    drivingTips.length;
-  const tip = drivingTips[tipIndex]!;
+function LoadingTip() {
+  // Static export cannot know the URL's mode until hydration.
+  const tip = drivingTips[0]!;
   return (
     <section className="loading-state" role="status">
       <Badge tone="brand">Loading</Badge>
-      <h1>{modeLabel ? `Preparing your ${modeLabel}…` : 'Preparing your practice exam.'}</h1>
+      <h1>Preparing your practice exam.</h1>
       <p>Did you know? {tip}</p>
     </section>
   );
