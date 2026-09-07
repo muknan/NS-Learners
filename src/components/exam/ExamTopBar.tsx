@@ -32,6 +32,7 @@ export function ExamTopBar({
   return (
     <header className="exam-top-bar" data-testid="exam-top-bar">
       <Button
+        aria-label="Exit"
         className="exam-top-bar__exit"
         tone="ghost"
         size="sm"

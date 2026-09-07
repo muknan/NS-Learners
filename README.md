@@ -63,6 +63,8 @@ Full Test contains twenty road-rule questions followed by twenty road-sign quest
 
 ## Persistence and recovery
 
+The exam Exit dialog offers Keep practicing, Exit without saving, and Save progress & exit. Saving retains the active attempt for Resume on the home page; discarding removes that attempt. Neither exit action adds a completed score. Timed test deadlines keep running while away and are not reset on resume. Failed saves keep the dialog open with an error so the learner can retry.
+
 Version 2 sessions preserve shuffled question and option order, answers, flags, section timing and section-break acknowledgment across reloads. Compatible unversioned records are normalized conservatively; malformed IDs, option orders, indices and unsupported versions are rejected. New full tests use ordered sections; a legacy mixed attempt is scored by category and cannot pass without twenty questions in each category and sixteen correct in each.
 
 Saving results and history must succeed before the active attempt is removed. If saving fails, keep the tab open, free browser storage and retry submission. Progress-save failures are shown in the exam. History is shared across tabs; `/results?historyId=...` selects that exact saved attempt.

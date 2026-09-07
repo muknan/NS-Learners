@@ -3317,3 +3317,37 @@ input[type='range'] {
     display: block;
   }
 }
+
+/* Keep interactive boundaries distinct from decorative card borders. */
+.flashcard-known-toggle,
+.site-nav > a,
+.site-nav > button,
+.site-nav > a[aria-current='page'],
+.button--secondary,
+.button--ghost,
+[data-theme='dark'] .button--secondary,
+.mode-card__cta:not(.is-primary),
+[data-theme='dark'] .mode-card__cta:not(.is-primary) {
+  border-color: var(--color-control-border);
+}
+
+.site-nav > a:hover,
+.flashcard-known-toggle:hover,
+.site-nav > button:not(:disabled):hover,
+.button--ghost:not(:disabled):hover,
+.button--secondary:not(:disabled):hover,
+[data-theme='dark'] .button--secondary:not(:disabled):hover {
+  border-color: var(--color-brand-primary);
+  background: var(--color-brand-tertiary);
+  color: var(--color-text-primary);
+}
+
+.site-nav > a:focus-visible,
+.site-nav > button:focus-visible {
+  border-color: var(--color-brand-primary);
+  background: var(--color-brand-tertiary);
+}
+
+.modal__footer {
+  flex-wrap: wrap;
+}

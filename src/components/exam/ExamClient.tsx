@@ -214,6 +214,7 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
   const progress = useProgress(session);
   const [submitModalOpen, setSubmitModalOpen] = useState(false);
   const [exitModalOpen, setExitModalOpen] = useState(false);
+  const [exitError, setExitError] = useState('');
   const [explanationModalOpen, setExplanationModalOpen] = useState(false);
   const [shortcutsOpen, setShortcutsOpen] = useState(false);
   const [navigatorOpen, setNavigatorOpen] = useState(false);
@@ -354,6 +355,7 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
     [addToast, cancelAutoAdvance, dispatch, questionsById, router, session],
   );
   const handleTimerExpire = useCallback(() => {
+    if (submittingRef.current) return;
     if (
       sessionRef.current.mode === 'full-test' &&
       sessionRef.current.sectionTwoStartedAt == null &&
@@ -448,6 +450,7 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
   const handleOpenExitModal = useCallback((): void => {
     cancelAutoAdvance();
     setNavigatorOpen(false);
+    setExitError('');
     setExitModalOpen(true);
   }, [cancelAutoAdvance]);
 
@@ -698,22 +701,28 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
     submitExam();
   }
 
-  function exitExam(): void {
-    const hasAnswers = Object.keys(session.answers).length > 0;
-    if (hasAnswers) {
-      const exited = completeSession(session);
-      const historyEntry = toHistoryEntry(exited, questionsById);
-      if (!saveHistory(historyEntry)) {
-        addToast(
-          'Could not save your result. Keep this tab open, free browser storage, then try again.',
-          'error',
-        );
-        setExitModalOpen(false);
-        return;
+  function exitExam(saveProgress: boolean): void {
+    if (submittingRef.current || sessionRef.current.phase === 'complete') return;
+    submittingRef.current = true;
+    setExitError('');
+    try {
+      const current = sessionRef.current;
+      if (saveProgress) {
+        if (!saveSessionForMode({ ...current, shouldAutoAdvance: false })) {
+          throw new Error('Storage unavailable');
+        }
+      } else {
+        clearSessionForMode(current.mode);
       }
+      router.push(saveProgress ? '/?savedProgress=1' : '/');
+    } catch {
+      submittingRef.current = false;
+      setExitError(
+        'Could not ' +
+          (saveProgress ? 'save your progress' : 'discard this attempt') +
+          '. Keep this tab open and try again.',
+      );
     }
-    clearSessionForMode(session.mode);
-    router.push(hasAnswers ? '/?savedExit=1' : '/');
   }
 
   function continueToSectionTwo(): void {
@@ -898,15 +907,22 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
         <Modal title="Exit exam?" onClose={() => setExitModalOpen(false)}>
           <div className="submit-warning">
             <AlertTriangle aria-hidden="true" />
-            <p>Your progress will be lost.</p>
+            <p>
+              Save this attempt to resume later, or discard it without adding a completed result.
+              {session.expiresAt !== null
+                ? ' The timed test clock keeps running while you are away.'
+                : ''}
+            </p>
           </div>
+          {exitError ? <p role="alert">{exitError}</p> : null}
           <footer className="modal__footer">
             <Button tone="secondary" onClick={() => setExitModalOpen(false)}>
-              Cancel
+              Keep practicing
             </Button>
-            <Button tone="danger" onClick={exitExam}>
-              Exit
+            <Button tone="ghost" onClick={() => exitExam(false)}>
+              Exit without saving
             </Button>
+            <Button onClick={() => exitExam(true)}>Save progress &amp; exit</Button>
           </footer>
         </Modal>
       ) : null}

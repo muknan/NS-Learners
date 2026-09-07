@@ -1,6 +1,6 @@
 :root {
   --color-brand-primary: #155ab6;
-  --color-brand-secondary: #10478f;
+  --color-brand-secondary: #08366f;
   --color-brand-tertiary: #e9f2ff;
   --color-brand-dark: #10478f;
   --color-surface-base: #f4f7fb;
@@ -14,6 +14,7 @@
   --color-text-inverse: #ffffff;
   --color-border-default: rgba(20, 36, 58, 0.08);
   --color-border-strong: rgba(20, 36, 58, 0.18);
+  --color-control-border: #71829b;
   --color-border-focus: #155ab6;
   --color-success: #1f7a4a;
   --color-success-bg: #e8f5ee;
@@ -85,10 +86,11 @@
 }
 
 [data-theme='dark'] {
+  --color-control-border: #61758f;
   --color-brand-dark: #66b5ff;
   --color-brand-tertiary: #17324f;
   --color-brand-primary: #66b5ff;
-  --color-brand-secondary: #94ccff;
+  --color-brand-secondary: #b8ddff;
   --color-text-inverse: #101e30;
   --color-surface-base: #0c1422;
   --color-surface-card: #101e30;

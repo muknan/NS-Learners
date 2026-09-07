@@ -61,14 +61,18 @@ export function HomeClient({ flashcardTotal, stats }: HomeClientProps) {
   }, []);
 
   useEffect(() => {
-    if (searchParams.get('savedExit') === '1') {
+    if (searchParams.get('savedProgress') === '1') {
       setToasts((current) => [
         ...current,
-        { id: nextToastId(), message: 'Progress saved to history', type: 'success' },
+        {
+          id: nextToastId(),
+          message: 'Progress saved. Resume your practice below.',
+          type: 'success',
+        },
       ]);
       // Strip the query param so reload/refresh doesn't re-show the toast.
       const url = new URL(window.location.href);
-      url.searchParams.delete('savedExit');
+      url.searchParams.delete('savedProgress');
       window.history.replaceState({}, '', url.toString());
     }
   }, [searchParams]);

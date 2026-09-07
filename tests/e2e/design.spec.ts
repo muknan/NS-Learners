@@ -1,6 +1,29 @@
 import { expect, test } from '@playwright/test';
 
 for (const theme of ['light', 'dark']) {
+  test(`${theme} navigation and ghost controls have distinct hover fills and borders`, async ({
+    page,
+  }) => {
+    await page.goto('/flashcards/');
+    await page.evaluate((theme) => {
+      document.documentElement.dataset.theme = theme;
+    }, theme);
+    await page.addStyleTag({ content: '* { transition: none !important; }' });
+    for (const control of [
+      page.locator('.site-nav a').first(),
+      page.getByRole('button', { name: /^Mark .+ as known$/ }),
+    ]) {
+      const before = await control.evaluate((el) => {
+        const s = getComputedStyle(el);
+        return { background: s.backgroundColor, border: s.borderTopColor };
+      });
+      expect(before.border).not.toBe('rgba(0, 0, 0, 0)');
+      await control.hover();
+      const after = await control.evaluate((el) => getComputedStyle(el).backgroundColor);
+      expect(after).not.toBe(before.background);
+      await page.mouse.move(0, 0);
+    }
+  });
   test(`${theme} primary controls retain contrast at rest, hover and focus`, async ({ page }) => {
     await page.goto('/');
     await page.evaluate((theme) => {
