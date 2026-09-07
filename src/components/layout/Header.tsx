@@ -64,11 +64,17 @@ export function Header() {
       </Link>
 
       <nav className="site-nav" aria-label="Primary navigation">
-        <Link aria-current={pathname === '/' ? 'page' : undefined} href="/" prefetch={false}>
+        <Link
+          aria-label="Home"
+          aria-current={pathname === '/' ? 'page' : undefined}
+          href="/"
+          prefetch={false}
+        >
           <Home aria-hidden="true" />
           <span className="site-nav__label">Home</span>
         </Link>
         <Link
+          aria-label="Handbooks"
           aria-current={pathname === '/handbooks' ? 'page' : undefined}
           href="/handbooks"
           prefetch={false}
@@ -77,6 +83,7 @@ export function Header() {
           <span className="site-nav__label">Handbooks</span>
         </Link>
         <Link
+          aria-label="Flashcards"
           aria-current={pathname === '/flashcards' ? 'page' : undefined}
           href="/flashcards"
           prefetch={false}

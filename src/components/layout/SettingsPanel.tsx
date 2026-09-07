@@ -86,10 +86,6 @@ export function SettingsPanel({ open, onClose }: { open: boolean; onClose: () =>
           <section className="settings-section" aria-labelledby="advance-settings-title">
             <h3 id="advance-settings-title">Auto-advance delay</h3>
             <div className="setting-row">
-              <div className="setting-label">
-                Auto-advance delay
-                <span className="setting-value">{advanceDuration}s</span>
-              </div>
               <div className="delay-choice" role="group" aria-label="Auto-advance delay">
                 {ADVANCE_DURATION_OPTIONS.map((duration) => (
                   <button
@@ -114,32 +110,35 @@ export function SettingsPanel({ open, onClose }: { open: boolean; onClose: () =>
             aria-labelledby="data-settings-title"
           >
             <h3 id="data-settings-title">Data &amp; shortcuts</h3>
-            <dl className="shortcut-list">
-              <div>
-                <dt>1-4</dt>
-                <dd>Choose an answer</dd>
-              </div>
-              <div>
-                <dt>F</dt>
-                <dd>Flag the question</dd>
-              </div>
-              <div>
-                <dt>← / →</dt>
-                <dd>Move between questions</dd>
-              </div>
-              <div>
-                <dt>N / P</dt>
-                <dd>Next or previous question</dd>
-              </div>
-              <div>
-                <dt>Enter / Space</dt>
-                <dd>Continue or submit</dd>
-              </div>
-              <div>
-                <dt>Esc</dt>
-                <dd>Close panels and dialogs</dd>
-              </div>
-            </dl>
+            <details>
+              <summary>Keyboard shortcuts</summary>
+              <dl className="shortcut-list">
+                <div>
+                  <dt>1-4</dt>
+                  <dd>Choose an answer</dd>
+                </div>
+                <div>
+                  <dt>F</dt>
+                  <dd>Flag the question</dd>
+                </div>
+                <div>
+                  <dt>← / →</dt>
+                  <dd>Move between questions</dd>
+                </div>
+                <div>
+                  <dt>N / P</dt>
+                  <dd>Next or previous question</dd>
+                </div>
+                <div>
+                  <dt>Enter / Space</dt>
+                  <dd>Continue or submit</dd>
+                </div>
+                <div>
+                  <dt>Esc</dt>
+                  <dd>Close panels and dialogs</dd>
+                </div>
+              </dl>
+            </details>
             <button
               className="settings-text-button"
               onClick={() => {

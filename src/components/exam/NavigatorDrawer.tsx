@@ -98,6 +98,13 @@ export function NavigatorDrawer({
     return null;
   }
 
+  const firstUnanswered = session.questionIds.findIndex(
+    (id, index) =>
+      !session.answers[id] &&
+      (session.mode !== 'full-test' ||
+        (session.sectionTwoStartedAt != null ? index >= 20 : index < 20)),
+  );
+
   return (
     <div className="navigator-drawer" role="presentation">
       <button
@@ -138,6 +145,16 @@ export function NavigatorDrawer({
             </strong>
           </div>
           <ProgressBar value={progress.percentage} label="Exam progress" />
+          <Button
+            tone="secondary"
+            disabled={firstUnanswered < 0}
+            onClick={() => {
+              onSelect(firstUnanswered);
+              onClose();
+            }}
+          >
+            First unanswered
+          </Button>
           {session.mode === 'assisted' ? <small>Did you know? {tip}</small> : null}
         </div>
 

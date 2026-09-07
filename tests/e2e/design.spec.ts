@@ -85,3 +85,75 @@ test('settings exposes selection and keeps storage errors in the active dialog',
     await dialog.getByRole('button', { name: 'Cancel', exact: true }).click();
   }
 });
+
+test('resume navigation and exit actions stay fully visible across widths', async ({ page }) => {
+  await page.goto('/exam/?mode=rules-drill');
+  await page.getByRole('radio').first().click();
+  await page.getByRole('button', { name: 'Exit', exact: true }).click();
+  await page.getByRole('button', { name: 'Save progress & exit', exact: true }).click();
+  for (const theme of ['light', 'dark']) {
+    await page.evaluate((t) => (document.documentElement.dataset.theme = t), theme);
+    for (const width of [320, 375, 390, 520, 600, 760, 800, 1024, 1280]) {
+      await page.setViewportSize({ width, height: 900 });
+      const nav = page.getByRole('navigation', { name: 'Primary navigation' });
+      const bounds = await nav.boundingBox();
+      const rows = await nav
+        .locator(':scope > a, :scope > button')
+        .evaluateAll((items) => items.map((item) => item.getBoundingClientRect().y));
+      expect(Math.max(...rows) - Math.min(...rows)).toBeLessThanOrEqual(2);
+      for (const item of await nav.locator(':scope > a, :scope > button').all()) {
+        const box = (await item.boundingBox())!;
+        expect(box.x).toBeGreaterThanOrEqual(0);
+        expect(box.x + box.width).toBeLessThanOrEqual(width);
+        expect(box.x + box.width).toBeLessThanOrEqual(bounds!.x + bounds!.width + 1);
+      }
+    }
+  }
+  await page
+    .getByLabel('Resume Rules Drill')
+    .getByRole('button', { name: 'Resume', exact: true })
+    .click();
+  await page.getByRole('button', { name: 'Exit', exact: true }).click();
+  for (const width of [320, 390, 800, 1280]) {
+    await page.setViewportSize({ width, height: 900 });
+    const save = (await page
+      .getByRole('button', { name: 'Save progress & exit', exact: true })
+      .boundingBox())!;
+    const keep = (await page
+      .getByRole('button', { name: 'Keep practicing', exact: true })
+      .boundingBox())!;
+    const discard = (await page
+      .getByRole('button', { name: 'Exit without saving', exact: true })
+      .boundingBox())!;
+    expect(save.y + save.height).toBeLessThanOrEqual(keep.y);
+    expect(keep.y).toBe(discard.y);
+    expect(Math.abs(keep.width - discard.width)).toBeLessThan(1);
+    const icon = await page.locator('.submit-warning svg').boundingBox();
+    expect(icon!.width).toBe(24);
+    expect(discard.x + discard.width).toBeLessThanOrEqual(width);
+  }
+});
+
+test('navigator jumps to the first unanswered question', async ({ page }) => {
+  await page.goto('/exam/?mode=rules-drill');
+  await page.getByRole('radio').first().click();
+  await page.getByRole('button', { name: 'Open question navigator' }).click();
+  await page.getByRole('button', { name: 'First unanswered', exact: true }).click();
+  await expect(page.getByTestId('exam-top-bar')).toContainText('Q 2 /');
+  await expect(page.getByRole('dialog', { name: 'Question navigator' })).toHaveCount(0);
+});
+
+test('settings fits without scrolling and shortcuts expand on demand', async ({ page }) => {
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Settings', exact: true }).click();
+  for (const width of [320, 390, 800, 1280]) {
+    await page.setViewportSize({ width, height: 720 });
+    expect(
+      await page
+        .getByRole('dialog', { name: 'Practice settings' })
+        .evaluate((el) => el.scrollHeight <= el.clientHeight + 1),
+    ).toBe(true);
+  }
+  await page.getByText('Keyboard shortcuts', { exact: true }).click();
+  await expect(page.getByText('Choose an answer', { exact: true })).toBeVisible();
+});

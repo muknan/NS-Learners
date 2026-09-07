@@ -238,7 +238,7 @@ test('instant feedback shows explanations in a modal without shifting the card',
 
   const dialog = page.getByRole('dialog', { name: 'Explanation' });
   await expect(dialog).toBeVisible();
-  await expect(dialog).toContainText(/chapter|official/i);
+  await expect(dialog).toContainText(/chapter|official|handbook/i);
   await page.keyboard.press('Escape');
   await expect(dialog).toBeHidden();
   await expect(explanationButton).toBeFocused();

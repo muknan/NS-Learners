@@ -4,8 +4,8 @@
   "description": "Free Nova Scotia Class 7 learner licence mock exams.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#f4f7fb",
-  "theme_color": "#155ab6",
+  "background_color": "#faf8f5",
+  "theme_color": "#a84315",
   "icons": [
     {
       "src": "/icon-192.svg",

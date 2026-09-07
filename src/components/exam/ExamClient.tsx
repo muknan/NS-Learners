@@ -908,21 +908,21 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
           <div className="submit-warning">
             <AlertTriangle aria-hidden="true" />
             <p>
-              Save this attempt to resume later, or discard it without adding a completed result.
+              Save your answers to resume later. Exiting without saving discards this attempt.
               {session.expiresAt !== null
                 ? ' The timed test clock keeps running while you are away.'
                 : ''}
             </p>
           </div>
           {exitError ? <p role="alert">{exitError}</p> : null}
-          <footer className="modal__footer">
+          <footer className="modal__footer exit-actions">
+            <Button onClick={() => exitExam(true)}>Save progress &amp; exit</Button>
             <Button tone="secondary" onClick={() => setExitModalOpen(false)}>
               Keep practicing
             </Button>
-            <Button tone="ghost" onClick={() => exitExam(false)}>
+            <Button tone="danger" onClick={() => exitExam(false)}>
               Exit without saving
             </Button>
-            <Button onClick={() => exitExam(true)}>Save progress &amp; exit</Button>
           </footer>
         </Modal>
       ) : null}

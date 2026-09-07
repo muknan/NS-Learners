@@ -233,7 +233,8 @@ export function HomeClient({ flashcardTotal, stats }: HomeClientProps) {
                   <Badge tone="warning">In progress</Badge>
                   <h2>Resume your {getExamMode(sess.mode).label}</h2>
                   <p>
-                    Question {sess.currentIndex + 1} of {sess.questionIds.length} is waiting.
+                    {Object.keys(sess.answers).length} of {sess.questionIds.length} answered ·
+                    Continue at question {sess.currentIndex + 1}.
                   </p>
                 </div>
                 <div className="resume-card__actions">
