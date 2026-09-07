@@ -11,6 +11,7 @@ export function ConfirmDialog({
   cancelLabel = 'Cancel',
   onCancel,
   onConfirm,
+  error,
 }: {
   open: boolean;
   title: string;
@@ -19,6 +20,7 @@ export function ConfirmDialog({
   cancelLabel?: string;
   onCancel: () => void;
   onConfirm: () => void;
+  error?: string;
 }) {
   if (!open) {
     return null;
@@ -28,6 +30,7 @@ export function ConfirmDialog({
     <Modal title={title} onClose={onCancel}>
       <div className="confirm-dialog">
         <p>{description}</p>
+        {error ? <p role="alert">{error}</p> : null}
       </div>
       <footer className="modal__footer">
         <Button tone="secondary" onClick={onCancel}>

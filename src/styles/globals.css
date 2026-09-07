@@ -313,7 +313,7 @@ p {
     transform 160ms ease;
 }
 
-.button:hover {
+.button:not(:disabled):hover {
   transform: translateY(-1px);
 }
 
@@ -328,7 +328,7 @@ p {
 
 .button--primary:hover {
   background: var(--color-brand-secondary);
-  color: var(--color-brand-dark);
+  color: var(--color-text-inverse);
 }
 
 .button--secondary {
@@ -771,7 +771,7 @@ p {
 .mode-card:hover .mode-card__cta.is-primary {
   border-color: var(--color-brand-secondary);
   background: var(--color-brand-secondary);
-  color: var(--color-brand-dark);
+  color: var(--color-text-inverse);
 }
 
 /* Dark-theme adjustments — keep CTA legible on the dark surface */
@@ -796,7 +796,7 @@ p {
 [data-theme='dark'] .mode-card:hover .mode-card__cta.is-primary {
   border-color: var(--color-brand-secondary);
   background: var(--color-brand-secondary);
-  color: var(--color-brand-dark);
+  color: var(--color-text-inverse);
 }
 
 .mode-card--wide {
@@ -1468,7 +1468,7 @@ button.history-item:disabled {
 }
 
 .progress__segment--missed {
-  /* Neutral grey so it's distinct from brand orange (--color-warning is too similar to brand). */
+  /* Neutral state remains distinct from warning and selected states. */
   background: var(--color-text-muted);
 }
 
@@ -2165,7 +2165,7 @@ input[type='range'] {
 }
 
 .delay-choice button {
-  min-height: 38px;
+  min-height: 44px;
   border: 0;
   border-radius: 6px;
   background: transparent;
@@ -2187,6 +2187,8 @@ input[type='range'] {
 }
 
 .settings-text-button {
+  min-height: 44px;
+  text-align: left;
   width: max-content;
   border: 0;
   padding: 0;

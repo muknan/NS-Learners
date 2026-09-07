@@ -343,13 +343,13 @@ export function HomeClient({ flashcardTotal, stats }: HomeClientProps) {
       <section className="section-block" aria-labelledby="how-title">
         <div className="section-heading">
           <Badge tone="neutral">How it works</Badge>
-          <h2 id="how-title">Practice in three clean steps</h2>
+          <h2 id="how-title">Practice in three steps</h2>
         </div>
         <div className="steps-grid">
           <article>
             <span>01</span>
-            <h3>Set your mode</h3>
-            <p>Choose instant feedback or end-of-exam scoring, then set count and timer.</p>
+            <h3>Choose your mode</h3>
+            <p>Take a timed Full Test, focus on rules or signs, or learn with instant feedback.</p>
           </article>
           <article>
             <span>02</span>

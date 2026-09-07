@@ -19,6 +19,8 @@ export function SettingsPanel({ open, onClose }: { open: boolean; onClose: () =>
   useEffect(() => {
     if (open) {
       setAdvanceDuration(readAdvanceDuration());
+      setError('');
+      setPendingConfirm(null);
     }
   }, [open]);
 
@@ -43,28 +45,33 @@ export function SettingsPanel({ open, onClose }: { open: boolean; onClose: () =>
   }
 
   function clearAllAppData(): void {
-    for (const storage of [window.localStorage, window.sessionStorage]) {
-      for (const key of Object.keys(storage)) {
-        if (
-          key.startsWith('ns-learner-') ||
-          key.startsWith('ns-learners.') ||
-          key.startsWith('ns-retake-') ||
-          key.startsWith('nsLearner.') ||
-          key.startsWith('ns-exam-session-')
-        ) {
-          storage.removeItem(key);
+    try {
+      for (const storage of [window.localStorage, window.sessionStorage]) {
+        for (const key of Object.keys(storage)) {
+          if (
+            key.startsWith('ns-learner-') ||
+            key.startsWith('ns-learners.') ||
+            key.startsWith('ns-retake-') ||
+            key.startsWith('nsLearner.') ||
+            key.startsWith('ns-exam-session-')
+          ) {
+            storage.removeItem(key);
+          }
         }
       }
-    }
 
-    setPendingConfirm(null);
-    window.location.reload();
+      setPendingConfirm(null);
+      window.location.reload();
+    } catch {
+      setError(
+        'Could not clear all app data. Some data may already be removed. Check browser storage access and try again.',
+      );
+    }
   }
 
   return (
     <>
       <Modal title="Practice settings" onClose={onClose}>
-        {error ? <p role="alert">{error}</p> : null}
         <div className="settings-grid">
           <section className="settings-section" aria-labelledby="appearance-settings-title">
             <h3 id="appearance-settings-title">Appearance</h3>
@@ -86,6 +93,7 @@ export function SettingsPanel({ open, onClose }: { open: boolean; onClose: () =>
               <div className="delay-choice" role="group" aria-label="Auto-advance delay">
                 {ADVANCE_DURATION_OPTIONS.map((duration) => (
                   <button
+                    aria-pressed={advanceDuration === duration}
                     className={advanceDuration === duration ? 'is-active' : ''}
                     key={duration}
                     onClick={() => updateAdvanceDuration(duration)}
@@ -134,14 +142,20 @@ export function SettingsPanel({ open, onClose }: { open: boolean; onClose: () =>
             </dl>
             <button
               className="settings-text-button"
-              onClick={() => setPendingConfirm('score-history')}
+              onClick={() => {
+                setError('');
+                setPendingConfirm('score-history');
+              }}
               type="button"
             >
               Clear score history
             </button>
             <button
               className="settings-text-button settings-text-button--danger"
-              onClick={() => setPendingConfirm('all-data')}
+              onClick={() => {
+                setError('');
+                setPendingConfirm('all-data');
+              }}
               type="button"
             >
               Clear all app data
@@ -155,6 +169,7 @@ export function SettingsPanel({ open, onClose }: { open: boolean; onClose: () =>
         description="This removes your saved recent scores from this browser."
         onCancel={() => setPendingConfirm(null)}
         onConfirm={clearScoreHistory}
+        error={error}
       />
       <ConfirmDialog
         open={pendingConfirm === 'all-data'}
@@ -162,6 +177,7 @@ export function SettingsPanel({ open, onClose }: { open: boolean; onClose: () =>
         description="This removes settings, score history, saved sessions, and retake data from this browser."
         onCancel={() => setPendingConfirm(null)}
         onConfirm={clearAllAppData}
+        error={error}
       />
     </>
   );
