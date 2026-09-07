@@ -2505,25 +2505,6 @@ input[type='range'] {
   font-weight: 500;
 }
 
-.results-hero__stat-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  flex: 0 0 auto;
-}
-
-.results-hero__stat--correct .results-hero__stat-dot {
-  background: var(--color-success);
-}
-
-.results-hero__stat--wrong .results-hero__stat-dot {
-  background: var(--color-error);
-}
-
-.results-hero__stat--missed .results-hero__stat-dot {
-  background: var(--color-text-muted);
-}
-
 .results-hero__stat--correct strong {
   color: var(--color-success);
 }
@@ -3419,8 +3400,8 @@ input[type='range'] {
 
   .results-hero__stat {
     display: grid;
-    grid-template-columns: auto auto;
-    justify-content: center;
+    grid-template-columns: 1fr;
+    justify-items: center;
     gap: 4px;
     padding: 0;
   }

@@ -203,19 +203,16 @@ export function ResultsClient({ questions }: { questions: Question[] }) {
 
         <div className="results-hero__stats" aria-label="Score breakdown">
           <span className="results-hero__stat results-hero__stat--correct">
-            <span className="results-hero__stat-dot" aria-hidden="true" />
             <strong>{score.correct}</strong>
             <span>Correct</span>
           </span>
           <span className="results-hero__stat-divider" aria-hidden="true" />
           <span className="results-hero__stat results-hero__stat--wrong">
-            <span className="results-hero__stat-dot" aria-hidden="true" />
             <strong>{score.incorrect}</strong>
             <span>Wrong</span>
           </span>
           <span className="results-hero__stat-divider" aria-hidden="true" />
           <span className="results-hero__stat results-hero__stat--missed">
-            <span className="results-hero__stat-dot" aria-hidden="true" />
             <strong>{score.missed}</strong>
             <span>Unanswered</span>
           </span>
