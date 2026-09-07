@@ -40,6 +40,7 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
   const [knownIds, setKnownIds] = useState<Set<string>>(() => new Set());
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false);
+  const [saveError, setSaveError] = useState('');
   const [lastSessionIds, setLastSessionIds] = useState<string[]>([]);
   const [seenSessionIds, setSeenSessionIds] = useState<Set<string>>(new Set());
   const [leaveConfirmOpen, setLeaveConfirmOpen] = useState(false);
@@ -63,7 +64,6 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
   const isCurrentKnown = currentCard ? knownIds.has(currentCard.id) : false;
   const remainingCount = sessionDeck.filter((card) => !knownIds.has(card.id)).length;
   const isSubset = filteredPool.length > BATCH_SIZE;
-  const knownIdList = useMemo(() => [...knownIds].sort(), [knownIds]);
 
   function goPrevious(): void {
     setIndex((current) => {
@@ -135,12 +135,18 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
   }, [allCards]);
 
   useEffect(() => {
-    if (!isHydrated) {
-      return;
+    function syncKnown(event: StorageEvent): void {
+      if (event.key !== STORAGE_KEY && event.key !== null) return;
+      const next = new Set(readPersistedFlashcardsState()?.knownIds ?? []);
+      setKnownIds(next);
+      if (activeCategory === 'known') {
+        setSessionDeck(allCards.filter((card) => next.has(card.id)));
+        setIndex(0);
+      }
     }
-
-    writePersistedFlashcardsState({ knownIds: knownIdList });
-  }, [isHydrated, knownIdList]);
+    window.addEventListener('storage', syncKnown);
+    return () => window.removeEventListener('storage', syncKnown);
+  }, [activeCategory, allCards]);
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent): void {
@@ -210,7 +216,7 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
   }
 
   function toggleKnown(cardId: string): void {
-    const next = new Set(knownIds);
+    const next = new Set(readPersistedFlashcardsState()?.knownIds ?? knownIds);
 
     if (next.has(cardId)) {
       next.delete(cardId);
@@ -218,6 +224,11 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
       next.add(cardId);
     }
 
+    if (!writePersistedFlashcardsState({ knownIds: [...next] })) {
+      setSaveError('Could not save your known cards. Check browser storage and try again.');
+      return;
+    }
+    setSaveError('');
     setKnownIds(next);
 
     if (activeCategory === 'known') {
@@ -229,6 +240,11 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
   }
 
   function resetAll(): void {
+    if (!writePersistedFlashcardsState({ knownIds: [] })) {
+      setSaveError('Could not reset your known cards. Check browser storage and try again.');
+      return;
+    }
+    setSaveError('');
     setActiveCategory('all');
     const nextDeck = drawRandomSession(allCards, BATCH_SIZE, []);
     setSessionDeck(nextDeck);
@@ -302,8 +318,11 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
     </div>
   );
 
+  if (!isHydrated) return <p role="status">Loading your flashcards…</p>;
+
   return (
     <section className="flashcards-layout" aria-labelledby="flashcards-title">
+      {saveError ? <p role="alert">{saveError}</p> : null}
       <div className="flashcards-heading">
         <div>
           <Badge tone="brand">Flashcards</Badge>
@@ -478,15 +497,16 @@ function readPersistedFlashcardsState(): PersistedFlashcardsState | null {
   }
 }
 
-function writePersistedFlashcardsState(state: PersistedFlashcardsState): void {
+function writePersistedFlashcardsState(state: PersistedFlashcardsState): boolean {
   if (typeof window === 'undefined') {
-    return;
+    return false;
   }
 
   try {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    return true;
   } catch {
-    // Ignore storage failures so study mode still works in private browsing.
+    return false;
   }
 }
 

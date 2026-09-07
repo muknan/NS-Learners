@@ -25,6 +25,7 @@ const withPwa = nextPwa({
     /^historyId$/,
     /^expired$/,
     /^savedExit$/,
+    /^savedProgress$/,
     /^_rsc$/,
   ],
   runtimeCaching: [

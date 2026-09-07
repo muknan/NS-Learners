@@ -6,6 +6,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { SignImage } from '@/components/exam/SignImage';
 import { Badge } from '@/components/ui/Badge';
 import { Button, ButtonLink } from '@/components/ui/Button';
+import { Modal } from '@/components/ui/Modal';
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import { ToastViewport, type ToastMessage } from '@/components/ui/Toast';
 import { getExamMode } from '@/lib/modes';
@@ -21,6 +22,7 @@ import {
   readCompletedSession,
   readHistorySession,
   readSettings,
+  readSessionForMode,
   saveSessionForMode,
 } from '@/lib/storage';
 import { nextToastId } from '@/lib/toast';
@@ -30,6 +32,8 @@ export function ResultsClient({ questions }: { questions: Question[] }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const historyId = searchParams.get('historyId');
+  const [loaded, setLoaded] = useState(false);
+  const [retakeChoiceOpen, setRetakeChoiceOpen] = useState(false);
   const [session, setSession] = useState<ExamSession | null>(null);
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
   const questionsById = useMemo(
@@ -48,7 +52,10 @@ export function ResultsClient({ questions }: { questions: Question[] }) {
   const lowestTopics = useMemo(
     () =>
       score
-        ? [...score.byTopic].sort((left, right) => left.percentage - right.percentage).slice(0, 8)
+        ? [...score.byTopic]
+            .filter((topic) => topic.percentage < 100)
+            .sort((left, right) => left.percentage - right.percentage)
+            .slice(0, 8)
         : [],
     [score],
   );
@@ -59,6 +66,7 @@ export function ResultsClient({ questions }: { questions: Question[] }) {
     } else {
       setSession(readCompletedSession());
     }
+    setLoaded(true);
   }, [historyId]);
 
   const dismissToast = useCallback((id: string): void => {
@@ -75,6 +83,8 @@ export function ResultsClient({ questions }: { questions: Question[] }) {
       },
     ]);
   }, []);
+
+  if (!loaded) return <p role="status">Loading your result…</p>;
 
   if (!session || !score) {
     return (
@@ -114,7 +124,7 @@ export function ResultsClient({ questions }: { questions: Question[] }) {
     }
   }
 
-  async function retakeMissed(): Promise<void> {
+  async function retakeMissed(replaceSaved = false): Promise<void> {
     const missedIds = getMissedQuestionIds(completedSession, questionsById);
 
     if (!missedIds.length) {
@@ -129,6 +139,10 @@ export function ResultsClient({ questions }: { questions: Question[] }) {
       .request('ns-exam-mode-retake', { ifAvailable: true }, (lock) => {
         if (!lock) {
           addToast('A retake is already open in another tab. Finish or close it first.', 'error');
+          return;
+        }
+        if (readSessionForMode('retake') && !replaceSaved) {
+          setRetakeChoiceOpen(true);
           return;
         }
         const nextSession = createExamSession({
@@ -203,7 +217,7 @@ export function ResultsClient({ questions }: { questions: Question[] }) {
           <span className="results-hero__stat results-hero__stat--missed">
             <span className="results-hero__stat-dot" aria-hidden="true" />
             <strong>{score.missed}</strong>
-            <span>Missed</span>
+            <span>Unanswered</span>
           </span>
         </div>
       </section>
@@ -211,27 +225,9 @@ export function ResultsClient({ questions }: { questions: Question[] }) {
       <section className="section-block" aria-labelledby="breakdown-title">
         <div className="section-heading">
           <Badge tone="brand">Breakdown</Badge>
-          <h2 id="breakdown-title">Score by topic section.</h2>
+          <h2 id="breakdown-title">Score by section</h2>
         </div>
         <div className="breakdown-grid">
-          {score.bySection.map((section) => (
-            <article className="breakdown-item" key={section.section}>
-              <div>
-                <strong>{section.section}</strong>
-                <span>
-                  {section.correct}/{section.total}
-                </span>
-              </div>
-              <ProgressBar
-                value={section.percentage}
-                label={`${section.section} score`}
-                correct={section.correct}
-                incorrect={section.incorrect}
-                missed={section.missed}
-                total={section.total}
-              />
-            </article>
-          ))}
           {score.byCategory.map((category) => (
             <article className="breakdown-item" key={category.category}>
               <div>
@@ -286,7 +282,7 @@ export function ResultsClient({ questions }: { questions: Question[] }) {
         <Button
           disabled={!missed.length}
           icon={<Target aria-hidden="true" />}
-          onClick={retakeMissed}
+          onClick={() => void retakeMissed()}
         >
           Retake missed only
         </Button>
@@ -295,7 +291,7 @@ export function ResultsClient({ questions }: { questions: Question[] }) {
           tone="secondary"
           icon={<RotateCcw aria-hidden="true" />}
         >
-          Retake full exam
+          {readSessionForMode('full-test') ? 'Resume full exam' : 'Start full exam'}
         </ButtonLink>
         <Button tone="ghost" icon={<Clipboard aria-hidden="true" />} onClick={shareResult}>
           Copy result summary
@@ -304,7 +300,7 @@ export function ResultsClient({ questions }: { questions: Question[] }) {
 
       <section className="section-block wrong-answer-print" aria-labelledby="missed-title">
         <div className="section-heading">
-          <Badge tone={missed.length ? 'error' : 'success'}>{missed.length} missed</Badge>
+          <Badge tone={missed.length ? 'error' : 'success'}>{missed.length} to review</Badge>
           <h2 id="missed-title">Wrong answer review.</h2>
         </div>
         {missed.length ? (
@@ -313,6 +309,24 @@ export function ResultsClient({ questions }: { questions: Question[] }) {
           <p className="empty-state">No missed questions.</p>
         )}
       </section>
+      {retakeChoiceOpen ? (
+        <Modal title="You have a saved retake" onClose={() => setRetakeChoiceOpen(false)}>
+          <div className="submit-warning">
+            <p>
+              Resume your saved retake, or replace it with the missed questions from this result.
+            </p>
+          </div>
+          <footer className="modal__footer exit-actions">
+            <Button onClick={() => router.push('/exam?mode=retake')}>Resume saved retake</Button>
+            <Button tone="secondary" onClick={() => setRetakeChoiceOpen(false)}>
+              Cancel
+            </Button>
+            <Button tone="danger" onClick={() => void retakeMissed(true)}>
+              Replace saved retake
+            </Button>
+          </footer>
+        </Modal>
+      ) : null}
       <ToastViewport toasts={toasts} onDismiss={dismissToast} />
     </div>
   );
@@ -358,7 +372,7 @@ function ScoreRing({
     >
       <svg viewBox="0 0 120 120" aria-hidden="true">
         <title id={titleId}>
-          {label} — {correct} correct, {incorrect} wrong, {missed} missed of {total}
+          {label} — {correct} correct, {incorrect} wrong, {missed} unanswered of {total}
         </title>
         <circle className="score-ring__track" cx="60" cy="60" r={radius} />
         {correct > 0 && (

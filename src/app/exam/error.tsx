@@ -1,22 +1,18 @@
 'use client';
 
-import { useEffect } from 'react';
-import { ButtonLink } from '@/components/ui/Button';
-import { clearCurrentSession, clearSessionForMode } from '@/lib/storage';
+import { Button, ButtonLink } from '@/components/ui/Button';
 
-export default function ExamError() {
-  useEffect(() => {
-    clearCurrentSession();
-    clearSessionForMode(new URLSearchParams(window.location.search).get('mode') ?? 'full-test');
-  }, []);
-
+export default function ExamError({ reset }: { reset: () => void }) {
   return (
     <main className="page-shell">
       <section className="error-state" role="alert">
         <h1>Your session encountered an error.</h1>
-        <p>Start fresh or return home.</p>
+        <p>
+          Retry loading your saved attempt, or return home. Your saved answers have not been
+          cleared.
+        </p>
         <div className="results-actions">
-          <ButtonLink href="/exam?mode=full-test">Start fresh</ButtonLink>
+          <Button onClick={reset}>Retry</Button>
           <ButtonLink href="/" tone="secondary">
             Go home
           </ButtonLink>

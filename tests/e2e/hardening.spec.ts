@@ -172,7 +172,7 @@ test('quota failure keeps attempt and permits retry', async ({ page }) => {
     };
   });
   await page.getByRole('button', { name: 'Submit', exact: true }).click();
-  await expect(page.getByText(/Could not save your result/)).toBeVisible();
+  await expect(page.getByText(/Could not finish saving your result/)).toBeVisible();
   expect(
     await page.evaluate(() => localStorage.getItem('ns-exam-session-all-questions')),
   ).not.toBeNull();
@@ -247,6 +247,12 @@ test('production worker supports a fresh offline mode and reload', async ({ page
   await page.reload();
   await expect(page.getByTestId('exam-shell')).toBeVisible();
   expect((await current(page)).answers).toEqual(before.answers);
+  await page.getByRole('button', { name: 'Exit', exact: true }).click();
+  await page.getByRole('button', { name: 'Save progress & exit' }).click();
+  await page.goto('/?savedProgress=1');
+  await expect(
+    page.getByRole('heading', { name: 'Practice the Nova Scotia Class 7 learner test.' }),
+  ).toBeVisible();
   await page.goto('/');
   await page.getByRole('button', { name: 'Start Practice Exam', exact: true }).click();
   await expect(page.getByTestId('exam-shell')).toBeVisible();
@@ -367,4 +373,184 @@ test('primary and muted text tokens meet AA in both themes', async ({ page }) =>
       `${theme}: ${ratios}`,
     ).toBe(true);
   }
+});
+
+test('saved retake requires an explicit replacement choice', async ({ page }) => {
+  const saved = { ...fixture('retake'), id: 'saved-retake', answers: { 'q-001': 'a' } };
+  await seed(page, {
+    'ns-exam-session-retake': saved,
+    'nsLearner.completedSession': {
+      ...fixture('assisted'),
+      phase: 'complete',
+      completedAt: Date.now(),
+    },
+  });
+  await page.goto('/results/');
+  await page.getByRole('button', { name: 'Retake missed only' }).click();
+  const dialog = page.getByRole('dialog', { name: 'You have a saved retake' });
+  await expect(dialog).toBeVisible();
+  expect(
+    await page.evaluate(() => JSON.parse(localStorage.getItem('ns-exam-session-retake')!).id),
+  ).toBe(saved.id);
+  await dialog.getByRole('button', { name: 'Cancel', exact: true }).click();
+  await page.getByRole('button', { name: 'Retake missed only' }).click();
+  await dialog.getByRole('button', { name: 'Replace saved retake' }).click();
+  await expect(page.getByTestId('exam-shell')).toBeVisible();
+  expect((await current(page)).id).not.toBe(saved.id);
+});
+
+test('jumping to road signs keeps rules editable until confirmed', async ({ page }) => {
+  await start(page, { ...fixture('full-test', 40), expiresAt: Date.now() + 30 * 60000 });
+  await page.getByRole('button', { name: 'Open question navigator' }).click();
+  await page.getByRole('button', { name: /^Question 25,/ }).click();
+  const dialog = page.getByRole('dialog', { name: 'Start road signs?' });
+  await expect(dialog).toBeVisible();
+  expect((await current(page)).currentIndex).toBe(0);
+  await dialog.getByRole('button', { name: 'Keep reviewing' }).click();
+  expect((await current(page)).sectionTwoStartedAt).toBeNull();
+  await page.getByRole('button', { name: 'Open question navigator' }).click();
+  await page.getByRole('button', { name: /^Question 25,/ }).click();
+  await dialog.getByRole('button', { name: 'Start road signs', exact: true }).click();
+  await expect(page.getByTestId('exam-question')).toBeVisible();
+  expect((await current(page)).currentIndex).toBe(24);
+  await page.getByRole('button', { name: 'Open question navigator' }).click();
+  await expect(page.getByRole('button', { name: /^Question 1,/ })).toBeDisabled();
+});
+
+test('resuming after both deadlines saves an expired result', async ({ page }) => {
+  await seed(page, {
+    'ns-exam-session-full-test': {
+      ...fixture('full-test', 40),
+      startedAt: Date.now() - 2 * 3600000,
+      expiresAt: Date.now() - 90 * 60000,
+    },
+  });
+  await page.goto('/exam/?mode=full-test');
+  await expect(page).toHaveURL(/historyId=.*expired=1/);
+  await expect(page.getByText('Time expired', { exact: true })).toBeVisible();
+  expect(await page.evaluate(() => localStorage.getItem('ns-exam-session-full-test'))).toBeNull();
+});
+
+test('result URL keeps its attempt when another result replaces the latest slot', async ({
+  page,
+}) => {
+  const session = {
+    ...fixture(),
+    currentIndex: 2,
+    answers: Object.fromEntries(bank.slice(0, 3).map((q) => [q.id, q.correctId])),
+  } as ExamSession;
+  await start(page, session);
+  await page.getByRole('button', { name: 'Submit', exact: true }).click();
+  await expect(page).toHaveURL(/historyId=/);
+  await page.evaluate(() => {
+    const result = JSON.parse(localStorage.getItem('nsLearner.completedSession')!);
+    localStorage.setItem(
+      'nsLearner.completedSession',
+      JSON.stringify({ ...result, id: 'another-result', answers: {} }),
+    );
+  });
+  await page.reload();
+  await expect(page.getByText('3 of 3 correct overall')).toBeVisible();
+  await expect(page.getByText('Perfect score by topic!')).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+});
+
+test('clearing an open attempt in another tab cannot resurrect its answers', async ({
+  page,
+  context,
+}) => {
+  await start(page);
+  const other = await context.newPage();
+  await other.goto('/');
+  await other.evaluate(() => localStorage.removeItem('ns-exam-session-all-questions'));
+  await expect(
+    page.getByRole('heading', { name: 'This attempt was cleared in another tab' }),
+  ).toBeVisible();
+  await page.keyboard.press('1');
+  expect(
+    await other.evaluate(() => localStorage.getItem('ns-exam-session-all-questions')),
+  ).toBeNull();
+  await other.close();
+});
+
+test('failed result save keeps a visible retry action and succeeds after recovery', async ({
+  page,
+}) => {
+  const session = {
+    ...fixture(),
+    currentIndex: 2,
+    answers: Object.fromEntries(bank.slice(0, 3).map((q) => [q.id, q.correctId])),
+  } as ExamSession;
+  await start(page, session);
+  await page.evaluate(() => {
+    const original = Storage.prototype.setItem;
+    Storage.prototype.setItem = function (key, value) {
+      if (key === 'nsLearner.completedSession')
+        throw new DOMException('Full', 'QuotaExceededError');
+      original.call(this, key, value);
+    };
+    (window as unknown as { restoreStorage: () => void }).restoreStorage = () => {
+      Storage.prototype.setItem = original;
+    };
+  });
+  await page.getByRole('button', { name: 'Submit', exact: true }).click();
+  await expect(page.getByRole('button', { name: 'Retry saving result' })).toBeVisible();
+  await page.evaluate(() => (window as unknown as { restoreStorage: () => void }).restoreStorage());
+  await page.getByRole('button', { name: 'Retry saving result' }).click();
+  await expect(page).toHaveURL(/historyId=/);
+});
+
+test('compact exam settings has unique controls and restores keyboard focus', async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 667 });
+  await start(page);
+  const opener = page.getByRole('button', { name: 'Exam settings', exact: true });
+  await opener.click();
+  const dialog = page.getByRole('dialog', { name: 'Exam settings' });
+  await expect(dialog.getByRole('switch').first()).toBeFocused();
+  expect(
+    await page.evaluate(() => {
+      const ids = [...document.querySelectorAll('[id]')].map((el) => el.id);
+      return ids.length === new Set(ids).size;
+    }),
+  ).toBe(true);
+  await page.keyboard.press('Escape');
+  await expect(opener).toBeFocused();
+  await expect(dialog).toBeHidden();
+});
+
+test('flashcard known marks merge with another tab and storage failures stay visible', async ({
+  page,
+  context,
+}) => {
+  await page.goto('/flashcards/');
+  const other = await context.newPage();
+  await other.goto('/flashcards/');
+  const title = await page.getByRole('heading', { level: 1 }).innerText();
+  await page.getByRole('button', { name: /^Mark .+ as known$/ }).click();
+  if ((await other.getByRole('heading', { level: 1 }).innerText()) === title)
+    await other
+      .locator('.flashcard-actions')
+      .getByRole('button', { name: 'Next flashcard', exact: true })
+      .click();
+  await other.getByRole('button', { name: /^Mark .+ as known$/ }).click();
+  expect(
+    await other.evaluate(
+      () => JSON.parse(localStorage.getItem('ns-learners.flashcards.v2')!).knownIds.length,
+    ),
+  ).toBe(2);
+  await page.evaluate(() => {
+    Storage.prototype.setItem = () => {
+      throw new DOMException('Full', 'QuotaExceededError');
+    };
+  });
+  await page.getByRole('button', { name: /^Mark .+ as not known$/ }).click();
+  await expect(page.locator('.flashcards-layout').getByRole('alert')).toContainText(
+    'Could not save your known cards',
+  );
+  expect(
+    await other.evaluate(
+      () => JSON.parse(localStorage.getItem('ns-learners.flashcards.v2')!).knownIds.length,
+    ),
+  ).toBe(2);
+  await other.close();
 });

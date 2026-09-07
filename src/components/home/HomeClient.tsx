@@ -33,6 +33,7 @@ const modes = Object.values(EXAM_MODES);
 
 export function HomeClient({ flashcardTotal, stats }: HomeClientProps) {
   const router = useRouter();
+  const [storageError, setStorageError] = useState('');
   const [sessions, setSessions] = useState<ExamSession[]>([]);
   const [fullTestSession, setFullTestSession] = useState<ExamSession | null>(null);
   const [history, setHistory] = useState<HistoryEntry[]>([]);
@@ -85,27 +86,44 @@ export function HomeClient({ flashcardTotal, stats }: HomeClientProps) {
     router.push(`/exam?mode=${mode}`);
   }
 
+  function clearProgress(mode: string): boolean {
+    try {
+      clearSessionForMode(mode);
+      setStorageError('');
+      return true;
+    } catch {
+      setStorageError('Could not clear progress. Check browser storage and try again.');
+      return false;
+    }
+  }
+
   function startFreshFullTest(): void {
-    clearSessionForMode('full-test');
+    if (!clearProgress('full-test')) return;
+    setFullTestResetOpen(false);
     setFullTestSession(null);
     setSessions((prev) => prev.filter((s) => s.mode !== 'full-test'));
     router.push('/exam?mode=full-test');
   }
 
   function startFreshForMode(modeId: string): void {
-    clearSessionForMode(modeId);
+    if (!clearProgress(modeId)) return;
+    setResetConfirmMode(null);
     setSessions((prev) => prev.filter((s) => s.mode !== modeId));
   }
 
   function clearHistory(): void {
-    if (!clearStoredHistory()) return;
+    if (!clearStoredHistory()) {
+      setStorageError('Could not clear history. Check browser storage and try again.');
+      return;
+    }
+    setStorageError('');
     setHistory([]);
     setClearHistoryOpen(false);
   }
 
   function resetAllSessions(): void {
     for (const sess of activeResumeSessions) {
-      clearSessionForMode(sess.mode);
+      if (!clearProgress(sess.mode)) return;
     }
     setSessions(readAllActiveSessions());
     setResetAllConfirmOpen(false);
@@ -369,6 +387,7 @@ export function HomeClient({ flashcardTotal, stats }: HomeClientProps) {
         </div>
       </section>
       <ConfirmDialog
+        error={storageError}
         open={clearHistoryOpen}
         title="Clear recent score history?"
         description="This removes the saved scores shown on the home page from this browser."
@@ -376,6 +395,7 @@ export function HomeClient({ flashcardTotal, stats }: HomeClientProps) {
         onConfirm={clearHistory}
       />
       <ConfirmDialog
+        error={storageError}
         open={resetConfirmMode !== null}
         title="Reset progress?"
         description="This will clear your current session and start over. Your answers so far will be lost."
@@ -385,11 +405,11 @@ export function HomeClient({ flashcardTotal, stats }: HomeClientProps) {
         onConfirm={() => {
           if (resetConfirmMode) {
             startFreshForMode(resetConfirmMode);
-            setResetConfirmMode(null);
           }
         }}
       />
       <ConfirmDialog
+        error={storageError}
         open={fullTestResetOpen}
         title="Start fresh full test?"
         description="This will discard your current full-test session and start a new one."
@@ -398,13 +418,13 @@ export function HomeClient({ flashcardTotal, stats }: HomeClientProps) {
         onCancel={() => setFullTestResetOpen(false)}
         onConfirm={() => {
           startFreshFullTest();
-          setFullTestResetOpen(false);
         }}
       />
       <ConfirmDialog
+        error={storageError}
         open={resetAllConfirmOpen}
         title="Reset all practice sessions?"
-        description="This will clear every in-progress session and start them over. Your answers so far will be lost."
+        description="This clears saved practice sessions, including retakes. Your full-test session and completed scores are kept."
         confirmLabel="Reset All"
         cancelLabel="Cancel"
         onCancel={() => setResetAllConfirmOpen(false)}

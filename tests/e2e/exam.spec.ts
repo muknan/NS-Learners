@@ -43,7 +43,7 @@ test('land, start exam, answer all questions, and see results', async ({ page })
 
     await page.getByRole('button', { name: /^next$/i }).click();
 
-    const continueSection = page.getByRole('button', { name: /continue to section 2/i });
+    const continueSection = page.getByRole('button', { name: 'Start road signs', exact: true });
     if (await continueSection.isVisible()) {
       await continueSection.click();
     }
@@ -263,7 +263,7 @@ test.describe('exam viewport fit', () => {
         await expect(page.getByTestId('sign-image')).toHaveCount(0);
         await page.getByRole('button', { name: 'Open question navigator' }).click();
         await page.getByRole('button', { name: /^Question 21,/ }).click();
-        await page.getByRole('button', { name: /continue to section 2/i }).click();
+        await page.getByRole('button', { name: 'Start road signs', exact: true }).click();
         await expect(page.getByTestId('sign-image')).toBeVisible();
         await assertExamFit(page, `${viewport.name} ${colorScheme} image question`);
 

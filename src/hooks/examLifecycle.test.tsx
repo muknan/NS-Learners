@@ -1,13 +1,26 @@
-import { act, renderHook } from '@testing-library/react';
+import { act, fireEvent, render, renderHook, screen } from '@testing-library/react';
 import { afterEach, expect, it, vi } from 'vitest';
 import { ExamProvider, useExam } from '@/hooks/useExam';
 import { useTimer } from '@/hooks/useTimer';
 import { questions } from '@/lib/questions';
 import { createExamSession } from '@/lib/session';
+import ExamError from '@/app/exam/error';
 
 afterEach(() => {
   vi.useRealTimers();
   localStorage.clear();
+});
+
+it('an exam rendering error preserves the saved attempt and offers retry', () => {
+  const session = createExamSession({ questions });
+  localStorage.setItem('ns-exam-session-full-test', JSON.stringify(session));
+  localStorage.setItem('nsLearner.currentSession', JSON.stringify(session));
+  const reset = vi.fn();
+  render(<ExamError reset={reset} />);
+  expect(JSON.parse(localStorage.getItem('ns-exam-session-full-test')!).id).toBe(session.id);
+  expect(JSON.parse(localStorage.getItem('nsLearner.currentSession')!).id).toBe(session.id);
+  fireEvent.click(screen.getByRole('button', { name: 'Retry' }));
+  expect(reset).toHaveBeenCalledOnce();
 });
 
 it('does not accept answers after a section deadline while a save is pending', () => {
@@ -24,6 +37,35 @@ it('does not accept answers after a section deadline while a save is pending', (
 it('allocates thirty minutes to the first full-test section', () => {
   const session = createExamSession({ questions });
   expect(session.expiresAt! - session.startedAt).toBe(30 * 60000);
+});
+
+it('requires confirmation before locking road rules, including navigator jumps', () => {
+  const session = createExamSession({ questions });
+  const { result } = renderHook(useExam, {
+    wrapper: ({ children }) => <ExamProvider initialSession={session}>{children}</ExamProvider>,
+  });
+  act(() => result.current.dispatch({ type: 'go-to', index: 24 }));
+  expect(result.current.state.session.currentIndex).toBe(0);
+  expect(result.current.state.pendingSectionIndex).toBe(24);
+  act(() => result.current.dispatch({ type: 'cancel-section' }));
+  expect(result.current.state.session.sectionTwoStartedAt).toBeNull();
+  act(() => result.current.dispatch({ type: 'go-to', index: 24 }));
+  act(() => result.current.dispatch({ type: 'confirm-section' }));
+  expect(result.current.state.session.currentIndex).toBe(24);
+  expect(result.current.state.session.sectionTwoStartedAt).toBeTypeOf('number');
+  act(() => result.current.dispatch({ type: 'go-to', index: 0 }));
+  expect(result.current.state.session.currentIndex).toBe(20);
+});
+
+it('starts the second clock at the first deadline when resuming late', () => {
+  const deadline = Date.now() - 45 * 60000;
+  const session = { ...createExamSession({ questions }), expiresAt: deadline };
+  const { result } = renderHook(useExam, {
+    wrapper: ({ children }) => <ExamProvider initialSession={session}>{children}</ExamProvider>,
+  });
+  act(() => result.current.dispatch({ type: 'go-to', index: 20 }));
+  expect(result.current.state.session.expiresAt).toBe(deadline + 30 * 60000);
+  expect(result.current.state.pendingSectionIndex).toBeUndefined();
 });
 
 it('completed state cannot be reopened by a queued answer', () => {

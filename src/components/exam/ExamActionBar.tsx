@@ -47,9 +47,11 @@ export const ExamActionBar = memo(function ExamActionBar({
       return undefined;
     }
 
+    popoverRef.current?.querySelector<HTMLElement>('[role="switch"]')?.focus();
     function handleKeyDown(event: KeyboardEvent): void {
       if (event.key === 'Escape') {
         event.preventDefault();
+        popoverRef.current?.querySelector<HTMLElement>('[aria-label="Exam settings"]')?.focus();
         setSettingsOpen(false);
       }
     }
@@ -69,16 +71,16 @@ export const ExamActionBar = memo(function ExamActionBar({
     };
   }, [settingsOpen]);
 
-  const toggles = (
+  const toggles = (suffix: string) => (
     <div className="exam-action-bar__toggles">
       <ToggleSwitch
-        id="instant-feedback-toggle"
+        id={`instant-feedback-toggle-${suffix}`}
         label="Instant feedback"
         checked={instantFeedback}
         onChange={onToggleInstantFeedback}
       />
       <ToggleSwitch
-        id="auto-advance-toggle"
+        id={`auto-advance-toggle-${suffix}`}
         label="Auto-advance"
         checked={autoAdvance}
         onChange={onToggleAutoAdvance}
@@ -90,11 +92,18 @@ export const ExamActionBar = memo(function ExamActionBar({
     <footer className="exam-action-bar" data-testid="exam-action-bar">
       <div className="exam-action-bar__settings">
         <div className="exam-action-bar__inline-settings">
-          {toggles}
+          {toggles('inline')}
           {toggleHint ? <p className="exam-action-bar__hint">{toggleHint}</p> : null}
         </div>
 
-        <div className="exam-action-bar__compact-settings" ref={popoverRef}>
+        <div
+          className="exam-action-bar__compact-settings"
+          ref={popoverRef}
+          onBlur={(event) => {
+            if (!event.currentTarget.contains(event.relatedTarget as Node | null))
+              setSettingsOpen(false);
+          }}
+        >
           <Button
             aria-expanded={settingsOpen}
             aria-label="Exam settings"
@@ -108,13 +117,18 @@ export const ExamActionBar = memo(function ExamActionBar({
           />
           {settingsOpen ? (
             <div className="exam-action-popover" role="dialog" aria-label="Exam settings">
-              {toggles}
+              {toggles('compact')}
               {toggleHint ? <p className="exam-action-bar__hint">{toggleHint}</p> : null}
               <Button
                 aria-label="Close exam settings"
                 size="sm"
                 tone="ghost"
-                onClick={() => setSettingsOpen(false)}
+                onClick={() => {
+                  popoverRef.current
+                    ?.querySelector<HTMLElement>('[aria-label="Exam settings"]')
+                    ?.focus();
+                  setSettingsOpen(false);
+                }}
               >
                 Close
               </Button>

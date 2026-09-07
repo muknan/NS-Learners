@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/Button';
 import { SettingsPanel } from '@/components/layout/SettingsPanel';
 import { useMounted } from '@/hooks/useMounted';
 import { useTheme } from '@/hooks/useTheme';
-import { readCurrentSession, SESSION_CHANGE_EVENT } from '@/lib/storage';
+import { readAllActiveSessions, readCurrentSession, SESSION_CHANGE_EVENT } from '@/lib/storage';
 
 export function Header() {
   const router = useRouter();
@@ -21,7 +21,7 @@ export function Header() {
 
   useEffect(() => {
     function syncActiveMode(): void {
-      const session = readCurrentSession();
+      const session = readCurrentSession() ?? readAllActiveSessions()[0];
       if (session && session.phase !== 'complete') {
         setActiveMode(session.mode);
       } else {

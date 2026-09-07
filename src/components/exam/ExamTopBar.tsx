@@ -42,8 +42,12 @@ export function ExamTopBar({
         Exit
       </Button>
 
-      <strong className="exam-top-bar__title">
-        {modeLabel} <span aria-hidden="true">·</span> Q {questionNumber} / {totalQuestions}
+      <strong
+        className="exam-top-bar__title"
+        aria-label={`${modeLabel}, question ${questionNumber} of ${totalQuestions}`}
+      >
+        <span className="exam-top-bar__mode-label">{modeLabel} · </span>Q {questionNumber} /{' '}
+        {totalQuestions}
       </strong>
 
       <div className="exam-top-bar__metrics">

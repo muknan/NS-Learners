@@ -43,10 +43,11 @@ function ToastItem({
   durationMs: number;
 }) {
   useEffect(() => {
+    if (toast.type === 'error') return;
     const timer = window.setTimeout(() => onDismiss(toast.id), durationMs);
 
     return () => window.clearTimeout(timer);
-  }, [durationMs, onDismiss, toast.id]);
+  }, [durationMs, onDismiss, toast.id, toast.type]);
 
   return (
     <div className={`toast toast--${toast.type}`}>

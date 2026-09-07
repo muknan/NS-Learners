@@ -3,14 +3,17 @@
 import type { AnswerOption, ExamSession } from '@/types/exam';
 import {
   createContext,
+  useEffect,
   useContext,
   useLayoutEffect,
   useMemo,
   useReducer,
+  useRef,
   useState,
   type ReactNode,
 } from 'react';
 import { saveCurrentSession } from '@/lib/storage';
+import { ButtonLink } from '@/components/ui/Button';
 
 export type ExamAction =
   | { type: 'answer'; questionId: string; optionId: AnswerOption['id'] }
@@ -23,10 +26,13 @@ export type ExamAction =
   | { type: 'set-auto-advance-duration'; valueMs: number }
   | { type: 'cancel-auto-advance' }
   | { type: 'dismiss-section-break' }
+  | { type: 'confirm-section' }
+  | { type: 'cancel-section' }
   | { type: 'submit'; now: number }
   | { type: 'replace'; session: ExamSession };
 
 export interface ExamState {
+  pendingSectionIndex?: number | undefined;
   phase: ExamSession['phase'];
   session: ExamSession;
 }
@@ -51,10 +57,30 @@ export function ExamProvider({
     session: initialSession,
   });
   const [saveFailed, setSaveFailed] = useState(false);
+  const [removed, setRemoved] = useState(false);
+  const removedRef = useRef(false);
+
+  useEffect(() => {
+    function syncRemoval(event: StorageEvent): void {
+      if (event.storageArea !== window.localStorage) return;
+      if (
+        (event.key === null || event.key === `ns-exam-session-${initialSession.mode}`) &&
+        event.newValue === null
+      ) {
+        removedRef.current = true;
+        setRemoved(true);
+      }
+    }
+    window.addEventListener('storage', syncRemoval);
+    return () => window.removeEventListener('storage', syncRemoval);
+  }, [initialSession.mode]);
 
   // Persist the committed state before passive timer effects can complete and remove it.
   useLayoutEffect(() => {
-    if (state.session.phase === 'in-progress' || state.session.phase === 'review') {
+    if (
+      !removedRef.current &&
+      (state.session.phase === 'in-progress' || state.session.phase === 'review')
+    ) {
       // Never persist the transient shouldAutoAdvance flag;
       // it must always start false on restore to avoid accidental auto-advance.
       setSaveFailed(!saveCurrentSession({ ...state.session, shouldAutoAdvance: false }));
@@ -62,6 +88,15 @@ export function ExamProvider({
   }, [state.session]);
 
   const value = useMemo(() => ({ state, dispatch, saveFailed }), [state, saveFailed]);
+
+  if (removed)
+    return (
+      <section className="empty-exam" role="alert">
+        <h1>This attempt was cleared in another tab</h1>
+        <p>Return home to start a new practice session.</p>
+        <ButtonLink href="/">Go to Home</ButtonLink>
+      </section>
+    );
 
   return <ExamContext.Provider value={value}>{children}</ExamContext.Provider>;
 }
@@ -79,6 +114,12 @@ export function useExam(): ExamContextValue {
 function examReducer(state: ExamState, action: ExamAction): ExamState {
   if (state.phase === 'complete' && action.type !== 'replace') return state;
   switch (action.type) {
+    case 'confirm-section':
+      return state.pendingSectionIndex === undefined
+        ? state
+        : moveToIndex(state, state.pendingSectionIndex, true);
+    case 'cancel-section':
+      return { ...state, pendingSectionIndex: undefined };
     case 'dismiss-section-break':
       return { ...state, session: { ...state.session, sectionBreakSeen: true } };
     case 'answer': {
@@ -222,11 +263,19 @@ function examReducer(state: ExamState, action: ExamAction): ExamState {
   }
 }
 
-function moveToIndex(state: ExamState, index: number): ExamState {
+function moveToIndex(state: ExamState, index: number, confirmed = false): ExamState {
   const isFull = state.session.mode === 'full-test' && state.session.questionIds.length === 40;
   if (isFull && state.session.sectionTwoStartedAt != null) index = Math.max(20, index);
   const beginSecond = isFull && index >= 20 && state.session.sectionTwoStartedAt == null;
   const now = Date.now();
+  if (beginSecond && !confirmed && (state.session.expiresAt ?? Infinity) > now) {
+    return {
+      ...state,
+      pendingSectionIndex: index,
+      session: { ...state.session, shouldAutoAdvance: false },
+    };
+  }
+  const secondStart = Math.min(now, state.session.expiresAt ?? now);
   const questionId = state.session.questionIds[index];
   const phase =
     state.session.phase === 'complete'
@@ -239,12 +288,17 @@ function moveToIndex(state: ExamState, index: number): ExamState {
 
   return {
     phase,
+    pendingSectionIndex: undefined,
     session: {
       ...state.session,
       phase,
       currentIndex: index,
       ...(beginSecond
-        ? { sectionTwoStartedAt: now, expiresAt: now + 30 * 60000, sectionBreakSeen: false }
+        ? {
+            sectionTwoStartedAt: secondStart,
+            expiresAt: secondStart + 30 * 60000,
+            sectionBreakSeen: confirmed,
+          }
         : {}),
       shouldAutoAdvance: false,
     },

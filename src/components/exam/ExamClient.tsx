@@ -215,6 +215,7 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
   const [submitModalOpen, setSubmitModalOpen] = useState(false);
   const [exitModalOpen, setExitModalOpen] = useState(false);
   const [exitError, setExitError] = useState('');
+  const [resultSaveError, setResultSaveError] = useState('');
   const [explanationModalOpen, setExplanationModalOpen] = useState(false);
   const [shortcutsOpen, setShortcutsOpen] = useState(false);
   const [navigatorOpen, setNavigatorOpen] = useState(false);
@@ -256,7 +257,7 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
     currentQuestion.explanation && currentQuestionAnswered && session.phase === 'review',
   );
   const showSectionBreak =
-    session.mode === 'full-test' && session.currentIndex === 20 && !sectionBreakSeen;
+    session.mode === 'full-test' && session.currentIndex >= 20 && !sectionBreakSeen;
   const tip = useMemo(
     () => drivingTips[Math.floor(Math.random() * drivingTips.length)]!,
     // eslint-disable-next-line react-hooks/exhaustive-deps -- stable for session lifetime
@@ -332,7 +333,7 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
   }, [dispatch]);
 
   const submitExam = useCallback(
-    (expired = false): void => {
+    async (expired = false): Promise<void> => {
       if (sessionRef.current.phase === 'complete' || submittingRef.current) return;
       submittingRef.current = true;
 
@@ -340,19 +341,25 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
       const historyEntry = toHistoryEntry(completed, questionsById);
 
       cancelAutoAdvance();
-      if (!saveCompletedSession(completed) || !saveHistory(historyEntry)) {
-        submittingRef.current = false;
-        addToast(
-          'Could not save your result. Keep this tab open, free browser storage, then submit again.',
-          'error',
+      try {
+        const saved = await navigator.locks.request(
+          'ns-exam-history',
+          () => saveCompletedSession(completed) && saveHistory(historyEntry),
         );
-        return;
+        if (!saved) throw new Error('Result storage unavailable');
+        clearSessionForMode(session.mode);
+        dispatch({ type: 'submit', now: completed.completedAt ?? Date.now() });
+        router.push(
+          `/results?historyId=${encodeURIComponent(completed.id)}${expired ? '&expired=1' : ''}`,
+        );
+      } catch {
+        submittingRef.current = false;
+        setResultSaveError(
+          'Could not finish saving your result. Keep this tab open, check browser storage, then retry.',
+        );
       }
-      clearSessionForMode(session.mode);
-      dispatch({ type: 'submit', now: completed.completedAt ?? Date.now() });
-      router.push(`/results${expired ? '?expired=1' : ''}`);
     },
-    [addToast, cancelAutoAdvance, dispatch, questionsById, router, session],
+    [cancelAutoAdvance, dispatch, questionsById, router, session],
   );
   const handleTimerExpire = useCallback(() => {
     if (submittingRef.current) return;
@@ -401,7 +408,7 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
   const requestSubmit = useCallback((): void => {
     const unanswered = getUnansweredQuestionNumbers(session);
 
-    if (unanswered.length) {
+    if (unanswered.length || session.flaggedIds.length) {
       setSubmitModalOpen(true);
       return;
     }
@@ -810,6 +817,14 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
       />
 
       <div className="exam-main">
+        {resultSaveError ? (
+          <div role="alert">
+            <p>{resultSaveError}</p>
+            <Button onClick={() => void submitExam(remaining !== null && remaining <= 0)}>
+              Retry saving result
+            </Button>
+          </div>
+        ) : null}
         {saveFailed ? (
           <p role="alert">
             Progress could not be saved. Keep this tab open and free browser storage before leaving.
@@ -887,7 +902,10 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
         <Modal title="Submit practice exam?" onClose={() => setSubmitModalOpen(false)}>
           <div className="submit-warning">
             <AlertTriangle aria-hidden="true" />
-            <p>You have {unansweredNumbers.length} unanswered questions. Submit anyway?</p>
+            <p>
+              You have {unansweredNumbers.length} unanswered and {flaggedCount} flagged questions.
+              Submit anyway?
+            </p>
           </div>
           <div className="unanswered-list" aria-label="Unanswered questions">
             {unansweredNumbers.map((number) => (
@@ -899,6 +917,32 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
               Keep working
             </Button>
             <Button onClick={confirmSubmit}>Submit anyway</Button>
+          </footer>
+        </Modal>
+      ) : null}
+
+      {state.pendingSectionIndex !== undefined ? (
+        <Modal title="Start road signs?" onClose={() => dispatch({ type: 'cancel-section' })}>
+          <div className="submit-warning">
+            <AlertTriangle aria-hidden="true" />
+            <p>
+              Starting road signs locks your road rules answers. You have{' '}
+              {session.questionIds.slice(0, 20).filter((id) => !session.answers[id]).length}{' '}
+              unanswered road rules questions. The next section has 30 minutes.
+            </p>
+          </div>
+          <footer className="modal__footer">
+            <Button tone="secondary" onClick={() => dispatch({ type: 'cancel-section' })}>
+              Keep reviewing
+            </Button>
+            <Button
+              onClick={() => {
+                setNavigatorOpen(false);
+                dispatch({ type: 'confirm-section' });
+              }}
+            >
+              Start road signs
+            </Button>
           </footer>
         </Modal>
       ) : null}
