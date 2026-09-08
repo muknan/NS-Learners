@@ -348,7 +348,11 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
           () => saveCompletedSession(completed) && saveHistory(historyEntry),
         );
         if (!saved) throw new Error('Result storage unavailable');
-        await updateReview((store) => collectMistakes(store, [completed]));
+        try {
+          await updateReview((store) => collectMistakes(store, [completed]));
+        } catch {
+          // Results retries the history import and shows a recoverable Review warning.
+        }
         clearSessionForMode(session.mode);
         dispatch({ type: 'submit', now: completed.completedAt ?? Date.now() });
         router.push(

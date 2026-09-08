@@ -9,6 +9,7 @@ import { Button, ButtonLink } from '@/components/ui/Button';
 import { Modal } from '@/components/ui/Modal';
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import { ToastViewport, type ToastMessage } from '@/components/ui/Toast';
+import { useReview } from '@/hooks/useReview';
 import { getExamMode } from '@/lib/modes';
 import { getTopicLabel } from '@/lib/questions';
 import {
@@ -37,6 +38,7 @@ export function ResultsClient({ questions }: { questions: Question[] }) {
   const [retakeChoiceOpen, setRetakeChoiceOpen] = useState(false);
   const [session, setSession] = useState<ExamSession | null>(null);
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
+  const { error: reviewError, change: changeReview } = useReview();
   const questionsById = useMemo(
     () => new Map(questions.map((question) => [question.id, question])),
     [questions],
@@ -184,6 +186,20 @@ export function ResultsClient({ questions }: { questions: Question[] }) {
 
   return (
     <div className="results-layout">
+      {reviewError && (
+        <aside className="study-tip results-review-warning" role="alert">
+          <p>Your result is saved, but Review could not be updated.</p>
+          <p>Check browser storage, then try again. Existing Review data has been kept.</p>
+          <Button
+            tone="secondary"
+            onClick={async () => {
+              if (await changeReview(() => {})) document.getElementById('results-title')?.focus();
+            }}
+          >
+            Retry Review update
+          </Button>
+        </aside>
+      )}
       <section className="results-hero" aria-labelledby="results-title">
         <div className="results-hero__status">
           {score.passed === null ? (
@@ -207,7 +223,9 @@ export function ResultsClient({ questions }: { questions: Question[] }) {
         />
 
         <div className="results-hero__copy">
-          <h1 id="results-title">{getExamMode(completedSession.mode).label}</h1>
+          <h1 id="results-title" tabIndex={-1}>
+            {getExamMode(completedSession.mode).label}
+          </h1>
           {completedSession.completedAt ? (
             <p>
               <time dateTime={new Date(completedSession.completedAt).toISOString()}>

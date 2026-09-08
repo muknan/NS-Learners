@@ -1076,6 +1076,12 @@ button.history-item:disabled {
   margin: 0;
 }
 
+.results-review-warning {
+  display: grid;
+  gap: 12px;
+  justify-items: start;
+}
+
 .page-subtitle {
   max-width: 660px;
   margin-block-end: 24px;
