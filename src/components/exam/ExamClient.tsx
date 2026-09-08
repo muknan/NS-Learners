@@ -744,7 +744,7 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
   }
 
   function handlePointerDown(event: ReactPointerEvent<HTMLElement>): void {
-    if (event.pointerType !== 'touch') {
+    if (event.pointerType !== 'touch' || document.querySelector('[role="dialog"], dialog[open]')) {
       pointerStartX.current = null;
       pointerStartY.current = null;
       return;
@@ -764,6 +764,7 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
   function handlePointerUp(event: ReactPointerEvent<HTMLElement>): void {
     if (
       event.pointerType !== 'touch' ||
+      document.querySelector('[role="dialog"], dialog[open]') ||
       pointerStartX.current === null ||
       pointerStartY.current === null
     ) {
