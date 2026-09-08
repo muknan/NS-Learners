@@ -117,10 +117,14 @@ export function buildShareSummary(
     `${label} - ${summary.correct}/${summary.total} (${summary.percentage}%)${
       summary.passed === null ? '' : ` - ${summary.passed ? 'Pass' : 'Fail'}`
     }`,
-    `Rules: ${rules?.correct ?? 0}/${rules?.total ?? 0} - Signs: ${signs?.correct ?? 0}/${
-      signs?.total ?? 0
-    }`,
-    ...summary.byTopic
+    [
+      rules?.total ? `Rules: ${rules.correct}/${rules.total}` : '',
+      signs?.total ? `Signs: ${signs.correct}/${signs.total}` : '',
+    ]
+      .filter(Boolean)
+      .join(' - '),
+    ...[...summary.byTopic]
+      .sort((left, right) => left.percentage - right.percentage)
       .slice(0, 3)
       .map((topic) => `${getTopicLabel(topic.topic)}: ${topic.percentage}%`),
     `Completed: ${completedAt}`,

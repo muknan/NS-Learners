@@ -1116,15 +1116,9 @@ button.history-item:disabled {
 
 .flashcard-filter-list {
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   gap: 8px;
-  overflow-x: auto;
-  scrollbar-width: none;
   padding-bottom: 2px; /* prevent focus-ring clipping */
-}
-
-.flashcard-filter-list::-webkit-scrollbar {
-  display: none;
 }
 
 .flashcard-filter-chip {
@@ -2571,14 +2565,12 @@ input[type='range'] {
   justify-self: center;
 }
 
-.wrong-item__placeholder {
-  width: 96px;
-  height: 96px;
-  border-radius: var(--radius-card);
-  background: var(--color-surface-muted);
-  border: 1px dashed var(--color-border-default);
-  align-self: center;
-  justify-self: center;
+.wrong-item--text {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.wrong-item.is-correct {
+  border-inline-start-color: var(--color-success);
 }
 
 .wrong-item__topic {

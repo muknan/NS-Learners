@@ -4,6 +4,16 @@ import { render, screen } from '@testing-library/react';
 import { ProgressBar } from '@/components/ui/ProgressBar';
 
 describe('ProgressBar', () => {
+  it('describes the full score for assistive technology without a phantom unanswered segment', () => {
+    const { container } = render(
+      <ProgressBar value={100} label="Score" correct={20} incorrect={0} missed={0} total={20} />,
+    );
+    expect(screen.getByRole('progressbar')).toHaveAttribute(
+      'aria-valuetext',
+      '20 correct, 0 wrong, 0 unanswered out of 20',
+    );
+    expect(container.querySelector('.progress__segment--missed')).toBeNull();
+  });
   it('sets aria attributes correctly', () => {
     render(<ProgressBar value={60} label="Exam progress" />);
     const bar = screen.getByRole('progressbar');

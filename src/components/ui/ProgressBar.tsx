@@ -40,10 +40,9 @@ export const ProgressBar = memo(function ProgressBar({
   }
 
   // Use exact fractional percentages so segments meet edge-to-edge.
-  // A 0.01 % overlap on the last segment prevents sub-pixel rendering gaps.
   const correctPct = (correct / total) * 100;
   const incorrectPct = (incorrect / total) * 100;
-  const missedPct = (missed / total) * 100 + 0.01;
+  const missedPct = (missed / total) * 100;
 
   const legendItems: Array<{ label: string; count: number; dotClass: string }> = [];
   if (correct > 0)
@@ -59,12 +58,17 @@ export const ProgressBar = memo(function ProgressBar({
       dotClass: 'progress__legend-dot--incorrect',
     });
   if (missed > 0)
-    legendItems.push({ label: 'Missed', count: missed, dotClass: 'progress__legend-dot--missed' });
+    legendItems.push({
+      label: 'Unanswered',
+      count: missed,
+      dotClass: 'progress__legend-dot--missed',
+    });
 
   return (
     <>
       <div
         className="progress progress--stacked"
+        aria-valuetext={`${correct} correct, ${incorrect} wrong, ${missed} unanswered out of ${total}`}
         role="progressbar"
         aria-valuemin={0}
         aria-valuemax={100}

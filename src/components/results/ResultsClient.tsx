@@ -33,6 +33,7 @@ export function ResultsClient({ questions }: { questions: Question[] }) {
   const searchParams = useSearchParams();
   const historyId = searchParams.get('historyId');
   const [loaded, setLoaded] = useState(false);
+  const [reviewFilter, setReviewFilter] = useState<'missed' | 'flagged' | 'all'>('missed');
   const [retakeChoiceOpen, setRetakeChoiceOpen] = useState(false);
   const [session, setSession] = useState<ExamSession | null>(null);
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
@@ -61,6 +62,7 @@ export function ResultsClient({ questions }: { questions: Question[] }) {
   );
 
   useEffect(() => {
+    setReviewFilter('missed');
     if (historyId) {
       setSession(readHistorySession(historyId));
     } else {
@@ -106,7 +108,18 @@ export function ResultsClient({ questions }: { questions: Question[] }) {
   }
 
   const completedSession = session;
-  const expired = searchParams.get('expired') === '1';
+  const expired =
+    searchParams.get('expired') === '1' ||
+    (session.expiresAt !== null &&
+      session.completedAt !== null &&
+      session.completedAt >= session.expiresAt);
+  const reviewResults = results.filter(
+    (result) =>
+      reviewFilter === 'all' ||
+      (reviewFilter === 'flagged'
+        ? session.flaggedIds.includes(result.question.id)
+        : !result.isCorrect),
+  );
 
   async function shareResult(): Promise<void> {
     try {
@@ -195,6 +208,16 @@ export function ResultsClient({ questions }: { questions: Question[] }) {
 
         <div className="results-hero__copy">
           <h1 id="results-title">{getExamMode(completedSession.mode).label}</h1>
+          {completedSession.completedAt ? (
+            <p>
+              <time dateTime={new Date(completedSession.completedAt).toISOString()}>
+                {new Date(completedSession.completedAt).toLocaleString('en-CA', {
+                  dateStyle: 'medium',
+                  timeStyle: 'short',
+                })}
+              </time>
+            </p>
+          ) : null}
           <p>
             {score.correct} of {score.total} correct overall
             {expired ? ' — time expired' : ''}
@@ -298,12 +321,33 @@ export function ResultsClient({ questions }: { questions: Question[] }) {
       <section className="section-block wrong-answer-print" aria-labelledby="missed-title">
         <div className="section-heading">
           <Badge tone={missed.length ? 'error' : 'success'}>{missed.length} to review</Badge>
-          <h2 id="missed-title">Wrong answer review.</h2>
+          <h2 id="missed-title">Question review</h2>
         </div>
-        {missed.length ? (
-          <WrongAnswerList results={missed} />
+        <div className="flashcard-filter-list" role="group" aria-label="Review filter">
+          {(['missed', 'flagged', 'all'] as const).map((filter) => (
+            <button
+              className="flashcard-filter-chip"
+              type="button"
+              key={filter}
+              aria-pressed={reviewFilter === filter}
+              onClick={() => setReviewFilter(filter)}
+            >
+              {filter === 'missed'
+                ? 'Needs review'
+                : filter === 'flagged'
+                  ? 'Flagged'
+                  : 'All answers'}
+            </button>
+          ))}
+        </div>
+        {reviewResults.length ? (
+          <AnswerReviewList results={reviewResults} />
         ) : (
-          <p className="empty-state">No missed questions.</p>
+          <p className="empty-state">
+            {reviewFilter === 'flagged'
+              ? 'No flagged questions in this attempt.'
+              : 'No missed questions. Choose All answers to review your explanations.'}
+          </p>
         )}
       </section>
       {retakeChoiceOpen ? (
@@ -411,16 +455,15 @@ function ScoreRing({
   );
 }
 
-function WrongAnswerList({ results }: { results: QuestionResult[] }) {
+function AnswerReviewList({ results }: { results: QuestionResult[] }) {
   return (
     <div className="wrong-list">
       {results.map((result) => (
-        <article className="wrong-item" key={result.question.id}>
-          {result.question.image ? (
-            <SignImage compact question={result.question} />
-          ) : (
-            <div className="wrong-item__placeholder" aria-hidden="true" />
-          )}
+        <article
+          className={`wrong-item${result.question.image ? '' : ' wrong-item--text'}${result.isCorrect ? ' is-correct' : ''}`}
+          key={result.question.id}
+        >
+          {result.question.image ? <SignImage compact question={result.question} /> : null}
           <div>
             <p className="wrong-item__topic">
               {result.question.category === 'rules' ? 'Rules' : 'Signs'} ·{' '}
@@ -428,8 +471,8 @@ function WrongAnswerList({ results }: { results: QuestionResult[] }) {
             </p>
             <h3>{result.question.text}</h3>
             <div className="answer-comparison">
-              <span className="is-wrong">
-                <X aria-hidden="true" />
+              <span className={result.isCorrect ? 'is-correct' : 'is-wrong'}>
+                {!result.isCorrect ? <X aria-hidden="true" /> : null}
                 Your answer: {result.selectedText ?? 'No answer'}
               </span>
               <span className="is-correct">Correct answer: {result.correctText}</span>

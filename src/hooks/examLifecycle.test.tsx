@@ -39,6 +39,20 @@ it('allocates thirty minutes to the first full-test section', () => {
   expect(session.expiresAt! - session.startedAt).toBe(30 * 60000);
 });
 
+it('instant feedback rejects queued answer changes until feedback is disabled', () => {
+  const session = createExamSession({ questions, mode: 'assisted' });
+  const questionId = session.questionIds[0]!;
+  const { result } = renderHook(useExam, {
+    wrapper: ({ children }) => <ExamProvider initialSession={session}>{children}</ExamProvider>,
+  });
+  act(() => result.current.dispatch({ type: 'answer', questionId, optionId: 'a' }));
+  act(() => result.current.dispatch({ type: 'answer', questionId, optionId: 'b' }));
+  expect(result.current.state.session.answers[questionId]).toBe('a');
+  act(() => result.current.dispatch({ type: 'set-instant-feedback', value: false }));
+  act(() => result.current.dispatch({ type: 'answer', questionId, optionId: 'b' }));
+  expect(result.current.state.session.answers[questionId]).toBe('b');
+});
+
 it('requires confirmation before locking road rules, including navigator jumps', () => {
   const session = createExamSession({ questions });
   const { result } = renderHook(useExam, {

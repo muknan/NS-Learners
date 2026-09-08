@@ -1,5 +1,6 @@
 import { test, expect, type Page } from '@playwright/test';
 import bank from '../../src/data/questions.json' with { type: 'json' };
+import cards from '../../src/data/flashcards.json' with { type: 'json' };
 import type { ExamSession, ModeId } from '../../src/types/exam';
 
 function fixture(mode: ModeId = 'all-questions', count = 3): ExamSession {
@@ -99,6 +100,8 @@ test('history query selects requested result', async ({ page }) => {
     ...fixture('assisted', 2),
     id: 'older',
     phase: 'complete',
+    expiresAt: Date.now() - 60000,
+    flaggedIds: ['q-001'],
     completedAt: Date.now(),
     answers: { 'q-001': 'a', 'q-002': 'a' },
   };
@@ -118,6 +121,48 @@ test('history query selects requested result', async ({ page }) => {
   });
   await page.goto('/results/?historyId=older');
   await expect(page.getByText('2 of 2 correct overall')).toBeVisible();
+  await expect(page.getByText('Time expired', { exact: true })).toBeVisible();
+  await page.getByRole('button', { name: 'Flagged', exact: true }).click();
+  await expect(page.locator('.wrong-item')).toHaveCount(1);
+  await expect(page.locator('.answer-comparison .is-wrong')).toHaveCount(0);
+  await page.getByRole('button', { name: 'All answers', exact: true }).click();
+  await expect(page.locator('.wrong-item')).toHaveCount(2);
+  await expect(page.locator('time')).toHaveAttribute('datetime', /T/);
+});
+
+test('delay save failure retains the previous selection and explains recovery', async ({
+  page,
+}) => {
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Settings', exact: true }).click();
+  await page.evaluate(() => {
+    const original = Storage.prototype.setItem;
+    Storage.prototype.setItem = function (key, value) {
+      if (key === 'ns-learner-advance-duration')
+        throw new DOMException('Full', 'QuotaExceededError');
+      original.call(this, key, value);
+    };
+  });
+  const dialog = page.getByRole('dialog', { name: 'Practice settings' });
+  await dialog.getByRole('button', { name: '8s', exact: true }).click();
+  await expect(dialog.getByRole('alert')).toContainText('Could not save the delay');
+  await expect(dialog.getByRole('button', { name: '3s', exact: true })).toHaveAttribute(
+    'aria-pressed',
+    'true',
+  );
+});
+
+test('To learn shows only unknown cards and fits a narrow screen', async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 667 });
+  await seed(page, {
+    'ns-learners.flashcards.v2': { knownIds: cards.slice(1).map((card) => card.id) },
+  });
+  await page.goto('/flashcards/');
+  await page.getByRole('button', { name: 'To learn', exact: true }).click();
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(cards[0]!.title);
+  await page.getByRole('button', { name: /^Mark .+ as known$/ }).click();
+  await expect(page.getByText(/marked every card as known/)).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });
 
 test('keyboard radio activation selects and arrow changes option', async ({ page }) => {

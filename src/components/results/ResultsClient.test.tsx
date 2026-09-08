@@ -79,7 +79,7 @@ describe('ResultsClient', () => {
     render(<ResultsClient questions={testQuestions} />);
     expect(screen.getByText(/correct overall/i)).toBeInTheDocument();
     expect(screen.getByText(/breakdown/i)).toBeInTheDocument();
-    expect(screen.getByText(/wrong answer review/i)).toBeInTheDocument();
+    expect(screen.getByText(/question review/i)).toBeInTheDocument();
   });
 
   it('disables "Retake missed only" when all answers are correct', () => {

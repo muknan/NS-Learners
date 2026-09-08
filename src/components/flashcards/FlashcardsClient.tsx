@@ -16,7 +16,7 @@ import type { Flashcard, FlashcardCategory } from '@/lib/flashcards.schema';
 const STORAGE_KEY = 'ns-learners.flashcards.v2';
 const BATCH_SIZE = 20;
 
-type CategoryFilter = FlashcardCategory | 'all' | 'known';
+type CategoryFilter = FlashcardCategory | 'all' | 'known' | 'unknown';
 
 type PersistedFlashcardsState = {
   knownIds?: string[];
@@ -24,6 +24,7 @@ type PersistedFlashcardsState = {
 
 const categoryFilters: Array<{ label: string; value: CategoryFilter }> = [
   { label: 'All', value: 'all' },
+  { label: 'To learn', value: 'unknown' },
   { label: 'Rules', value: 'rules' },
   { label: 'Signs', value: 'signs' },
   { label: 'Safety', value: 'safety' },
@@ -41,7 +42,6 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false);
   const [saveError, setSaveError] = useState('');
-  const [lastSessionIds, setLastSessionIds] = useState<string[]>([]);
   const [seenSessionIds, setSeenSessionIds] = useState<Set<string>>(new Set());
   const [leaveConfirmOpen, setLeaveConfirmOpen] = useState(false);
   const [resetConfirmOpen, setResetConfirmOpen] = useState(false);
@@ -56,6 +56,7 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
     if (activeCategory === 'known') {
       return allCards.filter((card) => knownIds.has(card.id));
     }
+    if (activeCategory === 'unknown') return allCards.filter((card) => !knownIds.has(card.id));
     return allCards.filter((card) => activeCategory === 'all' || card.category === activeCategory);
   }, [activeCategory, allCards, knownIds]);
 
@@ -90,11 +91,10 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
   function shuffleDeck(): void {
     if (activeCategory === 'known') return;
 
-    const pool =
-      activeCategory === 'all' ? allCards : allCards.filter((c) => c.category === activeCategory);
+    const pool = filteredPool;
 
     const allSeen = pool.every((card) => seenSessionIds.has(card.id));
-    const excludeIds = allSeen ? [] : lastSessionIds;
+    const excludeIds = allSeen ? [] : [...seenSessionIds];
 
     if (allSeen) {
       setSeenSessionIds(new Set());
@@ -102,7 +102,6 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
 
     const nextDeck = drawRandomSession(pool, BATCH_SIZE, excludeIds);
     setSessionDeck(nextDeck);
-    setLastSessionIds(nextDeck.map((c) => c.id));
     setSeenSessionIds((prev) => {
       const next = new Set(prev);
       for (const c of nextDeck) next.add(c.id);
@@ -130,7 +129,6 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
 
     const initialDeck = drawRandomSession(allCards, BATCH_SIZE, []);
     setSessionDeck(initialDeck);
-    setLastSessionIds(initialDeck.map((c) => c.id));
     setSeenSessionIds(new Set(initialDeck.map((c) => c.id)));
   }, [allCards]);
 
@@ -139,9 +137,14 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
       if (event.key !== STORAGE_KEY && event.key !== null) return;
       const next = new Set(readPersistedFlashcardsState()?.knownIds ?? []);
       setKnownIds(next);
-      if (activeCategory === 'known') {
-        setSessionDeck(allCards.filter((card) => next.has(card.id)));
+      if (activeCategory === 'known' || activeCategory === 'unknown') {
+        setSessionDeck((current) =>
+          activeCategory === 'known'
+            ? allCards.filter((card) => next.has(card.id))
+            : current.filter((card) => !next.has(card.id)),
+        );
         setIndex(0);
+        setDetailsOpen(false);
       }
     }
     window.addEventListener('storage', syncKnown);
@@ -159,6 +162,7 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
       if (
         target instanceof HTMLInputElement ||
         target instanceof HTMLTextAreaElement ||
+        target instanceof HTMLSelectElement ||
         (target instanceof HTMLElement && target.isContentEditable)
       ) {
         return;
@@ -193,19 +197,19 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
         ? allCards
         : category === 'known'
           ? allCards.filter((c) => knownIds.has(c.id))
-          : allCards.filter((c) => c.category === category);
+          : category === 'unknown'
+            ? allCards.filter((c) => !knownIds.has(c.id))
+            : allCards.filter((c) => c.category === category);
 
     if (category === 'known') {
       setSessionDeck(pool);
-      setLastSessionIds([]);
       setIndex(0);
       setDetailsOpen(false);
       return;
     }
 
-    const nextDeck = drawRandomSession(pool, BATCH_SIZE, lastSessionIds);
+    const nextDeck = drawRandomSession(pool, BATCH_SIZE, [...seenSessionIds]);
     setSessionDeck(nextDeck);
-    setLastSessionIds(nextDeck.map((c) => c.id));
     setSeenSessionIds((prev) => {
       const next = new Set(prev);
       for (const c of nextDeck) next.add(c.id);
@@ -231,8 +235,11 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
     setSaveError('');
     setKnownIds(next);
 
-    if (activeCategory === 'known') {
-      const nextDeck = allCards.filter((card) => next.has(card.id));
+    if (activeCategory === 'known' || activeCategory === 'unknown') {
+      const nextDeck =
+        activeCategory === 'known'
+          ? allCards.filter((card) => next.has(card.id))
+          : sessionDeck.filter((card) => !next.has(card.id));
       setSessionDeck(nextDeck);
       setIndex((current) => (nextDeck.length === 0 ? 0 : Math.min(current, nextDeck.length - 1)));
       setDetailsOpen(false);
@@ -248,7 +255,6 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
     setActiveCategory('all');
     const nextDeck = drawRandomSession(allCards, BATCH_SIZE, []);
     setSessionDeck(nextDeck);
-    setLastSessionIds(nextDeck.map((c) => c.id));
     setSeenSessionIds(new Set(nextDeck.map((c) => c.id)));
     setIndex(0);
     setDetailsOpen(false);
@@ -263,7 +269,7 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
     if (pool.length === 0) return [];
 
     const eligible = pool.filter((card) => !excludeIds.includes(card.id));
-    const source = eligible.length >= batchSize ? eligible : pool;
+    const source = eligible.length ? eligible : pool;
 
     const shuffled = shuffleFlashcards(source, Date.now());
     return shuffled.slice(0, Math.min(batchSize, shuffled.length));
@@ -288,7 +294,11 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
       </Button>
       <Button
         aria-label="Shuffle flashcards"
-        disabled={filteredPool.length < 2 || activeCategory === 'known'}
+        disabled={
+          !filteredPool.length ||
+          (filteredPool.length < 2 && sessionDeck.length > 0) ||
+          activeCategory === 'known'
+        }
         icon={
           mounted ? (
             <Shuffle aria-hidden="true" />
@@ -422,8 +432,16 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
           </>
         ) : (
           <div className="flashcard-inner flashcard-inner--empty">
-            <h1 id="flashcards-title">No flashcards found</h1>
-            <p>Try another category.</p>
+            <h1 id="flashcards-title">
+              {activeCategory === 'unknown' ? 'This batch is learned' : 'No flashcards found'}
+            </h1>
+            <p>
+              {activeCategory === 'unknown'
+                ? filteredPool.length
+                  ? 'Choose Shuffle to study more cards.'
+                  : 'You have marked every card as known. Review them in Known whenever you like.'
+                : 'Try another category.'}
+            </p>
           </div>
         )}
       </Card>

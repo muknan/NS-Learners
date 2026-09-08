@@ -56,11 +56,14 @@ export function readAdvanceDuration(): number {
   }
 }
 
-export function saveAdvanceDuration(value: number): void {
+export function saveAdvanceDuration(value: number): boolean {
   try {
-    getStorage('local')?.setItem(ADVANCE_DURATION_KEY, String(normalizeAdvanceDuration(value)));
+    const storage = getStorage('local');
+    if (!storage) return false;
+    storage.setItem(ADVANCE_DURATION_KEY, String(normalizeAdvanceDuration(value)));
+    return true;
   } catch {
-    // Storage persistence is best-effort only.
+    return false;
   }
 }
 

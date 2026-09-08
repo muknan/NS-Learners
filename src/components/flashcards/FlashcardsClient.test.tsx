@@ -91,6 +91,24 @@ describe('FlashcardsClient', () => {
     const nextTitles = await collectVisibleBatch(user);
 
     expect(nextTitles.every((title) => !previousTitles.includes(title))).toBe(true);
+    await user.click(screen.getByRole('button', { name: /shuffle flashcards/i }));
+    await screen.findByText('Card 1 of 5 — 5 of 5 remaining');
+    const lastTitles = await collectVisibleBatch(user, 5);
+    expect(new Set([...previousTitles, ...nextTitles, ...lastTitles]).size).toBe(45);
+    await user.click(screen.getByRole('button', { name: /shuffle flashcards/i }));
+    await screen.findByText('Card 1 of 20 — 20 of 20 remaining');
+  });
+
+  it('To learn excludes known cards and reaches a useful completed state', async () => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ knownIds: ['fc-201'] }));
+    const user = userEvent.setup();
+    render(<FlashcardsClient deck={deck} />);
+    await user.click(await screen.findByRole('button', { name: 'To learn' }));
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Crosswalks');
+    await user.click(screen.getByRole('button', { name: /mark .* as known/i }));
+    expect(screen.getByText(/marked every card as known/i)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /shuffle flashcards/i })).toBeDisabled();
+    expect(readKnownIds()).toHaveLength(2);
   });
 
   it('clears known flashcards when Reset All is clicked', async () => {
@@ -109,13 +127,16 @@ describe('FlashcardsClient', () => {
   });
 });
 
-async function collectVisibleBatch(user: ReturnType<typeof userEvent.setup>): Promise<string[]> {
+async function collectVisibleBatch(
+  user: ReturnType<typeof userEvent.setup>,
+  count = 20,
+): Promise<string[]> {
   const titles: string[] = [];
 
-  for (let index = 0; index < 20; index += 1) {
+  for (let index = 0; index < count; index += 1) {
     titles.push(screen.getByRole('heading', { level: 1 }).textContent ?? '');
 
-    if (index < 19) {
+    if (index < count - 1) {
       await user.click(screen.getByRole('button', { name: /next flashcard/i }));
     }
   }

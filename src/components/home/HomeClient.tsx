@@ -74,7 +74,7 @@ export function HomeClient({ flashcardTotal, stats }: HomeClientProps) {
       // Strip the query param so reload/refresh doesn't re-show the toast.
       const url = new URL(window.location.href);
       url.searchParams.delete('savedProgress');
-      window.history.replaceState({}, '', url.toString());
+      window.history.replaceState(window.history.state, '', url.toString());
     }
   }, [searchParams]);
 

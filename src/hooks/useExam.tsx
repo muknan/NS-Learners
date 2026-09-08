@@ -128,6 +128,7 @@ function examReducer(state: ExamState, action: ExamAction): ExamState {
       if (index < 0 || (state.session.sectionTwoStartedAt != null && index < 20)) return state;
       const autoAdvanced = new Set(state.session.autoAdvancedIds);
       const isFirstAnswer = state.session.answers[action.questionId] === undefined;
+      if (state.session.instantFeedback && !isFirstAnswer) return state;
       const alreadyAutoAdvanced = autoAdvanced.has(action.questionId);
       const shouldAutoAdvance = isFirstAnswer && !alreadyAutoAdvanced && state.session.autoAdvance;
       if (shouldAutoAdvance) {

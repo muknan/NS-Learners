@@ -29,8 +29,12 @@ export function SettingsPanel({ open, onClose }: { open: boolean; onClose: () =>
   }
 
   function updateAdvanceDuration(value: number): void {
+    if (!saveAdvanceDuration(value)) {
+      setError('Could not save the delay. Check browser storage and try again.');
+      return;
+    }
+    setError('');
     setAdvanceDuration(value);
-    saveAdvanceDuration(value);
     window.dispatchEvent(
       new CustomEvent('ns-learner-advance-duration-change', { detail: { value } }),
     );
@@ -73,6 +77,7 @@ export function SettingsPanel({ open, onClose }: { open: boolean; onClose: () =>
     <>
       <Modal title="Practice settings" onClose={onClose}>
         <div className="settings-grid">
+          {error && pendingConfirm === null ? <p role="alert">{error}</p> : null}
           <section className="settings-section" aria-labelledby="appearance-settings-title">
             <h3 id="appearance-settings-title">Appearance</h3>
             <ToggleSwitch
