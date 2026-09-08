@@ -578,11 +578,13 @@ test('flashcard known marks merge with another tab and storage failures stay vis
       .getByRole('button', { name: 'Next flashcard', exact: true })
       .click();
   await other.getByRole('button', { name: /^Mark .+ as known$/ }).click();
-  expect(
-    await other.evaluate(
-      () => JSON.parse(localStorage.getItem('ns-learners.flashcards.v2')!).knownIds.length,
-    ),
-  ).toBe(2);
+  await expect
+    .poll(() =>
+      other.evaluate(
+        () => JSON.parse(localStorage.getItem('ns-learners.flashcards.v2')!).knownIds.length,
+      ),
+    )
+    .toBe(2);
   await page.evaluate(() => {
     Storage.prototype.setItem = () => {
       throw new DOMException('Full', 'QuotaExceededError');

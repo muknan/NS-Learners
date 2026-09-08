@@ -175,7 +175,7 @@ test('auto-advances after an answer when instant feedback is off', async ({ page
   });
 
   await page.getByRole('button', { name: /start practice exam/i }).click();
-  await expect(page.getByTestId('exam-top-bar')).toContainText('Q 1 / 40');
+  await expect(page.getByTestId('exam-top-bar')).toContainText('Q 1/40');
   await page.getByTestId('answer-option').first().click();
 
   const nextButton = page.getByTestId('exam-action-bar').getByRole('button', { name: /^next$/i });
@@ -194,7 +194,7 @@ test('auto-advances after an answer when instant feedback is off', async ({ page
   expect(countdownStyle.backgroundImage).toContain('linear-gradient');
   expect(countdownStyle.backgroundPosition).toContain('100%');
   expect(countdownStyle.backgroundRepeat).toBe('no-repeat');
-  await expect(page.getByTestId('exam-top-bar')).toContainText('Q 2 / 40', { timeout: 4500 });
+  await expect(page.getByTestId('exam-top-bar')).toContainText('Q 2/40', { timeout: 4500 });
 });
 
 test('instant feedback shows explanations in a modal without shifting the card', async ({

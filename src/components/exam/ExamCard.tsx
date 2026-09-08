@@ -3,6 +3,7 @@
 import { AnswerOption } from '@/components/exam/AnswerOption';
 import { SignImage } from '@/components/exam/SignImage';
 import { Badge } from '@/components/ui/Badge';
+import { SaveReviewButton } from '@/components/review/SaveReviewButton';
 import type { AnswerOption as AnswerOptionValue, ExamSession, Question } from '@/types/exam';
 import { getOrderedOptions } from '@/lib/session';
 import { getTopicLabel } from '@/lib/questions';
@@ -10,6 +11,7 @@ import { memo, useEffect, useRef } from 'react';
 
 interface ExamCardProps {
   locked?: boolean;
+  onSaveReview?: () => void;
   session: ExamSession;
   question: Question;
   questionIndex: number;
@@ -20,6 +22,7 @@ interface ExamCardProps {
 
 export const ExamCard = memo(function ExamCard({
   locked = false,
+  onSaveReview,
   session,
   question,
   questionIndex,
@@ -53,15 +56,18 @@ export const ExamCard = memo(function ExamCard({
       ) : null}
 
       <div className="exam-card__content-pane">
-        <div className="exam-card__meta">
-          <span>{getTopicLabel(question.topic)}</span>
-          <Badge className="exam-card__difficulty" tone={getDifficultyTone(question.difficulty)}>
-            {question.difficulty}
-          </Badge>
-          <span aria-hidden="true">·</span>
-          <span>
-            Q {questionIndex + 1} / {totalQuestions}
-          </span>
+        <div className="exam-card__question-tools">
+          <div className="exam-card__meta">
+            <span>{getTopicLabel(question.topic)}</span>
+            <Badge className="exam-card__difficulty" tone={getDifficultyTone(question.difficulty)}>
+              {question.difficulty}
+            </Badge>
+            <span aria-hidden="true">·</span>
+            <span>
+              Q {questionIndex + 1} / {totalQuestions}
+            </span>
+          </div>
+          <SaveReviewButton questionId={question.id} onSave={onSaveReview} />
         </div>
 
         <h2 ref={headingRef} className="exam-question" data-testid="exam-question" tabIndex={-1}>

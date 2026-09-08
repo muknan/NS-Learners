@@ -98,10 +98,10 @@ test('resume navigation and exit actions stay fully visible across widths', asyn
       const nav = page.getByRole('navigation', { name: 'Primary navigation' });
       const bounds = await nav.boundingBox();
       const rows = await nav
-        .locator(':scope > a, :scope > button')
+        .locator(':scope > a:visible, :scope > button:visible')
         .evaluateAll((items) => items.map((item) => item.getBoundingClientRect().y));
       expect(Math.max(...rows) - Math.min(...rows)).toBeLessThanOrEqual(2);
-      for (const item of await nav.locator(':scope > a, :scope > button').all()) {
+      for (const item of await nav.locator(':scope > a:visible, :scope > button:visible').all()) {
         const box = (await item.boundingBox())!;
         expect(box.x).toBeGreaterThanOrEqual(0);
         expect(box.x + box.width).toBeLessThanOrEqual(width);
@@ -139,7 +139,7 @@ test('navigator jumps to the first unanswered question', async ({ page }) => {
   await page.getByRole('radio').first().click();
   await page.getByRole('button', { name: 'Open question navigator' }).click();
   await page.getByRole('button', { name: 'First unanswered', exact: true }).click();
-  await expect(page.getByTestId('exam-top-bar')).toContainText('Q 2 /');
+  await expect(page.getByTestId('exam-top-bar')).toContainText('Q 2/');
   await expect(page.getByRole('dialog', { name: 'Question navigator' })).toHaveCount(0);
 });
 

@@ -12,6 +12,7 @@ import {
 } from 'react';
 import { ExamActionBar } from '@/components/exam/ExamActionBar';
 import { ExamCard } from '@/components/exam/ExamCard';
+import { collectMistakes, updateReview } from '@/lib/review';
 import { ExamTopBar } from '@/components/exam/ExamTopBar';
 import { NavigatorDrawer } from '@/components/exam/NavigatorDrawer';
 import { Badge } from '@/components/ui/Badge';
@@ -347,6 +348,7 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
           () => saveCompletedSession(completed) && saveHistory(historyEntry),
         );
         if (!saved) throw new Error('Result storage unavailable');
+        await updateReview((store) => collectMistakes(store, [completed]));
         clearSessionForMode(session.mode);
         dispatch({ type: 'submit', now: completed.completedAt ?? Date.now() });
         router.push(
@@ -844,6 +846,7 @@ function ExamWorkspace({ questions }: { questions: Question[] }) {
           </section>
         ) : (
           <ExamCard
+            onSaveReview={cancelAutoAdvance}
             locked={remaining !== null && remaining <= 0}
             instantFeedback={session.instantFeedback}
             onAnswer={answer}

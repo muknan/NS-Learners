@@ -26,15 +26,15 @@ export function AppChrome({ children }: { children: ReactNode }) {
     };
   }, []);
 
-  if (flashcardsActive) {
+  if (flashcardsActive || examActive) {
     return (
-      <div className="flashcards-root">
+      <div className={examActive ? 'exam-root' : 'flashcards-root'}>
         {!online ? (
           <div role="alert" className="offline-banner">
             You&apos;re offline - using cached content
           </div>
         ) : null}
-        <Header />
+        {examActive ? null : <Header />}
         {children}
       </div>
     );

@@ -377,12 +377,12 @@ export function HomeClient({ flashcardTotal, stats }: HomeClientProps) {
           <article>
             <span>02</span>
             <h3>Answer and flag</h3>
-            <p>Use the navigator, keyboard shortcuts, and review flags to move efficiently.</p>
+            <p>Flag questions for this attempt, or save them to Review to revisit later.</p>
           </article>
           <article>
             <span>03</span>
             <h3>Review weak spots</h3>
-            <p>See section breakdowns, missed answers, explanations, and retake only misses.</p>
+            <p>See your results, retake missed questions, and revisit your mistakes in Review.</p>
           </article>
         </div>
       </section>

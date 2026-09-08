@@ -219,46 +219,60 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
     setDetailsOpen(false);
   }
 
-  function toggleKnown(cardId: string): void {
-    const next = new Set(readPersistedFlashcardsState()?.knownIds ?? knownIds);
-
-    if (next.has(cardId)) {
-      next.delete(cardId);
-    } else {
-      next.add(cardId);
-    }
-
-    if (!writePersistedFlashcardsState({ knownIds: [...next] })) {
-      setSaveError('Could not save your known cards. Check browser storage and try again.');
-      return;
-    }
-    setSaveError('');
-    setKnownIds(next);
-
-    if (activeCategory === 'known' || activeCategory === 'unknown') {
-      const nextDeck =
-        activeCategory === 'known'
-          ? allCards.filter((card) => next.has(card.id))
-          : sessionDeck.filter((card) => !next.has(card.id));
-      setSessionDeck(nextDeck);
-      setIndex((current) => (nextDeck.length === 0 ? 0 : Math.min(current, nextDeck.length - 1)));
-      setDetailsOpen(false);
+  async function withKnownLock(change: () => void): Promise<void> {
+    try {
+      if (navigator.locks) await navigator.locks.request(STORAGE_KEY, change);
+      else change();
+    } catch {
+      setSaveError('Could not update your known cards. Check browser storage and try again.');
     }
   }
 
+  function toggleKnown(cardId: string): void {
+    void withKnownLock(() => {
+      const next = new Set(readPersistedFlashcardsState()?.knownIds ?? knownIds);
+
+      if (next.has(cardId)) {
+        next.delete(cardId);
+      } else {
+        next.add(cardId);
+      }
+
+      if (!writePersistedFlashcardsState({ knownIds: [...next] })) {
+        setSaveError('Could not save your known cards. Check browser storage and try again.');
+        return;
+      }
+      setSaveError('');
+      setKnownIds(next);
+
+      if (activeCategory === 'known' || activeCategory === 'unknown') {
+        const nextDeck =
+          activeCategory === 'known'
+            ? allCards.filter((card) => next.has(card.id))
+            : sessionDeck.filter((card) => !next.has(card.id));
+        setSessionDeck(nextDeck);
+        setIndex((current) => (nextDeck.length === 0 ? 0 : Math.min(current, nextDeck.length - 1)));
+        setDetailsOpen(false);
+      }
+    });
+  }
+
   function resetAll(): void {
-    if (!writePersistedFlashcardsState({ knownIds: [] })) {
-      setSaveError('Could not reset your known cards. Check browser storage and try again.');
-      return;
-    }
-    setSaveError('');
-    setActiveCategory('all');
-    const nextDeck = drawRandomSession(allCards, BATCH_SIZE, []);
-    setSessionDeck(nextDeck);
-    setSeenSessionIds(new Set(nextDeck.map((c) => c.id)));
-    setIndex(0);
-    setDetailsOpen(false);
-    setKnownIds(new Set());
+    void withKnownLock(() => {
+      if (!writePersistedFlashcardsState({ knownIds: [] })) {
+        setSaveError('Could not reset your known cards. Check browser storage and try again.');
+        return;
+      }
+      setSaveError('');
+      setActiveCategory('all');
+      const nextDeck = drawRandomSession(allCards, BATCH_SIZE, []);
+      setSessionDeck(nextDeck);
+      setSeenSessionIds(new Set(nextDeck.map((c) => c.id)));
+      setIndex(0);
+      setDetailsOpen(false);
+      setKnownIds(new Set());
+      setResetConfirmOpen(false);
+    });
   }
 
   function drawRandomSession(
@@ -357,7 +371,10 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
               <span className="icon-placeholder" aria-hidden="true" />
             )
           }
-          onClick={() => setResetConfirmOpen(true)}
+          onClick={() => {
+            setSaveError('');
+            setResetConfirmOpen(true);
+          }}
           size="sm"
           tone="ghost"
         >
@@ -366,7 +383,7 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
       </div>
 
       <div className="flashcard-toolbar" aria-label="Flashcard filters">
-        <div className="flashcard-filter-list" aria-label="Category filters">
+        <div className="flashcard-filter-list" role="group" aria-label="Category filters">
           {categoryFilters.map((filter) => (
             <button
               aria-pressed={activeCategory === filter.value}
@@ -473,15 +490,13 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
 
       <ConfirmDialog
         open={resetConfirmOpen}
+        error={saveError}
         title="Reset all flashcards?"
         description="This will clear every known card and shuffle a new deck. This cannot be undone."
         confirmLabel="Reset"
         cancelLabel="Cancel"
         onCancel={() => setResetConfirmOpen(false)}
-        onConfirm={() => {
-          setResetConfirmOpen(false);
-          resetAll();
-        }}
+        onConfirm={resetAll}
       />
     </section>
   );

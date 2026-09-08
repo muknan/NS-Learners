@@ -178,7 +178,7 @@ export function SettingsPanel({ open, onClose }: { open: boolean; onClose: () =>
       <ConfirmDialog
         open={pendingConfirm === 'all-data'}
         title="Clear all app data?"
-        description="This removes settings, score history, saved sessions, and retake data from this browser."
+        description="This removes settings, scores, saved attempts, Review questions, and learned flashcards from this browser."
         onCancel={() => setPendingConfirm(null)}
         onConfirm={clearAllAppData}
         error={error}

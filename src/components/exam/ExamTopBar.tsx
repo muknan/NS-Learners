@@ -46,7 +46,7 @@ export function ExamTopBar({
         className="exam-top-bar__title"
         aria-label={`${modeLabel}, question ${questionNumber} of ${totalQuestions}`}
       >
-        <span className="exam-top-bar__mode-label">{modeLabel} · </span>Q {questionNumber} /{' '}
+        <span className="exam-top-bar__mode-label">{modeLabel} · </span>Q {questionNumber}/
         {totalQuestions}
       </strong>
 

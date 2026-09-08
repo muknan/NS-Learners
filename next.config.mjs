@@ -15,9 +15,14 @@ const withPwa = nextPwa({
   skipWaiting: false,
   clientsClaim: true,
   dynamicStartUrl: false,
-  additionalManifestEntries: ['/', '/exam/', '/results/', '/handbooks/', '/flashcards/'].map(
-    (url) => ({ url, revision: buildRevision }),
-  ),
+  additionalManifestEntries: [
+    '/',
+    '/exam/',
+    '/results/',
+    '/handbooks/',
+    '/flashcards/',
+    '/review/',
+  ].map((url) => ({ url, revision: buildRevision })),
   ignoreURLParametersMatching: [
     /^utm_/,
     /^fbclid$/,

@@ -2,7 +2,17 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { BookOpen, Home, Layers, Moon, Play, RotateCcw, Settings, Sun } from 'lucide-react';
+import {
+  Bookmark,
+  BookOpen,
+  Home,
+  Layers,
+  Moon,
+  Play,
+  RotateCcw,
+  Settings,
+  Sun,
+} from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { SettingsPanel } from '@/components/layout/SettingsPanel';
@@ -91,6 +101,15 @@ export function Header() {
           <Layers aria-hidden="true" />
           <span className="site-nav__label">Flashcards</span>
         </Link>
+        <Link
+          aria-label="Review"
+          aria-current={pathname === '/review' ? 'page' : undefined}
+          href="/review"
+          prefetch={false}
+        >
+          <Bookmark aria-hidden="true" />
+          <span className="site-nav__label">Review</span>
+        </Link>
         <button
           type="button"
           onClick={() => setSettingsOpen(true)}
@@ -105,6 +124,7 @@ export function Header() {
           )}
         </button>
         <button
+          className="site-nav__theme"
           type="button"
           onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
           aria-label={

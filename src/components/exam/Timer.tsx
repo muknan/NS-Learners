@@ -17,7 +17,15 @@ export const Timer = memo(function Timer({ remaining }: { remaining: number | nu
       aria-label={accessibleLabel}
     >
       <Clock aria-hidden="true" />
-      <span aria-hidden="true">{remaining === null ? 'Timer off' : formatDuration(remaining)}</span>
+      <span aria-hidden="true">
+        {remaining === null ? (
+          <>
+            <span className="timer__off-prefix">Timer </span>off
+          </>
+        ) : (
+          formatDuration(remaining)
+        )}
+      </span>
     </div>
   );
 });

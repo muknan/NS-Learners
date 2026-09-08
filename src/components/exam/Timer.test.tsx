@@ -6,7 +6,7 @@ import { Timer } from '@/components/exam/Timer';
 describe('Timer', () => {
   it('renders "Timer off" when remaining is null', () => {
     render(<Timer remaining={null} />);
-    expect(screen.getByText('Timer off')).toBeInTheDocument();
+    expect(screen.getByRole('timer')).toHaveTextContent('Timer off');
     expect(screen.getByLabelText('Timer off')).toBeInTheDocument();
   });
 

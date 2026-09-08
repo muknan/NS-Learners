@@ -291,8 +291,25 @@ p {
 .flashcards-root > main {
   flex: 1 1 auto;
   min-height: 0;
-  overflow: hidden;
+  overflow-y: auto;
   padding-block: 0;
+}
+.flashcards-root > .site-header,
+.flashcards-root > .offline-banner {
+  flex-shrink: 0;
+}
+.exam-root {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+}
+.exam-root > .offline-banner {
+  flex-shrink: 0;
+}
+.exam-root > .exam-page-shell {
+  flex: 1;
+  min-height: 0;
+  height: auto;
 }
 
 .page-shell:has(.exam-layout) {
@@ -707,15 +724,13 @@ p {
 
 .mode-card__meta {
   max-width: 100%;
-  overflow: hidden;
   border-radius: var(--radius-pill);
   padding: 3px 8px;
   background: var(--color-surface-muted);
   color: var(--color-text-secondary);
   font-size: var(--text-12);
   font-weight: 500;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  white-space: normal;
   justify-self: start;
 }
 
@@ -953,9 +968,7 @@ button.history-item:disabled {
   font-size: var(--text-14);
   font-weight: 600;
   line-height: 1.3;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
 }
 
 .history-item__row > span[aria-label^='Score:'] {
@@ -1072,14 +1085,13 @@ button.history-item:disabled {
 .flashcards-layout {
   display: grid;
   width: min(840px, 100%);
-  height: 100%;
-  min-height: 0;
-  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  min-height: 100%;
+  grid-template-rows: auto auto 1fr auto;
   grid-template-columns: minmax(0, 1fr);
   gap: var(--space-3);
   margin-inline: auto;
   padding: var(--space-3);
-  overflow: hidden;
+  overflow: visible;
   touch-action: pan-y;
 }
 
@@ -1148,8 +1160,8 @@ button.history-item:disabled {
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
-  overflow: hidden;
-  min-height: 0;
+  overflow: visible;
+  min-height: auto;
   padding: clamp(18px, 4vw, 30px);
 }
 
@@ -1189,8 +1201,8 @@ button.history-item:disabled {
   align-items: center;
   justify-content: center;
   gap: var(--space-3);
-  overflow: hidden;
-  min-height: 0;
+  overflow: visible;
+  min-height: auto;
 }
 
 .flashcard-inner--empty {
@@ -1200,8 +1212,8 @@ button.history-item:disabled {
 .flashcard-study-area {
   display: grid;
   width: 100%;
-  min-height: 0;
-  flex: 1 1 auto;
+  min-height: min-content;
+  flex: 0 0 auto;
   align-content: center;
   justify-items: center;
   gap: var(--space-3);
@@ -1244,7 +1256,7 @@ button.history-item:disabled {
   gap: 10px;
   text-align: center;
   flex: 0 1 auto;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .flashcard-view h1 {
@@ -1580,15 +1592,19 @@ button.history-item:disabled {
 }
 
 .exam-main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--exam-gap);
   min-width: 0;
   min-height: 0;
-  overflow: hidden;
+  overflow-y: auto;
   padding: var(--exam-pad-y) var(--exam-pad-x);
 }
 
 .exam-card {
   display: grid;
-  height: 100%;
+  flex: 1;
+  height: auto;
   min-height: 0;
   grid-template-rows: minmax(0, 1fr);
   grid-template-columns: minmax(0, min(720px, 100%));
@@ -3107,6 +3123,12 @@ input[type='range'] {
   .exam-top-bar__metrics > .badge {
     display: none;
   }
+  .timer__off-prefix {
+    display: none;
+  }
+  .exam-top-bar__title {
+    font-size: var(--text-14);
+  }
 }
 
 @media (max-width: 640px) {
@@ -3144,7 +3166,7 @@ input[type='range'] {
   .flashcard-view {
     padding: var(--space-3);
     gap: var(--space-3);
-    overflow: hidden; /* Keep card itself from scrolling */
+    overflow: visible;
   }
 
   .flashcard-inner {
@@ -3428,4 +3450,253 @@ input[type='range'] {
 .settings-section details .shortcut-list {
   display: grid;
   margin-top: 12px;
+}
+
+/* Review uses text labels as well as color; violet identifies intentional saves. */
+:root {
+  --review-low: #526b18;
+  --review-medium: #835900;
+  --review-high: #ae3036;
+  --review-saved: #6d45a1;
+}
+[data-theme='dark'] {
+  --review-low: #bdd879;
+  --review-medium: #edc46b;
+  --review-high: #f49798;
+  --review-saved: #c4a5ef;
+}
+.review-low {
+  --review-accent: var(--review-low);
+}
+.review-medium {
+  --review-accent: var(--review-medium);
+}
+.review-high {
+  --review-accent: var(--review-high);
+}
+.review-saved {
+  --review-accent: var(--review-saved);
+}
+.review-page {
+  display: grid;
+  gap: 20px;
+  max-width: 860px;
+  margin-inline: auto;
+}
+.review-page header p,
+.review-note {
+  color: var(--color-text-secondary);
+}
+.review-page header p {
+  margin-top: 12px;
+}
+.review-legend,
+.review-question__meta,
+.review-toolbar,
+.review-undo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.review-toolbar {
+  justify-content: space-between;
+}
+.review-toolbar select {
+  min-height: 44px;
+  max-width: 100%;
+  margin-left: 8px;
+  padding: 8px;
+  border: 1px solid var(--color-control-border);
+  border-radius: var(--radius-control);
+  background: var(--color-surface-card);
+  color: var(--color-text-primary);
+}
+.review-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: var(--radius-pill);
+  font-size: var(--text-14);
+  font-weight: 600;
+  color: var(--review-accent);
+  background: color-mix(in srgb, var(--review-accent) 12%, var(--color-surface-card));
+}
+.review-question,
+.review-empty {
+  display: grid;
+  gap: 16px;
+  padding: clamp(16px, 3vw, 28px);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-card);
+  background: var(--color-surface-card);
+  min-width: 0;
+}
+.review-question {
+  border-left: 4px solid var(--review-accent);
+}
+.review-question h2 {
+  font-size: var(--text-22);
+  line-height: 1.5;
+}
+.review-question__meta {
+  color: var(--color-text-secondary);
+  font-size: var(--text-14);
+}
+.review-question > .button,
+.review-empty > .button {
+  justify-self: start;
+}
+.review-options {
+  display: grid;
+  gap: 8px;
+  padding-left: 24px;
+  list-style: upper-alpha;
+}
+.review-options li {
+  padding-left: 4px;
+}
+.review-answer {
+  border-block: 1px solid var(--color-border-strong);
+  padding-block: 4px;
+}
+.review-answer summary {
+  cursor: pointer;
+  padding-block: 12px;
+  font-weight: 600;
+}
+.review-answer p,
+.review-answer small {
+  display: block;
+  margin-block: 12px;
+}
+.review-save-control .review-saved {
+  color: var(--review-saved);
+  border-color: color-mix(in srgb, var(--review-saved) 50%, var(--color-control-border));
+  background: color-mix(in srgb, var(--review-saved) 10%, var(--color-surface-card));
+}
+.exam-card__question-tools {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.exam-card__question-tools .exam-card__meta {
+  flex-wrap: wrap;
+}
+.review-save-control .button {
+  min-height: 44px;
+  white-space: nowrap;
+}
+.review-save-control p {
+  color: var(--color-error);
+  font-size: var(--text-14);
+}
+@media (max-height: 360px) {
+  .navigator-drawer__panel {
+    height: 100dvh;
+    grid-template-rows: auto auto auto auto;
+    overflow-y: auto;
+    align-content: start;
+  }
+  .navigator-drawer__grid {
+    overflow: visible;
+  }
+  .exam-route-active {
+    height: auto;
+    min-height: 100%;
+    overflow-y: auto;
+  }
+  .exam-root {
+    height: auto;
+    min-height: 100dvh;
+  }
+  .exam-root > .exam-page-shell {
+    flex: none;
+    max-height: none;
+    overflow: visible;
+  }
+  .exam-layout {
+    min-height: 100dvh;
+    height: auto;
+    grid-template-rows: auto auto auto;
+    overflow: visible;
+  }
+  .exam-main,
+  .exam-card,
+  .exam-card__content-pane,
+  .answer-list {
+    height: auto;
+    overflow: visible;
+  }
+  .exam-card .exam-question {
+    max-height: none;
+    overflow: visible;
+  }
+  .exam-top-bar,
+  .exam-action-bar {
+    min-height: 52px;
+  }
+}
+@media (max-height: 500px) and (orientation: landscape) {
+  .exam-card--with-image {
+    grid-template-columns: minmax(100px, 24%) minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr);
+  }
+  .exam-card__image-pane {
+    align-self: center;
+    max-height: 100%;
+  }
+  .exam-card__image-pane .sign-figure {
+    --sign-display-size: min(160px, 45vh);
+    max-height: 100%;
+  }
+  .exam-card__image-pane .sign-figure img {
+    max-height: 100%;
+  }
+  .review-save-control .button {
+    width: 44px;
+    padding-inline: 0;
+  }
+  .review-save-control .button > span:last-child {
+    display: none;
+  }
+}
+@media (max-width: 1150px) {
+  .site-header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    gap: 12px;
+  }
+  .site-nav {
+    width: 100%;
+    justify-content: center;
+  }
+}
+@media (max-width: 760px) {
+  .site-nav__label {
+    display: none;
+  }
+}
+@media (max-width: 640px) {
+  .site-nav > .site-nav__theme {
+    display: none;
+  }
+}
+@media (max-width: 380px) {
+  .site-nav > a,
+  .site-nav > button {
+    min-width: 44px;
+    padding-inline: 0;
+  }
+  .site-nav > .button {
+    min-width: 66px;
+    padding-inline: 6px;
+  }
+  .site-nav > .button .button__icon {
+    display: none;
+  }
 }
