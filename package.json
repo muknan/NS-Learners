@@ -17,7 +17,7 @@
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "format": "prettier --write .",
-    "analyze": "ANALYZE=true next build",
+    "analyze": "node scripts/analyze.mjs",
     "prepare": "husky"
   },
   "dependencies": {

@@ -6,6 +6,7 @@ const buildRevision = randomUUID();
 
 const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
+  openAnalyzer: false,
 });
 
 const withPwa = nextPwa({
