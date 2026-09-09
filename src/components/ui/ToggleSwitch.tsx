@@ -16,7 +16,7 @@ export function ToggleSwitch({
   disabled = false,
 }: ToggleSwitchProps) {
   return (
-    <span className={`toggle-switch${disabled ? ' toggle-switch--disabled' : ''}`}>
+    <label htmlFor={id} className={`toggle-switch${disabled ? ' toggle-switch--disabled' : ''}`}>
       <span className="toggle-switch__label">{label}</span>
       <button
         id={id}
@@ -30,6 +30,6 @@ export function ToggleSwitch({
       >
         <span className="toggle-switch__thumb" />
       </button>
-    </span>
+    </label>
   );
 }

@@ -55,7 +55,7 @@ import type { AnswerOption, ExamSession, Question } from '@/types/exam';
 
 type LoadState = 'loading' | 'ready' | 'empty' | 'locked' | 'unsupported';
 const SWIPE_INTERACTIVE_SELECTOR =
-  'button, a, input, textarea, select, details, summary, [role="button"]';
+  'button, a, input, label, textarea, select, details, summary, [role="button"]';
 
 export function ExamClient({ questions }: { questions: Question[] }) {
   const searchParams = useSearchParams();
