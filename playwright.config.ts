@@ -18,5 +18,20 @@ export default defineConfig({
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
     },
+    {
+      name: 'chromium-touch',
+      testMatch: /touch-regressions\.spec\.ts/,
+      use: { ...devices['Pixel 7'] },
+    },
+    {
+      name: 'webkit-touch',
+      testMatch: /touch-regressions\.spec\.ts/,
+      use: { ...devices['iPhone 13'] },
+    },
+    {
+      name: 'webkit',
+      testMatch: /touch-regressions\.spec\.ts/,
+      use: { ...devices['Desktop Safari'] },
+    },
   ],
 });
