@@ -1,3 +1,27 @@
+# Touch regression pass — 2026-09-09
+
+Baseline: `98fca64`. [Triage, causal evidence and checked controls](docs/touch-audit-2026-09-09.md).
+
+- **B1:** Fixed the settings panel disappearing before WebKit delivered a switch click.
+  Commit `d179891` introduced blur dismissal that treated a null next-focus target as
+  leaving the panel. Actual WebKit taps reproduced it; the isolated blur guard fixes it
+  while preserving outside dismissal, Escape and keyboard focus behavior.
+- **Q1:** Switch labels now activate the native button, including Dark mode. Labels do
+  not initiate exam swipes; native click, keyboard and disabled semantics are retained.
+- **D1:** Added mobile WebKit/Chromium and desktop WebKit interaction projects alongside
+  full desktop Chromium coverage; CI installs both engines. Tests exercise the settings,
+  adjacent actions, navigator, native dialogs, Review, flashcards and responsive layouts.
+- **N1:** The audit records every suspect's disposition and proposes an AGENTS.md rule
+  requiring real WebKit/Chromium tap checks for focus, overlay and gesture changes.
+
+Verification: all 124 browser tests, 78 unit tests, lint, typecheck and production build
+pass. The unchanged local parent-lockfile and test-runner
+color-environment warnings remain informational; no unrelated parent files were edited.
+
+Confidence limit: verified using actual WebKit/Chromium engines with device emulation,
+not physical iOS Chrome or Android devices. The broader audit found no additional
+confirmed app bug needing a change. No triaged bug is deferred.
+
 # Closing QOL pass — 2026-09-08
 
 Baseline: `98cdd64`. The previous audits and Review implementation were reviewed before
