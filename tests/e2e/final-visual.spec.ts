@@ -34,7 +34,10 @@ test('keyboard outlines fit the clipped exam content and answer list', async ({ 
     ['answer', page.getByRole('radio').first()],
   ] as const) {
     await control.focus();
-    await page.screenshot({ path: test.info().outputPath(`${name}-outline.png`) });
+    await page.screenshot({
+      animations: 'disabled',
+      path: test.info().outputPath(`${name}-outline.png`),
+    });
     await expectUnclippedFocus(control);
   }
 });
@@ -47,6 +50,7 @@ for (const theme of ['light', 'dark'] as const) {
       await page.goto(route);
       await expect(page.locator('main')).toBeVisible();
       await page.screenshot({
+        animations: 'disabled',
         path: test.info().outputPath(`${route.replaceAll('/', '') || 'home'}.png`),
         fullPage: true,
       });
@@ -59,6 +63,7 @@ for (const theme of ['light', 'dark'] as const) {
           .click();
         await expect(page.getByRole('dialog')).toBeVisible();
         await page.screenshot({
+          animations: 'disabled',
           path: test.info().outputPath(`${route === '/' ? 'settings' : 'details'}.png`),
         });
         await page.getByRole('button', { name: 'Close dialog', exact: true }).click();
@@ -81,6 +86,7 @@ for (const theme of ['light', 'dark'] as const) {
       const save = page.getByRole('button', { name: 'Save to Review', exact: true });
       await save.hover();
       await page.screenshot({
+        animations: 'disabled',
         path: test.info().outputPath(`save-hover-${width}.png`),
         fullPage: true,
       });
@@ -92,6 +98,7 @@ for (const theme of ['light', 'dark'] as const) {
       expect(box.x + box.width).toBeLessThanOrEqual(width!);
       await save.focus();
       await page.screenshot({
+        animations: 'disabled',
         path: test.info().outputPath(`save-focus-${width}.png`),
         fullPage: true,
       });
@@ -99,7 +106,11 @@ for (const theme of ['light', 'dark'] as const) {
       const saved = page.getByRole('button', { name: 'Saved to Review', exact: true });
       await expect(saved).toHaveAttribute('aria-pressed', 'true');
       await expect.soft(saved).not.toHaveAttribute('title');
-      await page.screenshot({ path: test.info().outputPath(`saved-${width}.png`), fullPage: true });
+      await page.screenshot({
+        animations: 'disabled',
+        path: test.info().outputPath(`saved-${width}.png`),
+        fullPage: true,
+      });
       await saved.click();
       await expect(save).toHaveAttribute('aria-pressed', 'false');
     }

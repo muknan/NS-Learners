@@ -1,3 +1,28 @@
+# Final rendered pass — 2026-09-09
+
+Baseline: `9436ab9`. [Triage, evidence and proposed AGENTS.md rule](docs/final-pass-2026-09-09.md).
+
+- Removed Save to Review's redundant native `title` popup with explicit user approval.
+  Its visible label, accessible name and saved-state behavior are preserved. Exact
+  native-popup clipping was not reproduced locally; no speculative z-index fix was made.
+- Fixed additional, reproduced keyboard-outline clipping on Save and answer choices.
+  Their clipped containers lacked room for the 2px outline plus 2px offset; 4px internal
+  spacing preserves complete rings and existing scrolling. Before/after screenshots
+  are in `docs/screenshots/final-pass-before` and `final-pass-after`.
+- Confirmed the existing settings toggle fix in actual Chromium and WebKit engines,
+  with desktop clicks/keyboard and emulated mobile taps. Physical devices remain untested.
+- After passing unit and browser coverage, removed the redundant disabled click guard
+  from ToggleSwitch; native disabled semantics still pass label/track activation tests.
+- Added native-title regression checks, clipped-outline checks, and repeatable screenshots
+  across both themes, desktop, narrow portrait and short landscape; inspected study pages
+  and dialogs as well. Screenshots disable animation to avoid capturing transitional fades.
+
+Validation: **129 browser tests, 78 unit tests, lint, typecheck, question validation and
+production build pass**. Existing workspace-root and color-environment warnings remain.
+No additional confirmed bug is deferred. Large-file splitting and an optional visible
+Save label in short landscape are proposals only; no architecture or subjective redesign
+was applied. The full audit records retained defensive logic and remaining confidence limits.
+
 # Touch regression pass — 2026-09-09
 
 Baseline: `98fca64`. [Triage, causal evidence and checked controls](docs/touch-audit-2026-09-09.md).
