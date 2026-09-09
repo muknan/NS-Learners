@@ -24,7 +24,6 @@ export function SaveReviewButton({
         className={saved ? 'review-saved' : ''}
         disabled={!loaded}
         aria-label={saved ? 'Saved to Review' : 'Save to Review'}
-        title={saved ? 'Saved to Review' : 'Save to Review'}
         aria-pressed={saved}
         icon={<Bookmark aria-hidden="true" />}
         onClick={() => {

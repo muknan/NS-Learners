@@ -1722,7 +1722,7 @@ button.history-item:disabled {
   gap: calc(var(--exam-gap) * 0.7);
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding-block: 1px;
+  padding: 4px;
   scrollbar-width: thin;
 }
 
@@ -3588,6 +3588,7 @@ input[type='range'] {
   justify-content: space-between;
   gap: 8px;
   flex-wrap: wrap;
+  padding: 4px;
 }
 .exam-card__question-tools .exam-card__meta {
   flex-wrap: wrap;
