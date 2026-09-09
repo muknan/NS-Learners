@@ -25,7 +25,7 @@ export function ToggleSwitch({
         aria-checked={checked}
         aria-label={`${label}: ${checked ? 'on' : 'off'}`}
         disabled={disabled}
-        onClick={() => !disabled && onChange(!checked)}
+        onClick={() => onChange(!checked)}
         className={`toggle-switch__track${checked ? ' toggle-switch__track--on' : ''}`}
       >
         <span className="toggle-switch__thumb" />
