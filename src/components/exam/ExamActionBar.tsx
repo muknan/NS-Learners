@@ -100,7 +100,8 @@ export const ExamActionBar = memo(function ExamActionBar({
           className="exam-action-bar__compact-settings"
           ref={popoverRef}
           onBlur={(event) => {
-            if (!event.currentTarget.contains(event.relatedTarget as Node | null))
+            // WebKit taps can blur to null before click; outside pointers are handled separately.
+            if (event.relatedTarget && !event.currentTarget.contains(event.relatedTarget as Node))
               setSettingsOpen(false);
           }}
         >
