@@ -208,11 +208,13 @@ p {
   white-space: nowrap;
 }
 
-.site-nav > a:hover,
-.site-nav > button:hover {
-  border-color: var(--color-border-default);
-  background: var(--color-surface-card);
-  color: var(--color-text-primary);
+@media (hover: hover) and (pointer: fine) {
+  .site-nav > a:hover,
+  .site-nav > button:hover {
+    border-color: var(--color-border-default);
+    background: var(--color-surface-card);
+    color: var(--color-text-primary);
+  }
 }
 
 .site-nav > a:active,
@@ -268,8 +270,10 @@ p {
   text-underline-offset: 2px;
 }
 
-.site-footer p a:hover {
-  color: var(--color-brand-dark);
+@media (hover: hover) and (pointer: fine) {
+  .site-footer p a:hover {
+    color: var(--color-brand-dark);
+  }
 }
 
 .site-footer__legal {
@@ -336,8 +340,10 @@ p {
     transform 160ms ease;
 }
 
-.button:not(:disabled):hover {
-  transform: translateY(-1px);
+@media (hover: hover) and (pointer: fine) {
+  .button:not(:disabled):hover {
+    transform: translateY(-1px);
+  }
 }
 
 .button:active {
@@ -349,9 +355,11 @@ p {
   color: var(--color-text-inverse);
 }
 
-.button--primary:hover {
-  background: var(--color-brand-secondary);
-  color: var(--color-text-inverse);
+@media (hover: hover) and (pointer: fine) {
+  .button--primary:hover {
+    background: var(--color-brand-secondary);
+    color: var(--color-text-inverse);
+  }
 }
 
 .button--secondary {
@@ -360,10 +368,12 @@ p {
   color: var(--color-brand-dark);
 }
 
-.button--secondary:hover {
-  border-color: var(--color-brand-primary);
-  background: var(--color-brand-tertiary);
-  color: var(--color-brand-dark);
+@media (hover: hover) and (pointer: fine) {
+  .button--secondary:hover {
+    border-color: var(--color-brand-primary);
+    background: var(--color-brand-tertiary);
+    color: var(--color-brand-dark);
+  }
 }
 
 [data-theme='dark'] .button--secondary {
@@ -372,10 +382,12 @@ p {
   color: var(--color-text-primary);
 }
 
-[data-theme='dark'] .button--secondary:hover {
-  border-color: var(--color-brand-secondary);
-  background: color-mix(in srgb, var(--color-brand-primary) 24%, var(--color-surface-muted));
-  color: var(--color-text-primary);
+@media (hover: hover) and (pointer: fine) {
+  [data-theme='dark'] .button--secondary:hover {
+    border-color: var(--color-brand-secondary);
+    background: color-mix(in srgb, var(--color-brand-primary) 24%, var(--color-surface-muted));
+    color: var(--color-text-primary);
+  }
 }
 
 .button--ghost {
@@ -665,10 +677,12 @@ p {
     transform var(--transition-normal);
 }
 
-.mode-card:hover {
-  border-color: var(--color-border-strong);
-  box-shadow: var(--shadow-card-hover);
-  transform: translateY(-2px);
+@media (hover: hover) and (pointer: fine) {
+  .mode-card:hover {
+    border-color: var(--color-border-strong);
+    box-shadow: var(--shadow-card-hover);
+    transform: translateY(-2px);
+  }
 }
 
 .mode-card:focus-visible {
@@ -767,14 +781,18 @@ p {
   transition: transform var(--transition-normal);
 }
 
-.mode-card:hover .mode-card__cta {
-  border-color: var(--color-brand-primary);
-  background: var(--color-brand-tertiary);
-  color: var(--color-brand-dark);
+@media (hover: hover) and (pointer: fine) {
+  .mode-card:hover .mode-card__cta {
+    border-color: var(--color-brand-primary);
+    background: var(--color-brand-tertiary);
+    color: var(--color-brand-dark);
+  }
 }
 
-.mode-card:hover .mode-card__cta::after {
-  transform: translateX(3px);
+@media (hover: hover) and (pointer: fine) {
+  .mode-card:hover .mode-card__cta::after {
+    transform: translateX(3px);
+  }
 }
 
 .mode-card:active .mode-card__cta {
@@ -789,10 +807,12 @@ p {
   color: var(--color-text-inverse);
 }
 
-.mode-card:hover .mode-card__cta.is-primary {
-  border-color: var(--color-brand-secondary);
-  background: var(--color-brand-secondary);
-  color: var(--color-text-inverse);
+@media (hover: hover) and (pointer: fine) {
+  .mode-card:hover .mode-card__cta.is-primary {
+    border-color: var(--color-brand-secondary);
+    background: var(--color-brand-secondary);
+    color: var(--color-text-inverse);
+  }
 }
 
 /* Dark-theme adjustments — keep CTA legible on the dark surface */
@@ -802,10 +822,12 @@ p {
   color: var(--color-brand-secondary);
 }
 
-[data-theme='dark'] .mode-card:hover .mode-card__cta {
-  border-color: var(--color-brand-secondary);
-  background: color-mix(in srgb, var(--color-brand-primary) 22%, var(--color-surface-muted));
-  color: var(--color-text-primary);
+@media (hover: hover) and (pointer: fine) {
+  [data-theme='dark'] .mode-card:hover .mode-card__cta {
+    border-color: var(--color-brand-secondary);
+    background: color-mix(in srgb, var(--color-brand-primary) 22%, var(--color-surface-muted));
+    color: var(--color-text-primary);
+  }
 }
 
 [data-theme='dark'] .mode-card__cta.is-primary {
@@ -814,10 +836,12 @@ p {
   color: var(--color-text-inverse);
 }
 
-[data-theme='dark'] .mode-card:hover .mode-card__cta.is-primary {
-  border-color: var(--color-brand-secondary);
-  background: var(--color-brand-secondary);
-  color: var(--color-text-inverse);
+@media (hover: hover) and (pointer: fine) {
+  [data-theme='dark'] .mode-card:hover .mode-card__cta.is-primary {
+    border-color: var(--color-brand-secondary);
+    background: var(--color-brand-secondary);
+    color: var(--color-text-inverse);
+  }
 }
 
 .mode-card--wide {
@@ -830,11 +854,17 @@ p {
   .mode-card__cta::after {
     transition: none;
   }
-  .mode-card:hover {
-    transform: none;
+
+  @media (hover: hover) and (pointer: fine) {
+    .mode-card:hover {
+      transform: none;
+    }
   }
-  .mode-card:hover .mode-card__cta::after {
-    transform: none;
+
+  @media (hover: hover) and (pointer: fine) {
+    .mode-card:hover .mode-card__cta::after {
+      transform: none;
+    }
   }
 }
 
@@ -858,8 +888,10 @@ p {
   background: var(--color-surface-card);
 }
 
-.pdf-card:hover {
-  border-color: var(--color-border-strong);
+@media (hover: hover) and (pointer: fine) {
+  .pdf-card:hover {
+    border-color: var(--color-border-strong);
+  }
 }
 
 .pdf-card__icon {
@@ -923,9 +955,11 @@ button.history-item {
     border-color var(--transition-fast);
 }
 
-button.history-item:hover {
-  border-color: var(--color-border-strong);
-  background: var(--color-surface-muted);
+@media (hover: hover) and (pointer: fine) {
+  button.history-item:hover {
+    border-color: var(--color-border-strong);
+    background: var(--color-surface-muted);
+  }
 }
 
 button.history-item:focus-visible {
@@ -1150,11 +1184,18 @@ button.history-item:disabled {
   font-weight: 600;
 }
 
-.flashcard-filter-chip:hover,
 .flashcard-filter-chip[aria-pressed='true'] {
   border-color: var(--color-brand-primary);
   background: var(--color-brand-tertiary);
   color: var(--color-brand-primary);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .flashcard-filter-chip:hover {
+    border-color: var(--color-brand-primary);
+    background: var(--color-brand-tertiary);
+    color: var(--color-brand-primary);
+  }
 }
 
 [data-theme='dark'] .flashcard-filter-chip[aria-pressed='true'] {
@@ -1751,9 +1792,11 @@ button.history-item:disabled {
   opacity: 0.65;
 }
 
-.answer-option:hover {
-  border-color: var(--color-border-strong);
-  background: var(--color-surface-muted);
+@media (hover: hover) and (pointer: fine) {
+  .answer-option:hover {
+    border-color: var(--color-border-strong);
+    background: var(--color-surface-muted);
+  }
 }
 
 .answer-option:focus-visible {
@@ -3352,15 +3395,17 @@ input[type='range'] {
   border-color: var(--color-control-border);
 }
 
-.site-nav > a:hover,
-.flashcard-known-toggle:hover,
-.site-nav > button:not(:disabled):hover,
-.button--ghost:not(:disabled):hover,
-.button--secondary:not(:disabled):hover,
-[data-theme='dark'] .button--secondary:not(:disabled):hover {
-  border-color: color-mix(in srgb, var(--color-control-border) 75%, var(--color-text-primary));
-  background: color-mix(in srgb, var(--color-surface-muted) 70%, var(--color-surface-card));
-  color: var(--color-text-primary);
+@media (hover: hover) and (pointer: fine) {
+  .site-nav > a:hover,
+  .flashcard-known-toggle:hover,
+  .site-nav > button:not(:disabled):hover,
+  .button--ghost:not(:disabled):hover,
+  .button--secondary:not(:disabled):hover,
+  [data-theme='dark'] .button--secondary:not(:disabled):hover {
+    border-color: color-mix(in srgb, var(--color-control-border) 75%, var(--color-text-primary));
+    background: color-mix(in srgb, var(--color-surface-muted) 70%, var(--color-surface-card));
+    color: var(--color-text-primary);
+  }
 }
 
 .site-nav > a:focus-visible,
@@ -3406,8 +3451,11 @@ input[type='range'] {
   color: var(--color-error);
   border-color: color-mix(in srgb, var(--color-error) 45%, var(--color-surface-card));
 }
-.exit-actions .button--danger:hover {
-  background: color-mix(in srgb, var(--color-error) 16%, var(--color-surface-card));
+
+@media (hover: hover) and (pointer: fine) {
+  .exit-actions .button--danger:hover {
+    background: color-mix(in srgb, var(--color-error) 16%, var(--color-surface-card));
+  }
 }
 
 @media (max-width: 480px) {

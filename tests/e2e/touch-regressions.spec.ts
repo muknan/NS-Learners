@@ -5,6 +5,79 @@ async function activate(control: Locator, touch: boolean) {
   else await control.click();
 }
 
+for (const theme of ['light', 'dark']) {
+  test(`${theme} hover belongs to a mouse; touch retains only intentional selection`, async ({
+    page,
+    hasTouch,
+  }) => {
+    await page.goto('/');
+    await page.evaluate((theme) => {
+      localStorage.setItem('nsLearner.theme', theme);
+      document.documentElement.dataset.theme = theme;
+    }, theme);
+    await page.addStyleTag({ content: '* { transition: none !important; }' });
+    const look = (el: Locator) =>
+      el.evaluate((node) => {
+        const css = getComputedStyle(node);
+        return [css.backgroundColor, css.borderTopColor, css.color, css.transform];
+      });
+    const nav = page.getByRole('link', { name: 'Flashcards', exact: true });
+    if (!hasTouch) {
+      const rest = await look(nav);
+      await nav.hover();
+      expect(await look(nav)).not.toEqual(rest);
+      await page.mouse.move(0, 0);
+      await page.keyboard.press('Tab');
+      await expect(page.locator(':focus-visible')).toHaveCount(1);
+      return;
+    }
+    // No hover selector should be active on a primary touch pointer, even if :hover sticks.
+    expect(
+      await page.evaluate(() => {
+        const activeHover: string[] = [];
+        const inspect = (rules: CSSRuleList) => {
+          for (const rule of Array.from(rules)) {
+            if (rule instanceof CSSMediaRule && !matchMedia(rule.conditionText).matches) continue;
+            if (rule instanceof CSSStyleRule && rule.selectorText.includes(':hover'))
+              activeHover.push(rule.selectorText);
+            if ('cssRules' in rule) inspect((rule as CSSGroupingRule).cssRules);
+          }
+        };
+        for (const sheet of Array.from(document.styleSheets)) inspect(sheet.cssRules);
+        return activeHover;
+      }),
+    ).toEqual([]);
+    await nav.tap();
+    await expect(page).toHaveURL(/flashcards/);
+    await expect(nav).toHaveAttribute('aria-current', 'page');
+    const selectedNav = await look(nav);
+    await page.locator('#flashcards-title').tap();
+    expect(await look(nav)).toEqual(selectedNav);
+    await page.goto('/exam/?mode=rules-drill');
+    await expect(page.getByTestId('exam-shell')).toBeVisible();
+    await page.addStyleTag({ content: '* { transition: none !important; }' });
+    const opener = page.getByRole('button', { name: 'Exam settings', exact: true });
+    if (await opener.isVisible()) await opener.tap();
+    const auto = page.getByRole('switch', { name: /^Auto-advance/ });
+    if ((await auto.getAttribute('aria-checked')) === 'true') await auto.tap();
+    if (await opener.isVisible())
+      await page.getByRole('button', { name: 'Close exam settings' }).tap();
+    const answer = page.getByRole('radio').first();
+    await answer.tap();
+    await expect(answer).toHaveAttribute('aria-checked', 'true');
+    const selectedAnswer = await look(answer);
+    await page.getByTestId('exam-question').tap();
+    expect(await look(answer)).toEqual(selectedAnswer);
+    const save = page.getByRole('button', { name: 'Save to Review', exact: true });
+    await save.tap();
+    const saved = page.getByRole('button', { name: 'Saved to Review', exact: true });
+    await expect(saved).toHaveAttribute('aria-pressed', 'true');
+    const savedLook = await look(saved);
+    await page.getByTestId('exam-question').tap();
+    expect(await look(saved)).toEqual(savedLook);
+  });
+}
+
 async function start(page: Page, touch: boolean) {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/exam/?mode=rules-drill');

@@ -1,3 +1,15 @@
+# Touch hover correction — 2026-09-10
+
+Baseline: `038d9d1`. Mobile browsers can retain `:hover` after a tap. All hover-only
+rules now require `(hover: hover) and (pointer: fine)`, including navigation, answers,
+Review buttons, cards and filters. Persistent selection, saved/current states, press
+feedback and keyboard focus styles remain independent of hover. No event handlers changed.
+
+New light/dark regressions cover actual WebKit/Chromium taps on navigation, answers and
+Save to Review, preservation of intentional selection, and desktop hover/focus. The
+touch checks failed against the previous export before passing against the correction.
+All 137 browser cases pass; lint and the production build (including TypeScript) pass.
+
 # Final rendered pass — 2026-09-09
 
 Baseline: `9436ab9`. [Triage, evidence and proposed AGENTS.md rule](docs/final-pass-2026-09-09.md).
