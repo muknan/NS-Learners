@@ -1,3 +1,4 @@
+import flashcards from '../../src/data/flashcards.json' with { type: 'json' };
 import { expect, test, type Locator, type Page } from '@playwright/test';
 import { EXAM_MODES } from '../../src/lib/modes';
 
@@ -461,4 +462,83 @@ test('flashcard details, known marks and navigation respond without click-throug
   await activate(page.getByRole('button', { name: 'Close dialog', exact: true }), hasTouch);
   await activate(page.getByRole('button', { name: 'Next flashcard', exact: true }), hasTouch);
   await expect(title).not.toHaveText(before);
+});
+
+test('flashcard controls stay anchored across image and text cards', async ({
+  page,
+  hasTouch,
+}, testInfo) => {
+  const imageCard = flashcards.find((card) => card.image)!;
+  const textCard = [...flashcards]
+    .filter((card) => !card.image)
+    .sort((a, b) => (b.keyPoint ?? b.summary).length - (a.keyPoint ?? a.summary).length)[0]!;
+  await page.goto('/');
+  await page.evaluate(
+    (ids) => localStorage.setItem('ns-learners.flashcards.v2', JSON.stringify({ knownIds: ids })),
+    [imageCard.id, textCard.id],
+  );
+  for (const theme of ['light', 'dark'] as const) {
+    await page.emulateMedia({ colorScheme: theme });
+    for (const [width, height] of [
+      [320, 568],
+      [390, 844],
+      [375, 667],
+      [844, 390],
+      [1280, 800],
+    ]) {
+      await page.setViewportSize({ width: width!, height: height! });
+      await page.goto('/flashcards/');
+      await page.getByRole('button', { name: 'Known', exact: true }).click();
+      const controls = page.locator(
+        '.flashcard-known-toggle, .flashcard-detail__toggle, .flashcard-actions',
+      );
+      const positions = await controls.evaluateAll((els) =>
+        els.map((el) => {
+          const r = el.getBoundingClientRect();
+          return { x: r.x, y: r.y, width: r.width, height: r.height };
+        }),
+      );
+      for (let i = 0; i < 4; i++) {
+        await page.locator('.flashcard-study-area').evaluate((el) => {
+          el.scrollTop = el.scrollHeight;
+        });
+        const next = page.getByRole('button', { name: 'Next flashcard', exact: true });
+        if (hasTouch) await next.tap();
+        else await next.click();
+        expect(await page.locator('.flashcard-study-area').evaluate((el) => el.scrollTop)).toBe(0);
+        const current = await controls.evaluateAll((els) =>
+          els.map((el) => {
+            const r = el.getBoundingClientRect();
+            return { x: r.x, y: r.y, width: r.width, height: r.height };
+          }),
+        );
+        // Short landscape intentionally allows the whole page to scroll.
+        if (height! >= 568) {
+          expect(current).toEqual(positions);
+          for (const r of current) {
+            expect(r.y).toBeGreaterThanOrEqual(0);
+            expect(r.y + r.height).toBeLessThanOrEqual(height!);
+          }
+        }
+        expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
+          true,
+        );
+        if (i < 2)
+          await page.screenshot({
+            path: testInfo.outputPath(`flashcard-${theme}-${width}x${height}-${i}.png`),
+          });
+      }
+      const details = page.getByRole('button', { name: 'Details', exact: true });
+      if (hasTouch) await details.tap();
+      else await details.click();
+      await expect(page.getByRole('dialog')).toBeVisible();
+      await page.getByRole('button', { name: 'Close dialog', exact: true }).click();
+      await expect(page.getByRole('dialog')).toHaveCount(0);
+      await details.focus();
+      await page.keyboard.press('Enter');
+      await expect(page.getByRole('dialog')).toBeVisible();
+      await page.keyboard.press('Escape');
+      await expect(details).toBeFocused();
+    }
+  }
 });

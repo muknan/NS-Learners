@@ -346,7 +346,6 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
 
   return (
     <section className="flashcards-layout" aria-labelledby="flashcards-title">
-      {saveError ? <p role="alert">{saveError}</p> : null}
       <div className="flashcards-heading">
         <div>
           <Badge tone="brand">Flashcards</Badge>
@@ -383,6 +382,7 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
       </div>
 
       <div className="flashcard-toolbar" aria-label="Flashcard filters">
+        {saveError ? <p role="alert">{saveError}</p> : null}
         <div className="flashcard-filter-list" role="group" aria-label="Category filters">
           {categoryFilters.map((filter) => (
             <button
@@ -425,9 +425,17 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
                 <span>{isCurrentKnown ? 'Known' : 'Mark as Known'}</span>
               </button>
 
-              {isSubset && activeCategory !== 'known' ? <Badge tone="brand">Shuffled</Badge> : null}
-
-              <div className="flashcard-study-area">
+              <div
+                className="flashcard-study-area"
+                key={currentCard.id}
+                // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- The scrollable study region must be reachable for keyboard scrolling.
+                tabIndex={0}
+                role="region"
+                aria-label="Flashcard content"
+              >
+                {isSubset && activeCategory !== 'known' ? (
+                  <Badge tone="brand">Shuffled</Badge>
+                ) : null}
                 <FlashcardImage card={currentCard} />
 
                 <div className="flashcard-copy">

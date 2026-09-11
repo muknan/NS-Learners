@@ -1,3 +1,21 @@
+# Stable flashcard controls — 2026-09-11
+
+- Fixed image/text cards changing the height and position of Mark as Known, Details,
+  Previous, Shuffle and Next. The card now fills a bounded study area with dedicated
+  control rows; long content scrolls independently and resets to its top on each card.
+- Image height is bounded on the image itself, preserving aspect ratio without
+  cropping. Mobile controls have 44px touch targets and bottom safe-area padding.
+- Extremely short/zoomed viewports retain page scrolling rather than hiding content
+  or shrinking controls. No storage, navigation or learning semantics changed.
+- Added position and activation checks across image and longest text-only cards,
+  both themes, 320/375/390px portrait, short landscape and desktop in all four browser
+  projects. Screenshots were inspected from Chromium and WebKit. Tests cover repeated
+  navigation, content scroll reset, Details taps and keyboard focus restoration.
+- Verification: 153 browser tests and 79 unit tests passed; lint, typecheck and
+  production build passed. These are browser-engine/device-emulation checks, not
+  physical-phone verification. Existing long-content/zoom and empty-state tests remain.
+- The preceding mode-card change is included in the same verified release.
+
 # Deliberate mode activation — 2026-09-10
 
 Baseline: `45108fd`. Mode and Flashcards cards now contain one native action button.

@@ -1124,8 +1124,9 @@ button.history-item:disabled {
 .flashcards-layout {
   display: grid;
   width: min(840px, 100%);
-  min-height: 100%;
-  grid-template-rows: auto auto 1fr auto;
+  height: 100%;
+  min-height: 440px;
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
   grid-template-columns: minmax(0, 1fr);
   gap: var(--space-3);
   margin-inline: auto;
@@ -1207,8 +1208,8 @@ button.history-item:disabled {
   flex-direction: column;
   gap: var(--space-3);
   overflow: visible;
-  min-height: auto;
-  padding: clamp(18px, 4vw, 30px);
+  min-height: 0;
+  padding: clamp(12px, 2vh, 24px);
 }
 
 .flashcard-view--known {
@@ -1239,16 +1240,15 @@ button.history-item:disabled {
   color: var(--color-success);
 }
 
+/* Controls occupy stable rows; only the study content scrolls when necessary. */
 .flashcard-inner {
-  display: flex;
+  display: grid;
   width: 100%;
   flex: 1 1 auto;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-3);
-  overflow: visible;
-  min-height: auto;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  justify-items: center;
+  gap: 12px;
+  min-height: 0;
 }
 
 .flashcard-inner--empty {
@@ -1256,27 +1256,33 @@ button.history-item:disabled {
 }
 
 .flashcard-study-area {
-  display: grid;
+  display: flex;
   width: 100%;
-  min-height: min-content;
-  flex: 0 0 auto;
-  align-content: center;
-  justify-items: center;
-  gap: var(--space-3);
-  overflow: visible;
+  min-height: 0;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  padding: 4px;
+}
+
+.flashcard-study-area > * {
+  flex-shrink: 0;
+}
+
+.flashcard-study-area > :first-child {
+  margin-top: auto;
+}
+.flashcard-study-area > :last-child {
+  margin-bottom: auto;
 }
 
 .flashcard-image-wrapper {
   display: flex;
   width: 100%;
-  height: auto;
-  max-height: min(140px, 16vh);
-  flex: 0 1 auto;
-  align-items: center;
   justify-content: center;
   margin: 0;
-  overflow: hidden;
-  min-height: 0;
 }
 
 .flashcard-image-wrapper img {
@@ -1284,14 +1290,8 @@ button.history-item:disabled {
   width: auto;
   height: auto;
   max-width: 100%;
-  max-height: 100%;
+  max-height: clamp(72px, 14dvh, 160px);
   object-fit: contain;
-}
-
-@media (min-width: 641px) {
-  .flashcard-image-wrapper {
-    max-height: min(180px, 18vh);
-  }
 }
 
 .flashcard-copy {
@@ -3183,6 +3183,8 @@ input[type='range'] {
   .flashcards-layout {
     gap: var(--space-2);
     padding: var(--space-2) var(--space-3);
+    padding-bottom: max(var(--space-2), env(safe-area-inset-bottom));
+    min-height: 360px;
   }
 
   .flashcards-heading {
@@ -3217,26 +3219,9 @@ input[type='range'] {
     overflow: visible;
   }
 
-  .flashcard-inner {
-    justify-content: flex-start; /* Stack from top instead of center-squeeze */
-    gap: 16px;
-    overflow: visible; /* Allow children to measure their natural height */
-  }
-
+  .flashcard-inner,
   .flashcard-study-area {
-    gap: 16px;
-    align-content: start; /* Don't vertically center-squeeze tall content */
-  }
-
-  /* Let image grow into available flex space but never become microscopic */
-  .flashcard-image-wrapper {
-    min-height: 80px;
-    max-height: min(140px, 20vh);
-    margin-block: 4px;
-  }
-
-  .flashcard-image-wrapper img {
-    min-height: 60px;
+    gap: 8px;
   }
 
   /* Allow text to take natural height without clipping */
@@ -3250,7 +3235,7 @@ input[type='range'] {
 
   .flashcard-known-toggle {
     width: 100%;
-    min-height: 32px;
+    min-height: 44px;
     padding-inline: 10px;
     font-size: var(--text-12);
   }
@@ -3268,10 +3253,10 @@ input[type='range'] {
   }
 
   .flashcard-detail__toggle {
-    min-height: 32px;
+    min-height: 44px;
     padding-inline: 10px;
     font-size: var(--text-12);
-    margin-block-start: 12px;
+    margin-block-start: 0;
   }
 
   .flashcard-inner--empty p {
@@ -3287,7 +3272,7 @@ input[type='range'] {
   }
 
   .flashcard-actions .button {
-    min-height: 36px;
+    min-height: 44px;
     flex: 1 1 0;
     padding-inline: 6px;
     font-size: var(--text-12);
