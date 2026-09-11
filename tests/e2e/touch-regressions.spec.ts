@@ -542,3 +542,55 @@ test('flashcard controls stay anchored across image and text cards', async ({
     }
   }
 });
+
+test('mobile flashcard filters stay on one scrollable row with every category reachable', async ({
+  page,
+  hasTouch,
+  browserName,
+}, testInfo) => {
+  for (const width of [320, 390, 640]) {
+    await page.setViewportSize({ width, height: 844 });
+    await page.goto('/flashcards/');
+    const list = page.getByRole('group', { name: 'Category filters' });
+    const buttons = list.getByRole('button');
+    await expect(buttons).toHaveCount(7);
+    const tops = await buttons.evaluateAll((els) =>
+      els.map((el) => el.getBoundingClientRect().top),
+    );
+    expect(new Set(tops).size).toBe(1);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
+      true,
+    );
+    if (hasTouch && browserName === 'chromium' && width === 320) {
+      const bounds = (await list.boundingBox())!;
+      const cdp = await page.context().newCDPSession(page);
+      const x = bounds.x + bounds.width - 20;
+      const y = bounds.y + bounds.height / 2;
+      await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x, y }] });
+      for (let step = 1; step <= 12; step++) {
+        await cdp.send('Input.dispatchTouchEvent', {
+          type: 'touchMove',
+          touchPoints: [{ x: x - step * 12, y }],
+        });
+        await page.waitForTimeout(20);
+      }
+      await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+      await expect.poll(() => list.evaluate((el) => el.scrollLeft)).toBeGreaterThan(0);
+      await cdp.detach();
+    }
+    const known = list.getByRole('button', { name: 'Known', exact: true });
+    await known.focus();
+    await page.keyboard.press('Enter');
+    await expect(known).toHaveAttribute('aria-pressed', 'true');
+    const listBox = await list.boundingBox();
+    const knownBox = await known.boundingBox();
+    expect(knownBox!.x).toBeGreaterThanOrEqual(listBox!.x);
+    expect(knownBox!.x + knownBox!.width).toBeLessThanOrEqual(listBox!.x + listBox!.width + 1);
+    const all = list.getByRole('button', { name: 'All', exact: true });
+    await all.scrollIntoViewIfNeeded();
+    if (hasTouch) await all.tap();
+    else await all.click();
+    await expect(all).toHaveAttribute('aria-pressed', 'true');
+    await page.screenshot({ path: testInfo.outputPath(`single-row-filters-${width}.png`) });
+  }
+});

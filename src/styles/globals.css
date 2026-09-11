@@ -1132,7 +1132,6 @@ button.history-item:disabled {
   margin-inline: auto;
   padding: var(--space-3);
   overflow: visible;
-  touch-action: pan-y;
 }
 
 .flashcards-heading {
@@ -3204,6 +3203,13 @@ input[type='range'] {
 
   .flashcard-toolbar {
     gap: var(--space-2);
+  }
+
+  .flashcard-filter-list {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding: 4px 2px;
+    scrollbar-width: thin;
   }
 
   .flashcard-filter-chip {

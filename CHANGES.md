@@ -1,3 +1,16 @@
+# Single-row mobile flashcard filters — 2026-09-11
+
+Mobile category filters now scroll horizontally instead of wrapping. All seven
+filters remain available, with native scrolling and explicit focus visibility for
+keyboard users. Removed the flashcard page's vertical-only touch restriction so
+horizontal gestures reach the filter row. Desktop wrapping remains unchanged.
+
+Verified single-row layout, every filter's availability and keyboard/tap activation
+at 320, 390 and 640px in mobile/desktop Chromium and WebKit; inspected screenshots.
+Chromium also passed a browser touch-move swipe test. Existing anchored-control and
+long-content checks passed in both themes. Lint, typecheck and production build pass.
+No physical-device gesture verification is claimed.
+
 # Stable flashcard controls — 2026-09-11
 
 - Fixed image/text cards changing the height and position of Mark as Known, Details,

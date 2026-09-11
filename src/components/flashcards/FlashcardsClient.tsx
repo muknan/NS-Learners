@@ -389,6 +389,9 @@ export function FlashcardsClient({ deck }: { deck: Flashcard[] }) {
               aria-pressed={activeCategory === filter.value}
               className="flashcard-filter-chip"
               key={filter.value}
+              onFocus={(event) =>
+                event.currentTarget.scrollIntoView({ block: 'nearest', inline: 'nearest' })
+              }
               onClick={() => handleCategoryChange(filter.value)}
               type="button"
             >
