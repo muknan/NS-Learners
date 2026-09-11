@@ -679,13 +679,14 @@ p {
 
 @media (hover: hover) and (pointer: fine) {
   .mode-card:hover {
+    cursor: pointer;
     border-color: var(--color-border-strong);
     box-shadow: var(--shadow-card-hover);
     transform: translateY(-2px);
   }
 }
 
-.mode-card:focus-visible {
+.mode-card__cta:focus-visible {
   outline: 2px solid var(--color-brand-primary);
   outline-offset: 3px;
 }
@@ -748,9 +749,7 @@ p {
   justify-self: start;
 }
 
-/* ---- CTA pill inside the card ----
-   Renders as a real button visually. The entire .mode-card remains
-   the clickable element; this span is decorative (aria-hidden). */
+/* One native action per card; the surrounding card adds a mouse-only shortcut. */
 .mode-card__cta {
   display: inline-flex;
   width: 100%;
@@ -795,7 +794,7 @@ p {
   }
 }
 
-.mode-card:active .mode-card__cta {
+.mode-card__cta:active {
   transform: translateY(1px);
 }
 

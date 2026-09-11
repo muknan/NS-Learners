@@ -1,4 +1,86 @@
 import { expect, test, type Locator, type Page } from '@playwright/test';
+import { EXAM_MODES } from '../../src/lib/modes';
+
+test('mode card bodies are mouse shortcuts, never touch or pen launch targets', async ({
+  page,
+  hasTouch,
+}) => {
+  for (const width of [390, 1280]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto('/');
+    const cards = page.locator('.mode-card');
+    const count = await cards.count();
+    for (let i = 0; i < count; i++) {
+      const card = cards.nth(i);
+      const description = card.locator('.mode-card__description');
+      await description.dispatchEvent('pointerdown', { pointerType: 'pen' });
+      await description.dispatchEvent('pointerup', { pointerType: 'pen' });
+      await description.dispatchEvent('click', { pointerType: 'mouse', detail: 1 });
+      await expect(page).toHaveURL(/\/$/);
+      if (hasTouch) {
+        for (const target of [
+          card.locator('strong'),
+          description,
+          card.locator('.mode-card__meta'),
+        ]) {
+          await target.tap();
+          await expect(page).toHaveURL(/\/$/);
+        }
+        // The padding is also noninteractive, including on a wide touchscreen.
+        await card.tap({ position: { x: 12, y: 12 } });
+        await expect(page).toHaveURL(/\/$/);
+        expect(
+          await page.evaluate(() =>
+            Object.keys(localStorage).filter((key) => key.startsWith('ns-exam-session-')),
+          ),
+        ).toEqual([]);
+      } else {
+        await description.click();
+        await expect(page).toHaveURL(i === count - 1 ? /flashcards/ : /exam/);
+        await page.goto('/');
+      }
+    }
+  }
+});
+
+test('every mode has one native action that starts the intended destination', async ({
+  page,
+  hasTouch,
+}) => {
+  const destinations = [...Object.keys(EXAM_MODES), 'flashcards'];
+  for (let i = 0; i < destinations.length; i++) {
+    await page.goto('/');
+    const card = page.locator('.mode-card').nth(i);
+    await expect(card.getByRole('button')).toHaveCount(1);
+    await expect(card).not.toHaveAttribute('tabindex');
+    await activate(card.getByRole('button'), hasTouch);
+    if (destinations[i] === 'flashcards') {
+      await expect(page).toHaveURL(/flashcards/);
+    } else {
+      await expect(page).toHaveURL(new RegExp(`mode=${destinations[i]}`));
+      await expect(page.getByTestId('exam-shell')).toBeVisible();
+      expect(
+        await page.evaluate(
+          () => JSON.parse(localStorage.getItem('nsLearner.currentSession')!).mode,
+        ),
+      ).toBe(destinations[i]);
+    }
+  }
+});
+
+test('card buttons preserve keyboard navigation and explicit activation', async ({ page }) => {
+  await page.goto('/');
+  const buttons = page.locator('.mode-card button');
+  await buttons.first().focus();
+  await page.keyboard.press('Tab');
+  await expect(buttons.nth(1)).toBeFocused();
+  await page.keyboard.press('Space');
+  await expect(page).toHaveURL(/mode=rules-drill/);
+  await page.goto('/');
+  await buttons.first().focus();
+  await page.keyboard.press('Enter');
+  await expect(page).toHaveURL(/mode=full-test/);
+});
 
 async function activate(control: Locator, touch: boolean) {
   if (touch) await control.tap();

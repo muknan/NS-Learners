@@ -1,3 +1,20 @@
+# Deliberate mode activation — 2026-09-10
+
+Baseline: `45108fd`. Mode and Flashcards cards now contain one native action button.
+Finger/stylus taps on titles, descriptions, metadata and card padding do not launch
+anything, regardless of screen width. Mouse users retain whole-card activation and
+hover; keyboard and assistive activation use the labelled button. Resume is unchanged.
+
+The mouse shortcut checks the originating pointer-down type, activates only on click,
+and clears cancelled gestures. WebKit testing caught a touch-generated click reporting
+`pointerType: mouse`; inspecting only click would incorrectly launch the mode. Native
+button activation is kept separate to avoid duplicate launches. Text selections do not
+activate the surrounding card. Existing layout and button dimensions are preserved.
+
+Regression coverage checks every destination, phone/wide layouts, actual WebKit and
+Chromium taps/clicks, simulated stylus compatibility clicks, cancelled pointers, and
+single-button keyboard navigation. No physical-device stylus verification is claimed.
+
 # Touch hover correction — 2026-09-10
 
 Baseline: `038d9d1`. Mobile browsers can retain `:hover` after a tap. All hover-only

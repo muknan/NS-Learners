@@ -3,6 +3,7 @@
 import { ChevronRight, Play, RotateCcw, ShieldCheck, Trash2 } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
+import { ModeCard } from '@/components/home/ModeCard';
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
@@ -176,13 +177,7 @@ export function HomeClient({ flashcardTotal, stats }: HomeClientProps) {
         </div>
         <div className="mode-grid">
           {modes.map((mode) => (
-            <button
-              aria-label={`${mode.ctaLabel}: ${mode.label}. ${mode.description}`}
-              className="mode-card"
-              key={mode.id}
-              onClick={() => startExam(mode.id)}
-              type="button"
-            >
+            <ModeCard key={mode.id} onStart={() => startExam(mode.id)}>
               <span className="mode-card__top">
                 <span className="mode-card__category">{mode.categoryLabel}</span>
                 <strong>{mode.label}</strong>
@@ -190,23 +185,20 @@ export function HomeClient({ flashcardTotal, stats }: HomeClientProps) {
               </span>
               <span className="mode-card__bottom">
                 <span className="mode-card__meta">{mode.stats.join(' · ')}</span>
-                <span
+                <button
                   className={
                     mode.ctaVariant === 'primary' ? 'mode-card__cta is-primary' : 'mode-card__cta'
                   }
-                  aria-hidden="true"
+                  aria-label={`${mode.ctaLabel}: ${mode.label}. ${mode.description}`}
+                  onClick={() => startExam(mode.id)}
+                  type="button"
                 >
                   {mode.ctaLabel}
-                </span>
+                </button>
               </span>
-            </button>
+            </ModeCard>
           ))}
-          <button
-            aria-label="Open Flashcards: Chapter Flashcards. Quick-summary cards from every chapter."
-            className="mode-card"
-            onClick={() => router.push('/flashcards')}
-            type="button"
-          >
+          <ModeCard onStart={() => router.push('/flashcards')}>
             <span className="mode-card__top">
               <Badge tone="success">Flashcards</Badge>
               <strong>Chapter Flashcards</strong>
@@ -216,11 +208,16 @@ export function HomeClient({ flashcardTotal, stats }: HomeClientProps) {
             </span>
             <span className="mode-card__bottom">
               <span className="mode-card__meta">{flashcardTotal} cards · Keyboard friendly</span>
-              <span className="mode-card__cta" aria-hidden="true">
+              <button
+                className="mode-card__cta"
+                aria-label="Open Flashcards: Chapter Flashcards. Quick-summary cards from every chapter."
+                onClick={() => router.push('/flashcards')}
+                type="button"
+              >
                 Open Flashcards
-              </span>
+              </button>
             </span>
-          </button>
+          </ModeCard>
         </div>
       </section>
 
